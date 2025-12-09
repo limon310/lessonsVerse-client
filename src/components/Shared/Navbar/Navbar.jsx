@@ -8,7 +8,7 @@ import logo from '../../../assets/images/logo.png'
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
-
+  console.log(user)
   return (
     <div className='fixed w-full bg-white z-10 shadow-sm'>
       <div className='py-4 '>
@@ -57,6 +57,7 @@ const Navbar = () => {
 
                     {user ? (
                       <>
+                        <span className='px-4 py-3 hover:bg-neutral-100 transition font-semibold text-pink-500'>{user?.displayName}</span>
                         <Link
                           to='/dashboard'
                           className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'

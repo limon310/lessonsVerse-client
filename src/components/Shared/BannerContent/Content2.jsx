@@ -27,16 +27,7 @@ const Content2 = () => {
 
                     {/* RIGHT */}
                     <div className="w-full lg:w-7/12 flex justify-center relative mt-10 lg:mt-0">
-                        {/* <img src={bannerImg3} alt="" /> */}
-                        <div className="bg-gray-200 rounded-2xl p-6 shadow-xl w-full max-w-lg lg:max-w-none aspect-square flex items-center justify-center">
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80">
-                                <div className="p-8 bg-white/70 backdrop-blur-sm rounded-lg border-4 border-dashed border-gray-400 text-center text-gray-700">
-                                    <img src={bannerImg3} alt="" />
-                                    <p className="mt-4 text-2xl font-extrabold text-blue-600">“Learn. Create. Grow.”</p>
-                                </div>
-                            </div>
-
-                        </div>
+                        <img src={bannerImg3} alt="" />
                     </div>
 
                 </div>
