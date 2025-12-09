@@ -7,8 +7,9 @@ import Content3 from '../../Shared/BannerContent/Content3';
 
 const Banner = () => {
     return (
-        <div className=''>
+        <div>
             <Carousel
+                showThumbs={false}
                 autoPlay={true}
                 infiniteLoop={true}
             >

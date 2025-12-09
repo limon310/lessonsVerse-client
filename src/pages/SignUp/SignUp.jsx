@@ -4,15 +4,17 @@ import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 import { TbFidgetSpinner } from 'react-icons/tb'
 import { useForm } from "react-hook-form"
-import axios from 'axios';
+import SocialLogin from '../socialLogin/SocialLogin'
+import { imageUpload } from '../../utils'
+import LoadingSpinner from '../../components/Shared/LoadingSpinner'
 import useAxiosSecure from '../../hooks/useAxiosSecure'
 
 const SignUp = () => {
-  const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth()
+  const { createUser, updateUserProfile, loading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state || '/'
-  // const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
   // react hook form
   const {
@@ -24,23 +26,39 @@ const SignUp = () => {
   const handleSignUp = async data => {
     const { name, image, email, password } = data
     const imageFile = image[0]
-    const formData = new FormData()
-    formData.append('image', imageFile)
+    // const formData = new FormData()
+    // formData.append('image', imageFile)
 
     try {
-      const { data } = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_SECRET_API_KEY
-        }`,
-        formData
-      )
-      const imageURL = data?.data?.display_url;
-
-
+      // const { data } = await axios.post(
+      //   `https://api.imgbb.com/1/upload?key=${
+      //     import.meta.env.VITE_IMGBB_API_KEY
+      //   }`,
+      //   formData
+      // )
+      const imageURL = await imageUpload(imageFile)
+      console.log("image url" , imageURL)
       //1. User Registration
       const result = await createUser(email, password)
 
+      // 2. Generate image url from selected file
+
       //3. Save username & profile photo
-      await updateUserProfile(name, imageURL)
+      const updateInfo={
+        displayName: name,
+        photoURL: imageURL
+      }
+      await updateUserProfile(updateInfo)
+      // create user in database
+      const userInfo = {
+        name,
+        email,
+        image: imageURL
+      }
+      axiosSecure.post('/users', userInfo)
+      .then(res =>{
+        console.log("save user info in database", res.data);
+      })
 
       navigate(from, { replace: true })
       toast.success('Signup Successful')
@@ -52,66 +70,10 @@ const SignUp = () => {
     }
   }
 
-  // const handleSignUp = (data) => {
-  //   // console.log("after register", data.photo[0]);
-  //   const profileImg = data.image[0];
-  //   createUser(data.email, data.password)
-  //     .then(result => {
-  //       console.log(result.user);
-  //       // store the image and get the photo url
-  //       const formData = new FormData();
-  //       formData.append("image", profileImg);
-  //       const image_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_SECRET_API_KEY}`;
-
-  //       axios.post(image_URL, formData)
-  //         .then(res => {
-  //           // console.log("after post", res.data.data.url);
-  //           const photoURL = res.data.data.url
-
-  //           const userInfo = {
-  //             displayName: data.name,
-  //             photoURL: photoURL,
-  //             email: data.email
-  //           }
-  //           axiosSecure.post('/users', userInfo)
-  //             .then(res => {
-  //               if (res.data.insertedId) {
-  //                 console.log("user created in database", res.data);
-  //               }
-  //             })
-  //           const userProfile = {
-  //             displayName: data.name,
-  //             photoURL: photoURL,
-  //           }
-  //           updateUserProfile(userProfile)
-  //             .then(() => {
-  //               console.log("updated successfully");
-  //               navigate(location?.state || "/");
-  //             })
-  //             .catch(err => {
-  //               console.log(err);
-  //             })
-  //         })
-
-  //     })
-  //     .catch(error => {
-  //       console.log(error)
-  //     })
-  // }
-
-  // Handle Google Signin
-  const handleGoogleSignIn = async () => {
-    try {
-      //User Registration using google
-      await signInWithGoogle()
-
-      navigate(from, { replace: true })
-      toast.success('Signup Successful')
-    } catch (err) {
-      console.log(err)
-      toast.error(err?.message)
-    }
+  if(loading){
+    return LoadingSpinner
   }
+
   return (
     <div className='flex justify-center items-center min-h-screen bg-white'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
@@ -218,14 +180,8 @@ const SignUp = () => {
           </p>
           <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
         </div>
-        <div
-          onClick={handleGoogleSignIn}
-          className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'
-        >
-          <FcGoogle size={32} />
-
-          <p>Continue with Google</p>
-        </div>
+        {/* social login components */}
+        <SocialLogin></SocialLogin>
         <p className='px-6 text-sm text-center text-gray-400'>
           Already have an account?{' '}
           <Link
