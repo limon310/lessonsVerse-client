@@ -2,9 +2,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const AddLessonForm = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  console.log("user in dashboard add lesson", user)
   // Initialize useForm hook
   const {
     register,
@@ -16,7 +20,7 @@ const AddLessonForm = () => {
   // handle add lessons
   const onSubmit = (data) => {
     // console.log('Form Data Submitted:', data);
-    const {title, description, category, privacy, emotional_ton, access_level} = data;
+    const { title, description, category, privacy, emotional_ton, access_level } = data;
     const lessonData = {
       title,
       description,
@@ -24,13 +28,26 @@ const AddLessonForm = () => {
       privacy,
       emotional_ton,
       access_level,
-      authoInfo: {
+
+      authorInfo: {
         name: user?.displayName,
         email: user?.email,
         image: user?.photoURL
       }
     }
     console.log(lessonData)
+    axiosSecure.post('/lessons', lessonData)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            title: "Lesson Created!",
+            icon: "success",
+            draggable: true
+          });
+        }
+      })
   };
 
   return (
@@ -142,8 +159,10 @@ const AddLessonForm = () => {
               className={`w-full p-3 border ${errors.access_level ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register("access_level", { required: "Please select access level" })}
             >
-              <option value="Public">Public</option>
-              <option value="Private">Private</option>
+              <option value="Free ">Free </option>
+              {
+                <option value="Premium ">Premium </option>
+              }
             </select>
             {errors.access_level && <p className="mt-1 text-sm text-red-600">{errors.access_level.message}</p>}
           </div>

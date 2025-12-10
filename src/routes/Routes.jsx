@@ -58,14 +58,6 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-inventory',
-        element: (
-          <PrivateRoute>
-            <MyInventory />
-          </PrivateRoute>
-        ),
-      },
-      {
         path: 'manage-users',
         element: (
           <PrivateRoute>
