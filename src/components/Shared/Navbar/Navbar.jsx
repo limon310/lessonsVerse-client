@@ -28,11 +28,7 @@ const Navbar = () => {
     <li className='text-lg'><Link to="/public-lessons">Public Lessons</Link></li>
     <li className='text-lg'><Link to="">Add Lesson</Link></li>
     <li className='text-lg'><Link to="">My Lessons</Link></li>
-    {
-      user ?
-        <li className='text-lg'><Link to="">Upgrade Priemium</Link></li>
-        : ""
-    }
+    
   </>
   return (
     // <div className='fixed w-full bg-white z-10 shadow-sm'>

@@ -15,6 +15,7 @@ import MyLessons from '../pages/Dashboard/User/MyLessons'
 import { createBrowserRouter } from 'react-router'
 import PublicLessons from '../pages/PublicLessons/PublicLessons'
 import PricingComparisonTable from '../pages/PricingComparisonTable/PricingComparisonTable'
+import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,12 @@ export const router = createBrowserRouter([
         path: '/upgrade-premium',
         element: <PrivateRoute>
            <PricingComparisonTable></PricingComparisonTable>
+          </PrivateRoute>,
+      },
+      {
+        path: '/payment-success',
+        element: <PrivateRoute>
+           <PaymentSuccess></PaymentSuccess>
           </PrivateRoute>,
       },
       // {

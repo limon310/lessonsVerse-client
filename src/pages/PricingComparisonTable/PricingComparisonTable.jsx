@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { HiCheck, HiXMark } from 'react-icons/hi2';
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const comparisonFeatures = [
     {
@@ -65,9 +67,26 @@ const renderFeature = (value, isBoolean) => {
 };
 
 const PricingComparisonTable = () => {
+    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
+    // handle payment
+    const price = 1500;  // meaning $1500 or 1500 BDT?
+    const packageType = "Premium";
+    const userId = crypto.randomUUID();
 
-    const handleUpgrade = () => {
-        console.log("upgrade button clicked")
+    const handleUpgrade = async () => {
+        const paymentInfo = {
+            package_name: "Premium Membership",
+            price,
+            customer_email: user?.email,
+            plan: packageType,
+            customer_id: userId,
+        };
+
+        const res = await axiosSecure.post('/create-checkout-session', paymentInfo);
+
+        // redirect user to Stripe Checkout
+        window.location.href = res.data.url;
     };
 
     return (
