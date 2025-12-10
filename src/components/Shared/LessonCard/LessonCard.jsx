@@ -15,7 +15,7 @@ const LessonCard = ({ lesson, isUserPremium }) => {
         // createdDate
     } = lesson;
     // const {user} = useAuth();
-    console.log(authorInfo)
+    // console.log(authorInfo)
 
     // Conditional Logic
     const isPremiumLocked = access_level === 'Premium' && !isUserPremium;
@@ -45,7 +45,7 @@ const LessonCard = ({ lesson, isUserPremium }) => {
                     <div className="flex items-start justify-between mb-4">
                         <div>
                             <h2 className="text-xl font-bold text-gray-900 mb-1">Title: {title}</h2>
-                            <p className="text-sm text-gray-500">{description}</p>
+                            <p className="text-sm line-clamp-3 text-gray-700">{description}</p>
                         </div>
                     </div>
 

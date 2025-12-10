@@ -10,7 +10,7 @@ const PublicLessons = () => {
   const { user } = useAuth();
 
   // Fetch public lessons
-  const { data: public_lessons = [], isPending } = useQuery({
+  const { data: public_lessons = [], isLoading: lessonsLoading } = useQuery({
     queryKey: ['public-lessons'],
     queryFn: async () => {
       const res = await axios.get('http://localhost:3000/public-lessons');
@@ -30,7 +30,7 @@ const PublicLessons = () => {
 
   const isUserPremium = userData?.isPremium;
 
-  if (isPending || userLoading) {
+  if (lessonsLoading || userLoading) {
     return <LoadingSpinner />;
   }
 

@@ -1,9 +1,28 @@
 import { useState } from 'react'
 import DeleteModal from '../../Modal/DeleteModal'
-const CustomerOrderDataRow = () => {
+import useAxiosSecure from '../../../hooks/useAxiosSecure'
+import useAuth from '../../../hooks/useAuth'
+import { useQuery } from '@tanstack/react-query'
+import LoadingSpinner from '../../Shared/LoadingSpinner'
+
+
+const UserCreatedLessonRow = () => {
+
   let [isOpen, setIsOpen] = useState(false)
   const closeModal = () => setIsOpen(false)
-
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  // const { data: myLessons = [], isLoading } = useQuery({
+  //   queryKey: ['user', user?.email],
+  //   queryFn: async () => {
+  //     const res = await axiosSecure.get(`/my-lessons/${user?.email}`)
+  //     return res.data;
+  //   }
+  // });
+  // console.log(myLessons)
+  // if(isLoading){
+  //   return <LoadingSpinner></LoadingSpinner>
+  // }
   return (
     <tr>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -51,4 +70,4 @@ const CustomerOrderDataRow = () => {
   )
 }
 
-export default CustomerOrderDataRow
+export default UserCreatedLessonRow

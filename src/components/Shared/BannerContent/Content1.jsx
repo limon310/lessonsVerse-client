@@ -28,7 +28,7 @@ const Content1 = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                        <button className="px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-lg rounded-sm transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.5)] hover:shadow-[0_0_25px_rgba(6,182,212,0.8)] tracking-wider uppercase">
+                        <button className="button">
                             Start Journey
                         </button>
                         <button className="px-8 py-4 bg-transparent border border-violet-500 text-violet-300 hover:text-white hover:bg-violet-900/50 font-medium text-lg rounded-sm transition-all duration-300 tracking-wider uppercase">

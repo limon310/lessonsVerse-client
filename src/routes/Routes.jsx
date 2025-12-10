@@ -11,9 +11,10 @@ import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
 import MyInventory from '../pages/Dashboard/User/MyInventory'
 import ManageOrders from '../pages/Dashboard/User/ManageOrders'
-import MyOrders from '../pages/Dashboard/Customer/MyOrders'
+import MyLessons from '../pages/Dashboard/User/MyLessons'
 import { createBrowserRouter } from 'react-router'
 import PublicLessons from '../pages/PublicLessons/PublicLessons'
+import PricingComparisonTable from '../pages/PricingComparisonTable/PricingComparisonTable'
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,13 @@ export const router = createBrowserRouter([
       {
         path: '/public-lessons',
         Component: PublicLessons,
-      }
+      },
+      {
+        path: '/upgrade-premium',
+        element: <PrivateRoute>
+           <PricingComparisonTable></PricingComparisonTable>
+          </PrivateRoute>,
+      },
       // {
       //   path: '/plant/:id',
       //   element: <PlantDetails />,
@@ -78,10 +85,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-orders',
+        path: 'my-lessons',
         element: (
           <PrivateRoute>
-            <MyOrders />
+            <MyLessons />
           </PrivateRoute>
         ),
       },

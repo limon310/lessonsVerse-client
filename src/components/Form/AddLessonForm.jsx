@@ -125,7 +125,7 @@ const AddLessonForm = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
             {...register("description", {
               maxLength: {
-                value: 500,
+                value: 1000,
                 message: "Description cannot exceed 500 characters."
               }
             })}

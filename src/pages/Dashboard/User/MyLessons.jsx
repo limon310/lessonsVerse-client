@@ -1,6 +1,20 @@
-import CustomerOrderDataRow from '../../../components/Dashboard/TableRows/CustomerOrderDataRow'
+// import { useQuery } from '@tanstack/react-query';
+import UserCreatedLessonRow from '../../../components/Dashboard/TableRows/UserCreatedLessonRow'
+// import useAuth from '../../../hooks/useAuth'
+// import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
-const MyOrders = () => {
+const MyLessons = () => {
+  // const { user } = useAuth();
+  // console.log(user.email)
+  // const axiosSecure = useAxiosSecure();
+  // const { data: myLessons = [], isLoading } = useQuery({
+  //   queryKey: ['user', user?.email],
+  //   queryFn: async () => {
+  //     const res = await axiosSecure.get(`/my-lessons?/${user?.email}`)
+  //     return res.data;
+  //   }
+  // });
+  // console.log(myLessons);
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8'>
@@ -56,7 +70,7 @@ const MyOrders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <CustomerOrderDataRow />
+                  <UserCreatedLessonRow />
                 </tbody>
               </table>
             </div>
@@ -67,4 +81,4 @@ const MyOrders = () => {
   )
 }
 
-export default MyOrders
+export default MyLessons

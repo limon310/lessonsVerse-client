@@ -15,7 +15,7 @@ const UserMenu = () => {
   return (
     <>
     {/* my lessons */}
-      <MenuItem icon={FaBookmark } label='My Lessons' address='my-orders' />
+      <MenuItem icon={FaBookmark } label='My Lessons' address='my-lessons' />
       <MenuItem
         icon={MdBookmarkAdd}
         label='Add Lesson'
