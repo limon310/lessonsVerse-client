@@ -1,4 +1,4 @@
-import AddLessonForm from '../../../components/Form/AddLesson'
+import AddLessonForm from '../../../components/Form/AddLessonForm'
 
 const AddLesson = () => {
   return (

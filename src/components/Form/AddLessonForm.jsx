@@ -108,7 +108,7 @@ const AddLessonForm = () => {
               className={`w-full p-3 border ${errors.privacy ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register("privacy", { required: "Please select privacy." })}
             >
-              <option value="Public ">Public </option>
+              <option value="Public">Public</option>
               <option value="Private">Private</option>
             </select>
             {errors.privacy && <p className="mt-1 text-sm text-red-600">{errors.privacy.message}</p>}
@@ -159,9 +159,9 @@ const AddLessonForm = () => {
               className={`w-full p-3 border ${errors.access_level ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register("access_level", { required: "Please select access level" })}
             >
-              <option value="Free ">Free </option>
+              <option value="Free">Free</option>
               {
-                <option value="Premium ">Premium </option>
+                <option value="Premium">Premium</option>
               }
             </select>
             {errors.access_level && <p className="mt-1 text-sm text-red-600">{errors.access_level.message}</p>}
