@@ -25,8 +25,8 @@ const Navbar = () => {
   const links = <>
     <li className='text-lg'><Link to="/">Home</Link></li>
     <li className='text-lg'><Link to="/public-lessons">Public Lessons</Link></li>
-    <li className='text-lg'><Link to="">Add Lesson</Link></li>
-    <li className='text-lg'><Link to="">My Lessons</Link></li>
+    <li className='text-lg'><Link to="/dashboard/add-lesson">Add Lesson</Link></li>
+    <li className='text-lg'><Link to="/dashboard/my-lessons">My Lessons</Link></li>
     
   </>
   return (
