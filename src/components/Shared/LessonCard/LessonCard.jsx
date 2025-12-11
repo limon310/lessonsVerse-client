@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FaLock } from "react-icons/fa";
-
+import { Link } from 'react-router';
 
 const LessonCard = ({ lesson, isUserPremium }) => {
     // Destructure lesson properties for easier use
@@ -12,6 +12,7 @@ const LessonCard = ({ lesson, isUserPremium }) => {
         emotional_tone,
         authorInfo,
         access_level,
+        _id
         // createdDate
     } = lesson;
     // const {user} = useAuth();
@@ -23,14 +24,6 @@ const LessonCard = ({ lesson, isUserPremium }) => {
     const buttonClasses = isPremiumLocked
         ? 'text-gray-400 bg-gray-50 cursor-not-allowed'
         : 'text-indigo-700 bg-indigo-50 hover:bg-indigo-100';
-
-    const handleSeeDetails = () => {
-        alert(`Opening details page for: ${title}`);
-    };
-
-    const handleUpgrade = () => {
-        alert('Navigating to the Upgrade page...');
-    };
 
     return (
         <div className="max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-2xl">
@@ -93,11 +86,10 @@ const LessonCard = ({ lesson, isUserPremium }) => {
                         <p className="text-center text-sm text-gray-600 mb-4">
                             Upgrade to view
                         </p>
-                        <button
-                            onClick={handleUpgrade}
+                        <Link to="/upgrade-premium"
                             className="px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition duration-150 shadow-md">
                             Upgrade Now
-                        </button>
+                        </Link>
                     </div>
                 )}
 
@@ -105,13 +97,12 @@ const LessonCard = ({ lesson, isUserPremium }) => {
 
             {/* Footer Button */}
             <div className="p-4 border-t border-gray-100">
-                <button
-                    onClick={handleSeeDetails}
+                <Link to={`/lesson-details/${_id}`}
                     className={`w-full py-2 text-sm font-semibold rounded-lg transition duration-150 ${buttonClasses}`}
                     disabled={isPremiumLocked}
                 >
                     See Details Button
-                </button>
+                </Link>
             </div>
         </div>
     );

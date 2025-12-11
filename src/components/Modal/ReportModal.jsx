@@ -1,6 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
-const PurchaseModal = ({ closeModal, isOpen }) => {
+const ReportModal = ({ closeModal, isOpen }) => {
   // Total Price Calculation
 
   return (
@@ -60,4 +60,4 @@ const PurchaseModal = ({ closeModal, isOpen }) => {
   )
 }
 
-export default PurchaseModal
+export default ReportModal

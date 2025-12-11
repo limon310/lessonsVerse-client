@@ -7,8 +7,7 @@ import avatarImg from '../../../assets/images/placeholder.jpg'
 import logo from '../../../assets/images/logo.png'
 import { useQuery } from '@tanstack/react-query'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
-import axios from 'axios'
-import LoadingSpinner from '../LoadingSpinner'
+import { LuBadgeCheck } from "react-icons/lu";
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
@@ -157,7 +156,7 @@ const Navbar = () => {
             {user && (
               isUserPremium ? (
                 <span className="px-3 py-1 bg-yellow-500 text-white rounded-full">
-                  Premium
+                  <LuBadgeCheck />
                 </span>
               ) : (
                 <Link to='/upgrade-premium' className="btn bg-purple-400 mr-2 text-white text-sm">Upgrade</Link>

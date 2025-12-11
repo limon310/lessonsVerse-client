@@ -16,6 +16,7 @@ import { createBrowserRouter } from 'react-router'
 import PublicLessons from '../pages/PublicLessons/PublicLessons'
 import PricingComparisonTable from '../pages/PricingComparisonTable/PricingComparisonTable'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
+import LessonDetails from '../pages/LessonDetails/LessonDetails'
 
 export const router = createBrowserRouter([
   {
@@ -43,10 +44,12 @@ export const router = createBrowserRouter([
            <PaymentSuccess></PaymentSuccess>
           </PrivateRoute>,
       },
-      // {
-      //   path: '/plant/:id',
-      //   element: <PlantDetails />,
-      // },
+      {
+        path: '/lesson-details/:id',
+        element: <PrivateRoute>
+          <LessonDetails></LessonDetails>
+          </PrivateRoute>,
+      },
     ],
   },
   { path: '/login', element: <Login /> },
