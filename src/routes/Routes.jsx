@@ -17,6 +17,7 @@ import PublicLessons from '../pages/PublicLessons/PublicLessons'
 import PricingComparisonTable from '../pages/PricingComparisonTable/PricingComparisonTable'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 import LessonDetails from '../pages/LessonDetails/LessonDetails'
+import UpdateLesson from '../pages/Dashboard/UpdateLesson/UpdateLesson'
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +76,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddLesson />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'update-lesson',
+        element: (
+          <PrivateRoute>
+            <UpdateLesson />
           </PrivateRoute>
         ),
       },

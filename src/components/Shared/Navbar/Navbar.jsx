@@ -155,8 +155,8 @@ const Navbar = () => {
             {/* show upgrade button on condition */}
             {user && (
               isUserPremium ? (
-                <span className="px-3 py-1 bg-yellow-500 text-white rounded-full">
-                  <LuBadgeCheck />
+                <span className="px-3 py-1 text-white">
+                  <LuBadgeCheck color='blue' size={28} />
                 </span>
               ) : (
                 <Link to='/upgrade-premium' className="btn bg-purple-400 mr-2 text-white text-sm">Upgrade</Link>

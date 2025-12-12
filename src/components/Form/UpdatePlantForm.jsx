@@ -1,119 +1,202 @@
-const UpdatePlantForm = () => {
+
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
+
+const AddLessonForm = () => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  // console.log("user in dashboard add lesson", user)
+  // Initialize useForm hook
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset
+  } = useForm();
+
+  // handle add lessons
+  const onSubmit = (data) => {
+    // console.log('Form Data Submitted:', data);
+    const { title, description, category, privacy, emotional_ton, access_level } = data;
+    const lessonData = {
+      title,
+      description,
+      category,
+      privacy,
+      emotional_ton,
+      access_level,
+
+      authorInfo: {
+        name: user?.displayName,
+        email: user?.email,
+        image: user?.photoURL
+      }
+    }
+    console.log(lessonData)
+    axiosSecure.post('/lessons', lessonData)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            title: "Lesson Created!",
+            icon: "success",
+            draggable: true
+          });
+        }
+      })
+  };
+
   return (
-    <div className='w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50'>
-      <form>
-        <div className='grid grid-cols-1 gap-10'>
-          <div className='space-y-6'>
-            {/* Name */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='name' className='block text-gray-600'>
-                Name
-              </label>
-              <input
-                className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                name='name'
-                id='name'
-                type='text'
-                placeholder='Plant Name'
-                required
-              />
-            </div>
-            {/* Category */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='category' className='block text-gray-600 '>
-                Category
-              </label>
-              <select
-                required
-                className='w-full px-4 py-3 border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                name='category'
-              >
-                <option value='Indoor'>Indoor</option>
-                <option value='Outdoor'>Outdoor</option>
-                <option value='Succulent'>Succulent</option>
-                <option value='Flowering'>Flowering</option>
-              </select>
-            </div>
-            {/* Description */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='description' className='block text-gray-600'>
-                Description
-              </label>
+    <div className="max-w-3xl mx-auto my-10 p-6 bg-whited shadow-xl rounded-lg border border-gray-200">
 
-              <textarea
-                id='description'
-                placeholder='Write plant description here...'
-                className='block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800  border border-lime-300 bg-white focus:outline-lime-500 '
-                name='description'
-              ></textarea>
-            </div>
-          </div>
-          <div className='space-y-6 flex flex-col'>
-            {/* Price & Quantity */}
-            <div className='flex justify-between gap-2'>
-              {/* Price */}
-              <div className='space-y-1 text-sm'>
-                <label htmlFor='price' className='block text-gray-600 '>
-                  Price
-                </label>
-                <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                  name='price'
-                  id='price'
-                  type='number'
-                  placeholder='Price per unit'
-                  required
-                />
-              </div>
+      {/* Header */}
+      <h2 className="text-3xl font-bold mb-6 text-gray-800 border-b pb-2">Update Lesson</h2>
 
-              {/* Quantity */}
-              <div className='space-y-1 text-sm'>
-                <label htmlFor='quantity' className='block text-gray-600'>
-                  Quantity
-                </label>
-                <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                  name='quantity'
-                  id='quantity'
-                  type='number'
-                  placeholder='Available quantity'
-                  required
-                />
-              </div>
-            </div>
-            {/* Image */}
-            <div className=' p-4  w-full  m-auto rounded-lg grow'>
-              <div className='file_upload px-5 py-3 relative border-4 border-dotted border-gray-300 rounded-lg'>
-                <div className='flex flex-col w-max mx-auto text-center'>
-                  <label>
-                    <input
-                      className='text-sm cursor-pointer w-36 hidden'
-                      type='file'
-                      name='image'
-                      id='image'
-                      accept='image/*'
-                      hidden
-                    />
-                    <div className='bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500'>
-                      Upload Image
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
-            {/* Submit Button */}
-            <button
-              type='submit'
-              className='w-full cursor-pointer p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-lime-500 '
+        {/* --- Lesson Title Field --- */}
+        <div className="flex flex-col">
+          <label htmlFor="title" className="mb-2 text-sm font-medium text-gray-700">Lesson Title</label>
+          <input
+            id="title"
+            type="text"
+            placeholder="lesson title here"
+            className={`w-full p-3 border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            {...register("title", {
+              required: "Lesson title is required.",
+              minLength: {
+                value: 5,
+                message: "Title must be at least 5 characters long."
+              }
+            })}
+          />
+          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>}
+        </div>
+
+        {/* --- Category and privacy Fields*/}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          {/* Category Dropdown */}
+          <div className="flex flex-col">
+            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Category</label>
+            <select
+              id="category"
+              className={`w-full p-3 border ${errors.category ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register("category", { required: "Please select a category." })}
             >
-              Update Plant
-            </button>
+              <option value="Personal ">Personal </option>
+              <option value="Growth">Growth</option>
+              <option value="Career">Career</option>
+              <option value="Relationships">Relationships</option>
+              <option value="Mindset">Mindset</option>
+              <option value="Mistakes_learned">Mistakes Learned</option>
+              <option value="Finance_Money">Finance Money</option>
+              <option value="Health_Wellness">Health Wellness</option>
+            </select>
+            {errors.category && <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>}
           </div>
+
+          {/* Privacy */}
+          <div className="flex flex-col">
+            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Privacy</label>
+            <select
+              id="privacy"
+              className={`w-full p-3 border ${errors.privacy ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register("privacy", { required: "Please select privacy." })}
+            >
+              <option value="Public">Public</option>
+              <option value="Private">Private</option>
+            </select>
+            {errors.privacy && <p className="mt-1 text-sm text-red-600">{errors.privacy.message}</p>}
+          </div>
+        </div>
+
+        {/* --- Description Textarea --- */}
+        <div className="flex flex-col">
+          <label htmlFor="description" className="mb-2 text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            id="description"
+            rows="4"
+            placeholder="Provide a brief summary of the lesson content."
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+            {...register("description", {
+              maxLength: {
+                value: 1000,
+                message: "Description cannot exceed 500 characters."
+              }
+            })}
+          />
+          {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* --- access level and emotional ton Fields*/}
+          {/* Emotional Ton Dropdown */}
+          <div className="flex flex-col">
+            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Emotional Ton</label>
+            <select
+              id="emotional_ton"
+              className={`w-full p-3 border ${errors.emotional_ton ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register("emotional_ton", { required: "Please select a Ton." })}
+            >
+              <option value="Motivational">Motivational</option>
+              <option value="Sad">Sad</option>
+              <option value="Realization">Realization</option>
+              <option value="Gratitude">Gratitude</option>
+            </select>
+            {errors.emotional && <p className="mt-1 text-sm text-red-600">{errors.emotional_ton.message}</p>}
+          </div>
+
+          {/* Access level Input */}
+          <div className="flex flex-col">
+            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Access Level</label>
+            <select
+              id="access_level"
+              className={`w-full p-3 border ${errors.access_level ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register("access_level", { required: "Please select access level" })}
+            >
+              <option value="Free">Free</option>
+              {
+                <option value="Premium">Premium</option>
+              }
+            </select>
+            {errors.access_level && <p className="mt-1 text-sm text-red-600">{errors.access_level.message}</p>}
+          </div>
+        </div>
+
+        {/* --- Button Group --- */}
+        <div className="flex justify-end space-x-4 pt-4">
+
+          {/* Reset Button */}
+          <button
+            type="button"
+            onClick={() => reset()}
+            className="px-6 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out"
+            disabled={isSubmitting}
+          >
+            Reset
+          </button>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            // Conditional styling for disabled state
+            className={`px-6 py-2 text-white font-semibold rounded-lg shadow-md transition duration-150 ease-in-out ${isSubmitting
+              ? 'bg-blue-300 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+              }`}
+          >
+            {isSubmitting ? 'Updating...' : 'Update Lesson'}
+          </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default UpdatePlantForm
+export default AddLessonForm;

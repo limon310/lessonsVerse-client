@@ -11,11 +11,11 @@ const MyLessons = () => {
   const { data: myLessons = [], isLoading, refetch, } = useQuery({
     queryKey: ['user', user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/my-lessons?email=${user?.email}`)
+      const res = await axiosSecure.get(`/my-lessons/${user?.email}`)
       return res.data;
     }
   });
-  console.log(myLessons);
+  // console.log(myLessons);
   if (isLoading) {
     return <LoadingSpinner></LoadingSpinner>
   }

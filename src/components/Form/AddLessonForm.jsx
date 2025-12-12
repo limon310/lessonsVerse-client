@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import { useQuery } from '@tanstack/react-query';
 
 const AddLessonForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  console.log("user in dashboard add lesson", user)
+  // console.log("user in dashboard add lesson", user)
   // Initialize useForm hook
   const {
     register,
@@ -16,6 +17,16 @@ const AddLessonForm = () => {
     formState: { errors, isSubmitting },
     reset
   } = useForm();
+
+  // get user data using tanstack quiry for access level velidation
+  const { data: usersData = [] } = useQuery({
+    queryKey: ['usersAccessLevel', user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users/${user?.email}`)
+      return res.data;
+    }
+  });
+  const isUserPremium = usersData.isPremium;
 
   // handle add lessons
   const onSubmit = (data) => {
@@ -160,7 +171,9 @@ const AddLessonForm = () => {
               {...register("access_level", { required: "Please select access level" })}
             >
               <option value="Free">Free</option>
+              {/* check user premium or free */}
               {
+                isUserPremium &&
                 <option value="Premium">Premium</option>
               }
             </select>
