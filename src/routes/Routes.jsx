@@ -18,6 +18,8 @@ import PricingComparisonTable from '../pages/PricingComparisonTable/PricingCompa
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 import LessonDetails from '../pages/LessonDetails/LessonDetails'
 import UpdateLesson from '../pages/Dashboard/UpdateLesson/UpdateLesson'
+import AdminRoute from './AdminRoute'
+import CustomerRoute from './CustomerRoute'
 
 export const router = createBrowserRouter([
   {
@@ -36,20 +38,20 @@ export const router = createBrowserRouter([
       {
         path: '/upgrade-premium',
         element: <PrivateRoute>
-           <PricingComparisonTable></PricingComparisonTable>
-          </PrivateRoute>,
+          <PricingComparisonTable></PricingComparisonTable>
+        </PrivateRoute>,
       },
       {
         path: '/payment-success',
         element: <PrivateRoute>
-           <PaymentSuccess></PaymentSuccess>
-          </PrivateRoute>,
+          <PaymentSuccess></PaymentSuccess>
+        </PrivateRoute>,
       },
       {
         path: '/lesson-details/:id',
         element: <PrivateRoute>
           <LessonDetails></LessonDetails>
-          </PrivateRoute>,
+        </PrivateRoute>,
       },
     ],
   },
@@ -75,7 +77,19 @@ export const router = createBrowserRouter([
         path: 'add-lesson',
         element: (
           <PrivateRoute>
-            <AddLesson />
+            <CustomerRoute>
+              <AddLesson />
+            </CustomerRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'my-lessons',
+        element: (
+          <PrivateRoute>
+            <CustomerRoute>
+              <MyLessons />
+            </CustomerRoute>
           </PrivateRoute>
         ),
       },
@@ -91,7 +105,9 @@ export const router = createBrowserRouter([
         path: 'manage-users',
         element: (
           <PrivateRoute>
-            <ManageUsers />
+            <AdminRoute>
+              <ManageUsers />
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
@@ -100,14 +116,6 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Profile />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: 'my-lessons',
-        element: (
-          <PrivateRoute>
-            <MyLessons />
           </PrivateRoute>
         ),
       },
