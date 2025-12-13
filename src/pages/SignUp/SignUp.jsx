@@ -51,9 +51,9 @@ const SignUp = () => {
       await updateUserProfile(updateInfo)
       // create user in database
       const userInfo = {
-        name,
+        displayName: name,
         email,
-        image: imageURL
+        photoURL: imageURL
       }
       axiosSecure.post('/users', userInfo)
       .then(res =>{
