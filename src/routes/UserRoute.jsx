@@ -3,16 +3,16 @@ import useRole from '../hooks/useRole';
 import LoadingSpinner from '../components/Shared/LoadingSpinner';
 import { Navigate } from 'react-router';
 
-const CustomerRoute = ({children}) => {
+const UserRoute = ({children}) => {
     const {role, isRoleLoading} = useRole();
     console.log(role)
     if(isRoleLoading){
         return <LoadingSpinner></LoadingSpinner>
     }
-    if(role === "customer"){
+    if(role === "user"){
         return children;
     }
     return <Navigate to="/"></Navigate>
 };
 
-export default CustomerRoute;
+export default UserRoute;

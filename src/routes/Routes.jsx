@@ -19,7 +19,8 @@ import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 import LessonDetails from '../pages/LessonDetails/LessonDetails'
 import UpdateLesson from '../pages/Dashboard/UpdateLesson/UpdateLesson'
 import AdminRoute from './AdminRoute'
-import CustomerRoute from './CustomerRoute'
+import UserRoute from './UserRoute'
+import ManageLessons from '../pages/Dashboard/Admin/ManageLessons'
 
 export const router = createBrowserRouter([
   {
@@ -77,9 +78,9 @@ export const router = createBrowserRouter([
         path: 'add-lesson',
         element: (
           <PrivateRoute>
-            <CustomerRoute>
+            <UserRoute>
               <AddLesson />
-            </CustomerRoute>
+            </UserRoute>
           </PrivateRoute>
         ),
       },
@@ -87,9 +88,9 @@ export const router = createBrowserRouter([
         path: 'my-lessons',
         element: (
           <PrivateRoute>
-            <CustomerRoute>
+            <UserRoute>
               <MyLessons />
-            </CustomerRoute>
+            </UserRoute>
           </PrivateRoute>
         ),
       },
@@ -107,6 +108,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <ManageUsers />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'manage-lessons',
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ManageLessons />
             </AdminRoute>
           </PrivateRoute>
         ),

@@ -79,7 +79,7 @@ const Sidebar = () => {
               />
               {/* Role-Based Menu */}
               {
-                role === "customer" && <UserMenu />
+                role === "user" && <UserMenu />
               }
               {
                 role === "admin" && <AdminMenu />

@@ -1,7 +1,46 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { toast } from 'react-hot-toast'
 
-const ReportModal = ({ closeModal, isOpen }) => {
-  // Total Price Calculation
+const ReportModal = ({ closeModal, isOpen, lesson }) => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  // console.log("from lesson report modal", lesson);
+
+  // report reasons array
+  const reportReasons = [
+    { value: "inappropriate", text: "Inappropriate Content" },
+    { value: "hate", text: "Hate Speech or Harassment" },
+    { value: "misleading", text: "Misleading or False Information" },
+    { value: "spam", text: "Spam or Promotional Content" },
+    { value: "sensitive", text: "Sensitive or Disturbing Content" },
+    { value: "copyright", text: "Copyright Violation" },
+    { value: "privacy", text: "Privacy Violation" },
+    { value: "selfharm", text: "Self-Harm or Suicide Content" },
+    { value: "violence", text: "Violent or Graphic Content" },
+    { value: "misleading_ad", text: "Misleading Advertisement" },
+    { value: "fake_news", text: "False or Fake News" },
+    { value: "harassment", text: "Harassment or Bullying" },
+    { value: "other", text: "Other" },
+  ];
+
+  // handle report reason
+  const handleReport = (e) => {
+    e.preventDefault();
+    const data = e.target.reason.value;
+    console.log(data);
+
+    const reason = e.target.reason.value;
+    console.log(reason);
+    if (!reason) return;
+
+    axiosSecure.post(`/report-lesson/${lesson._id}`, { email: user?.email, displayName: user?.displayName, userId: user?.uid, reason })
+      .then(res => {
+        if (res.data.success) toast.success("Reported successfully");
+      });
+  };
 
   return (
     <Dialog
@@ -10,7 +49,7 @@ const ReportModal = ({ closeModal, isOpen }) => {
       className='relative z-10 focus:outline-none '
       onClose={closeModal}
     >
-      <div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
+      <div className='fixed inset-0 z-10 w-screen overflow-y-auto '>
         <div className='flex min-h-full items-center justify-center p-4'>
           <DialogPanel
             transition
@@ -18,41 +57,46 @@ const ReportModal = ({ closeModal, isOpen }) => {
           >
             <DialogTitle
               as='h3'
-              className='text-lg font-medium text-center leading-6 text-gray-900'
+              className='text-xl font-medium text-center leading-6 text-gray-900'
             >
-              Review Info Before Purchase
+              Report Lesson
             </DialogTitle>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Plant: Money Plant</p>
-            </div>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Category: Indoor</p>
-            </div>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Customer: PH</p>
-            </div>
+            <p className="text-sm text-muted-foreground py-3">
+              Reporting helps us review content that may violate community
+              guidelines. Reports are confidential.
+            </p>
+            <form onSubmit={handleReport}>
+              <fieldset className="fieldset py-4">
+                <label htmlFor="privacy" className="mb-2 text-sm font-medium text-gray-700">
+                  Reason for report
+                </label>
+                <select
+                  id="reason"
+                  name="reason"
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {reportReasons.map(reason => (
+                    <option className='text-lg ' key={reason.value} value={reason.value}>
+                      {reason.text}
+                    </option>
+                  ))}
+                </select>
 
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Price: $ 120</p>
-            </div>
-            <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Available Quantity: 5</p>
-            </div>
-            <div className='flex mt-2 justify-around'>
-              <button
-                type='button'
-                className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
-              >
-                Pay
-              </button>
-              <button
-                type='button'
-                className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2'
-                onClick={closeModal}
-              >
-                Cancel
-              </button>
-            </div>
+                <button
+                  type='submit'
+                  className='cursor-pointer mt-3 inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2'
+                >
+                  Confirm Report
+                </button>
+              </fieldset>
+            </form>
+            <button
+              onClick={closeModal}
+              type='button'
+              className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
+            >
+              Cancel
+            </button>
           </DialogPanel>
         </div>
       </div>

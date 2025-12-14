@@ -9,12 +9,20 @@ import useAxiosSecure from '../../hooks/useAxiosSecure'
 import LoadingSpinner from '../../components/Shared/LoadingSpinner'
 import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark, FaFlag } from "react-icons/fa";
 import { FaEye } from "react-icons/fa6";
+import { User } from 'lucide-react'
+import useAuth from '../../hooks/useAuth'
+import { useEffect } from 'react'
+import toast from 'react-hot-toast'
+
 
 const LessonDetails = () => {
+  const { user } = useAuth();
   let [isOpen, setIsOpen] = useState(false)
   const closeModal = () => {
     setIsOpen(false)
   }
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
   // console.log(id);
@@ -25,14 +33,102 @@ const LessonDetails = () => {
       return res.data;
     }
   })
-  console.log(lesson)
+  // console.log(lesson)
   const { title, description, category, emotional_ton, createdAt, privacy, authorInfo } = lesson;
-  const [liked, setLiked] = useState(false);
-  const [saved, setSaved] = useState(false);
-
+  // random view
   const views = Math.floor(Math.random() * 10000);
 
-  if (isLoading) {
+  // interaction button
+
+  // favorite count
+  const { data: favoriteCount = 0, refetch: refetchCount } = useQuery({
+    queryKey: ['favorite-count', lesson._id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/favorite-lessons/count/${lesson._id}`);
+      return res.data.count;
+    }
+  });
+
+  // like count
+  const { data: likeCount = 0, refetch: refetchLikeCount } = useQuery({
+    queryKey: ['like-count', lesson._id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/like-lessons/count/${lesson._id}`);
+      return res.data.count;
+    }
+  });
+
+  // initial check if user has favorited/liked
+  useEffect(() => {
+    if (!user) return;
+
+    // favorite
+    axiosSecure
+      .get(`/favorite-lessons/check?lessonId=${lesson._id}&email=${user.email}`)
+      .then(res => setIsFavorited(res.data.isFavorited));
+
+    // like
+    axiosSecure
+      .get(`/like-lessons/check?lessonId=${lesson._id}&email=${user.email}`)
+      .then(res => setIsLiked(res.data.isLiked));
+  }, [lesson._id, user, axiosSecure]);
+
+  // favorite button toogle
+  const handleToggleFavorite = () => {
+    axiosSecure.post(`/favorite-lessons/${lesson._id}`, { email: user?.email })
+      .then(res => {
+        setIsFavorited(res.data.action === 'added');
+        refetchCount();
+      });
+  };
+
+  // handle like button toogle
+  const handleToggleLike = () => {
+    if (!user) return alert("Please login to like");
+
+    axiosSecure.post(`/like-lessons/${lesson._id}`, { email: user.email })
+      .then(res => {
+        setIsLiked(res.data.action === "added");
+        refetchLikeCount();
+      });
+  };
+
+  // get user comment
+  const { data: userComments = [], isLoading: userCommentsLoading, refetch: commentRefetch } = useQuery({
+    queryKey: ['user-comments'],
+    queryFn: async () => {
+      const res = await axiosSecure.get('/getUser-comment')
+      return res.data;
+    }
+  })
+  // console.log(userComments);
+
+  // save user comment in db
+  const handlePostComment = (e) => {
+    e.preventDefault();
+    const comment = e.target.comment.value;
+    console.log(comment);
+    const userInfo = {
+      message: comment,
+      image: user?.photoURL,
+      userId: user?.uid,
+      displayName: user?.displayName,
+      email: user?.email,
+      createdAt: new Date(),
+    }
+    axiosSecure.post('/lesson-comment', userInfo)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.insertedId) {
+          toast.success("post comment");
+          commentRefetch();
+        }
+      })
+    // postCommentMutation.mutate(userInfo)
+    // e.target.reset();
+  }
+
+  if (isLoading || userCommentsLoading) {
     return <LoadingSpinner></LoadingSpinner>
   }
 
@@ -119,14 +215,11 @@ const LessonDetails = () => {
       {/* 4. Stats Section */}
       <section className="flex items-center gap-6 text-gray-600 text-lg">
         <span className="flex items-center gap-1">
-          ❤️ {0}
+          ❤️ {likeCount}
         </span>
-        {/* <span className="flex items-center gap-1">
-          ❤️ {lesson?.likes || 0}
-        </span> */}
 
         <span className="flex items-center gap-1">
-          🔖 {lesson?.favorites || 0}
+          🔖 {favoriteCount}
         </span>
 
         <span className="flex items-center gap-1">
@@ -139,20 +232,20 @@ const LessonDetails = () => {
       <section className="flex items-center gap-4">
         {/* Save */}
         <button
-          onClick={() => setSaved(!saved)}
-          className="px-4 py-2 border rounded-lg flex items-center gap-2 hover:bg-gray-100"
+          onClick={handleToggleFavorite}
+          className={`px-4 py-2 border rounded flex items-center gap-2
+         ${isFavorited ? 'bg-red-100 border-red-400' : 'hover:bg-gray-100'}`}
         >
-          {saved ? <FaBookmark /> : <FaRegBookmark />}
-          {saved ? "Saved" : "Save to Favorites"}
+          🔖 {isFavorited ? 'Saved' : 'Save to Favorite'}
         </button>
 
         {/* Like */}
         <button
-          onClick={() => setLiked(!liked)}
+          onClick={handleToggleLike}
           className="px-4 py-2 border rounded-lg flex items-center gap-2 hover:bg-gray-100"
         >
-          {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-          {liked ? "Liked" : "Like"}
+          {isLiked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+          {isLiked ? "Liked" : "Like"}
         </button>
 
         {/* Report */}
@@ -164,7 +257,7 @@ const LessonDetails = () => {
             <FaFlag /> Report Lesson
           </button>
           <ReportModal
-            plant={lesson}
+            lesson={lesson}
             closeModal={closeModal}
             isOpen={isOpen}
           >
@@ -181,24 +274,37 @@ const LessonDetails = () => {
 
         {/* Add comment */}
         <div className="space-y-3">
-          <textarea
-            placeholder="Write a comment..."
-            className="w-full border p-3 rounded-xl focus:outline-none focus:ring"
-            rows="3"
-          ></textarea>
+          <form onSubmit={handlePostComment}>
+            <textarea
+              placeholder="Write a comment..."
+              name='comment'
+              className="w-full border p-3 rounded-xl focus:outline-none focus:ring"
+              rows="3"
+            ></textarea>
 
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
-            Post Comment
-          </button>
+            <button
+              type='submit'
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+              Post Comment
+            </button>
+          </form>
         </div>
 
         {/* Existing comments */}
         <div className="space-y-4">
           {/* Example static comments, replace with map */}
-          <div className="p-4 border rounded-xl bg-gray-50">
-            <p className="font-medium">Demo User</p>
-            <p className="text-sm text-gray-600">This lesson was amazing!</p>
-          </div>
+          {
+            userComments.map(comment => <div key={comment._id} className="p-4 border rounded-xl bg-gray-50">
+              <div className='flex gap-3 items-center'>
+                <img src={comment.image} alt="user Photo"
+                  className='w-[50px] h-[50px] rounded-full'
+                />
+                <p className="font-medium">{comment.displayName}</p>
+              </div>
+              <p className="text-sm text-gray-600">{comment.message}</p>
+            </div>)
+          }
+
         </div>
       </section>
     </div>
