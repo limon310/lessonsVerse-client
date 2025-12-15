@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
@@ -11,6 +11,11 @@ import { toast } from 'react-hot-toast'
 
 const ManageLessons = () => {
     const axiosSecure = useAxiosSecure();
+    const [filters, setFilters] = useState({
+        category: "",
+        privacy: "",
+        flagged: false
+    });
     const { data: stats = {}, isLoading } = useQuery({
         queryKey: ['lesson-stats'],
         queryFn: async () => {
@@ -18,15 +23,21 @@ const ManageLessons = () => {
             return res.data;
         }
     });
-    // console.log(stats);
 
     const { data: allLessons = [], isLoading: allLessonsLoading, refetch } = useQuery({
-        queryKey: ['all-lessons'],
+        queryKey: ['admin-lessons', filters],
         queryFn: async () => {
-            const res = await axiosSecure.get('/all-public-lessons')
+            const params = {};
+
+            if (filters.category) params.category = filters.category;
+            if (filters.privacy) params.privacy = filters.privacy;
+            if (filters.flagged) params.flagged = true;
+
+            const res = await axiosSecure.get('/admin/lessons', { params });
             return res.data;
         }
-    })
+    });
+
     // console.log(allLessons);
 
     // HANDLE DELETE LESSONS
@@ -87,7 +98,7 @@ const ManageLessons = () => {
             })
     }
 
-    if (isLoading || allLessonsLoading ) {
+    if (isLoading || allLessonsLoading) {
         return <LoadingSpinner></LoadingSpinner>
     }
     return (
@@ -109,7 +120,30 @@ const ManageLessons = () => {
                     <div className="text-2xl font-bold">{stats.flaggedLessons}</div>
                 </div>
             </div>
-            <h2>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere consequatur quo delectus velit aliquam voluptas totam laudantium est, quia error impedit dicta illo, qui aliquid voluptatibus pariatur aut animi facilis.</h2>
+            <h2 className='text-3xl font-bold mb-2'>Search by: </h2>
+            <label htmlFor="category" className="mb-2 text-lg font-medium text-gray-700 ms-4 mr-3">Visibility</label>
+            <select onChange={(e) => setFilters({ ...filters, privacy: e.target.value })}>
+                <option value="">All</option>
+                <option value="Public">Public</option>
+                <option value="Private">Private</option>
+            </select>
+            <label htmlFor="category" className="mb-2 text-lg font-medium text-gray-700 mr-3 ml-3">Category</label>
+            <select onChange={(e) => setFilters({ ...filters, category: e.target.value })}>
+                <option value="">All Categories</option>
+                <option value="Personal ">Personal </option>
+                <option value="Growth">Growth</option>
+                <option value="Career">Career</option>
+                <option value="Relationships">Relationships</option>
+                <option value="Mindset">Mindset</option>
+                <option value="Mistakes_learned">Mistakes Learned</option>
+                <option value="Finance_Money">Finance Money</option>
+                <option value="Health_Wellness">Health Wellness</option>
+            </select>
+
+            <button onClick={() => setFilters({ ...filters, flagged: true })}
+                className='btn ms-4'>
+                Show Flagged
+            </button>
 
             <table className="table table-zebra">
                 {/* head */}
@@ -145,7 +179,6 @@ const ManageLessons = () => {
                                         lesson.isFeatured
                                             ? <p><RiHeartAdd2Fill size={24} /></p>
                                             : <RiHeartAdd2Line size={24} />
-
                                     }
 
                                 </button>
@@ -154,7 +187,7 @@ const ManageLessons = () => {
                                 <button className='btn cursor-pointer'
                                     onClick={() => handleMakeReview(lesson._id)}
                                 > <VscOpenPreview size={24} />
-                                    
+
                                 </button>
                             </td>
                             <td>
