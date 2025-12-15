@@ -26,7 +26,7 @@ const LessonCard = ({ lesson, isUserPremium }) => {
         : 'text-indigo-700 bg-indigo-50 hover:bg-indigo-100';
 
     return (
-        <div className="max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-2xl">
+        <div className="max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-2xl ">
 
             {/* Card Content Area */}
             <div className="p-6 relative">

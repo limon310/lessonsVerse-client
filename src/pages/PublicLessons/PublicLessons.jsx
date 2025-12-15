@@ -39,7 +39,7 @@ const PublicLessons = () => {
       <div>
         <h2 className='text-3xl font-bold py-3'>Total Public lessons <span className='text-pink-500'>{public_lessons.length}</span></h2>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-20 mt-5'>
           {public_lessons.map(lesson => (
             <LessonCard
               key={lesson._id}

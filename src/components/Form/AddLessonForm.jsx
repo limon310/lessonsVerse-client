@@ -39,11 +39,11 @@ const AddLessonForm = () => {
       privacy,
       emotional_ton,
       access_level,
-
+      creatorId: user?.uid,
       authorInfo: {
         name: user?.displayName,
         email: user?.email,
-        image: user?.photoURL
+        image: user?.photoURL,
       }
     }
     console.log(lessonData)
