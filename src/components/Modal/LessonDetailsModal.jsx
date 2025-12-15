@@ -1,10 +1,34 @@
 import { Dialog, DialogTitle, DialogPanel } from '@headlessui/react'
+import { useQuery } from '@tanstack/react-query';
 import { FaEye } from 'react-icons/fa';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 // import useAuth from '../../hooks/useAuth';
 const LessonDetailsModal = ({ closeModal, isOpen, lesson }) => {
   const { title, category, emotional_ton, createdAt, privacy, authorInfo } = lesson;
   // const {user} = useAuth();
   // console.log(authorInfo);
+  const axiosSecure = useAxiosSecure();
+
+   const views = Math.floor(Math.random() * 10000);
+
+  // like count
+  const { data: likeCount = 0 } = useQuery({
+    queryKey: ['like-count', lesson._id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/like-lessons/count/${lesson._id}`);
+      return res.data.count;
+    }
+  });
+
+  // favorite count
+  const { data: favoriteCount = 0 } = useQuery({
+    queryKey: ['favorite-count', lesson._id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/favorite-lessons/count/${lesson._id}`);
+      return res.data.count;
+    }
+  });
+
   return (
     <Dialog
       open={isOpen}
@@ -60,18 +84,15 @@ const LessonDetailsModal = ({ closeModal, isOpen, lesson }) => {
               {/* 4. Stats Section */}
               <section className="flex items-center gap-6 text-gray-600 text-lg py-3">
                 <span className="flex items-center gap-1">
-                  ❤️ {0}
-                </span>
-                {/* <span className="flex items-center gap-1">
-                        ❤️ {lesson?.likes || 0}
-                      </span> */}
-
-                <span className="flex items-center gap-1">
-                  🔖 {lesson?.favorites || 0}
+                  ❤️ {likeCount}
                 </span>
 
                 <span className="flex items-center gap-1">
-                  <FaEye /> {100} Views
+                  🔖 {favoriteCount}
+                </span>
+
+                <span className="flex items-center gap-1">
+                  <FaEye /> {views} Views
                 </span>
               </section>
               {/* 3. Author Section */}

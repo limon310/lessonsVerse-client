@@ -9,7 +9,6 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
-import MyInventory from '../pages/Dashboard/User/MyInventory'
 import ManageOrders from '../pages/Dashboard/User/ManageOrders'
 import MyLessons from '../pages/Dashboard/User/MyLessons'
 import { createBrowserRouter } from 'react-router'
@@ -21,6 +20,7 @@ import UpdateLesson from '../pages/Dashboard/UpdateLesson/UpdateLesson'
 import AdminRoute from './AdminRoute'
 import UserRoute from './UserRoute'
 import ManageLessons from '../pages/Dashboard/Admin/ManageLessons'
+import MyFavorite from '../pages/Dashboard/User/MyFavorite'
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +75,16 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'my-lessons',
+        element: (
+          <PrivateRoute>
+            <UserRoute>
+              <MyLessons />
+            </UserRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: 'add-lesson',
         element: (
           <PrivateRoute>
@@ -85,11 +95,11 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-lessons',
+        path: 'my-favorite',
         element: (
           <PrivateRoute>
             <UserRoute>
-              <MyLessons />
+              <MyFavorite />
             </UserRoute>
           </PrivateRoute>
         ),

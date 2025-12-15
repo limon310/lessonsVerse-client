@@ -17,7 +17,7 @@ import useAuth from '../../../hooks/useAuth';
 import { FaLock } from 'react-icons/fa';
 
 const UserCreatedLessonRow = ({ lesson, refetch }) => {
-  const { title, _id, category, createdAt, authorInfo, privacy, emotional_ton, access_level, } = lesson || {}
+  const { title, _id, category, createdAt, authorInfo, privacy, access_level, } = lesson || {}
   let [isOpen, setIsOpen] = useState(false)
   const closeModal = () => setIsOpen(false)
   const axiosSecure = useAxiosSecure();

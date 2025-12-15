@@ -26,6 +26,7 @@ const LessonDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
   // console.log(id);
+
   const { data: lesson = {}, isLoading } = useQuery({
     queryKey: ["lessons-details", id],
     queryFn: async () => {
@@ -75,7 +76,7 @@ const LessonDetails = () => {
 
   // favorite button toogle
   const handleToggleFavorite = () => {
-    axiosSecure.post(`/favorite-lessons/${lesson._id}`, { email: user?.email })
+    axiosSecure.post(`/favorite-lessons/${lesson._id}`, { email: user?.email, title: lesson.title})
       .then(res => {
         setIsFavorited(res.data.action === 'added');
         refetchCount();
@@ -121,6 +122,7 @@ const LessonDetails = () => {
         console.log(res.data);
         if (res.data.insertedId) {
           toast.success("post comment");
+          e.target.reset();
           commentRefetch();
         }
       })
