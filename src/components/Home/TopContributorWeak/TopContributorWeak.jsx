@@ -13,7 +13,7 @@ const TopContributorWeak = () => {
             return res.data;
         }
     })
-    console.log(topContributor);
+    // console.log(topContributor);
     if (isLoading) {
         return <LoadingSpinner></LoadingSpinner>
     }

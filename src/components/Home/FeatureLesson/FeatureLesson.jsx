@@ -29,7 +29,7 @@ const FeatureLesson = () => {
             return res.data;
         }
     })
-    console.log(featuredLessons || userLoading);
+    // console.log(featuredLessons);
 
     if (isLoading) {
         return <LoadingSpinner></LoadingSpinner>

@@ -1,5 +1,5 @@
 import AdminStatistics from '../../../components/Dashboard/Statistics/AdminStatistics'
-import CustomerStatistics from '../../../components/Dashboard/Statistics/CustomerStatistics';
+import UserStatistics from '../../../components/Dashboard/Statistics/UserStatistics';
 import useRole from '../../../hooks/useRole'
 const Statistics = () => {
   const {role} = useRole();
@@ -9,7 +9,7 @@ const Statistics = () => {
         role === "admin" && <AdminStatistics />
       }
       {
-        role === "customer" && <CustomerStatistics />
+        role === "user" && <UserStatistics />
       }
     </div>
   )
