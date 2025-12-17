@@ -33,12 +33,15 @@ const ReportModal = ({ closeModal, isOpen, lesson }) => {
     console.log(data);
 
     const reason = e.target.reason.value;
-    console.log(reason);
+    // console.log(reason);
     if (!reason) return;
 
     axiosSecure.post(`/report-lesson/${lesson._id}`, { email: user?.email, displayName: user?.displayName, userId: user?.uid, reason })
       .then(res => {
-        if (res.data.success) toast.success("Reported successfully");
+        if (res.data.success) {
+          toast.success("Reported successfully");
+          closeModal();
+        }
       });
   };
 

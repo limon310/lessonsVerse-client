@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import DeleteModal from '../../Modal/DeleteModal'
-import UpdatePlantModal from '../../Modal/UpdatePlantModal'
+import ReportDetailsModal from '../../Modal/ReportDetailsModal'
 
 const PlantDataRow = () => {
   let [isOpen, setIsOpen] = useState(false)
@@ -65,7 +65,7 @@ const PlantDataRow = () => {
           ></span>
           <span className='relative'>Update</span>
         </span>
-        <UpdatePlantModal
+        <ReportDetailsModal
           isOpen={isEditModalOpen}
           setIsEditModalOpen={setIsEditModalOpen}
         />

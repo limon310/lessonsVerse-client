@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import DeleteModal from '../../Modal/DeleteModal'
-import UpdatePlantModal from '../../Modal/UpdatePlantModal'
+import ReportDetailsModal from '../../Modal/ReportDetailsModal'
 import { Trash2 } from 'lucide-react';
 import { Eye } from 'lucide-react';
 import { Pencil } from 'lucide-react';

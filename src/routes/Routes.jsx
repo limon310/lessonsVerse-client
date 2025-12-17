@@ -21,6 +21,7 @@ import AdminRoute from './AdminRoute'
 import UserRoute from './UserRoute'
 import ManageLessons from '../pages/Dashboard/Admin/ManageLessons'
 import MyFavorite from '../pages/Dashboard/User/MyFavorite'
+import ManageFlaggedLesson from '../pages/Dashboard/Admin/ManageFlaggedLesson'
 
 export const router = createBrowserRouter([
   {
@@ -128,6 +129,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <ManageLessons />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'manage-flagged-lessons',
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ManageFlaggedLesson />
             </AdminRoute>
           </PrivateRoute>
         ),
