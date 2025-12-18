@@ -4,7 +4,6 @@ import MostSaveLessons from "../../components/Home/MostSaveLessons/MostSaveLesso
 import TopContributorWeak from "../../components/Home/TopContributorWeak/TopContributorWeak"
 import WhyLearningFromLife from "../../components/Home/WhyLearningFromLife/WhyLearningFromLife"
 
-
 const Home = () => {
   return (
     <div>

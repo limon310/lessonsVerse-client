@@ -1,5 +1,5 @@
 import { FaUserAlt, FaBook, FaFlag } from 'react-icons/fa'
-import { BsFillHouseDoorFill } from 'react-icons/bs'
+import { FiBookOpen } from "react-icons/fi";
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
@@ -151,7 +151,7 @@ const AdminStatistics = () => {
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
             >
-              <BsFillHouseDoorFill className='w-6 h-6 text-white' />
+              <FiBookOpen size={24} />
             </div>
             <div className='p-4 text-right'>
               <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
