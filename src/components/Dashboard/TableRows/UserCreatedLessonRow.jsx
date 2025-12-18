@@ -48,7 +48,7 @@ const UserCreatedLessonRow = ({ lesson, refetch }) => {
   const handleDelete = (lesson) => {
     // console.log(lesson._id);
     const id = lesson._id;
-    console.log(id);
+    // console.log(id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",

@@ -1,14 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
+import successAnimation from '../../assets/images/Tick Pop.json'
+import Lottie from 'lottie-react';
 
 const AddLessonForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [showSuccess, setShowSuccess] = useState(false);
   // console.log("user in dashboard add lesson", user)
   // Initialize useForm hook
   const {
@@ -51,12 +53,9 @@ const AddLessonForm = () => {
       .then(res => {
         console.log(res.data);
         if (res.data.insertedId) {
-          Swal.fire({
-            position: "top-end",
-            title: "Lesson Created!",
-            icon: "success",
-            draggable: true
-          });
+          setShowSuccess(true);
+          setTimeout(() => setShowSuccess(false), 3000);
+          reset();
         }
       })
   };
@@ -208,6 +207,30 @@ const AddLessonForm = () => {
           </button>
         </div>
       </form>
+
+      {/* lotie animation */}
+      {showSuccess && (
+        <div className='flex flex-col'
+          style={{
+            position: "fixed",
+            top: 20,
+            right: 20,
+            width: 150,
+            background: "#fff",
+            borderRadius: 12,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            padding: 10,
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Lottie animationData={successAnimation} loop={false} />
+          <p className='text-green-500'>Lesson Created</p>
+        </div>
+      )}
+
     </div>
   );
 };
