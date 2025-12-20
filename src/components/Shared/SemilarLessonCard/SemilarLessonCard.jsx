@@ -3,7 +3,8 @@ import React from 'react';
 import { FaLock } from "react-icons/fa";
 import { Link } from 'react-router';
 
-const LessonCard = ({ lesson, isUserPremium }) => {
+const SemilarLessonCard
+ = ({ recommended, isUserPremium }) => {
     // Destructure lesson properties for easier use
     const {
         title,
@@ -14,9 +15,7 @@ const LessonCard = ({ lesson, isUserPremium }) => {
         access_level,
         _id
         // createdDate
-    } = lesson;
-    // const {user} = useAuth();
-    // console.log(authorInfo)
+    } = recommended;
 
     // Conditional Logic
     const isPremiumLocked = access_level === 'Premium' && !isUserPremium;
@@ -108,4 +107,4 @@ const LessonCard = ({ lesson, isUserPremium }) => {
     );
 };
 
-export default LessonCard;
+export default SemilarLessonCard;

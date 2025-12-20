@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/",
   withCredentials: true,
 })
-
+// http://localhost:3000/
 const useAxiosSecure = () => {
   const { user, logOut, loading } = useAuth()
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ const useAxiosSecure = () => {
           if (err?.response?.status === 401 || err?.response?.status === 403) {
             logOut()
               .then(() => {
-                console.log('Logged out successfully.')
+                // console.log('Logged out successfully.')
               })
               .catch(console.error)
             navigate('/login')

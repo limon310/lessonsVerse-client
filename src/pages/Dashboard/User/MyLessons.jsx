@@ -10,10 +10,10 @@ const MyLessons = () => {
   const axiosSecure = useAxiosSecure();
   const { data: myLessons = [], isLoading, refetch, } = useQuery({
     enabled: !!user?.email, 
-    queryKey: ['user', user?.email],
+    queryKey: ['myLessonsIn-myLessonPage', user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-lessons/${user?.email}`)
-      return res.data || {};
+      return res.data;
     }
   });
   // console.log(myLessons);

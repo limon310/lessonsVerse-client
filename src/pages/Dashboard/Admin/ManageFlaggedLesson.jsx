@@ -38,7 +38,7 @@ const ManageFlaggedLesson = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log("clicked delete button", id)
+                // console.log("clicked delete button", id)
                 axiosSecure.delete(`/delete-flagged-lesson/${id}`)
                     .then(res => {
                         refetch();

@@ -35,10 +35,10 @@ const AddLessonForm = () => {
         image: user?.photoURL
       }
     }
-    console.log(lessonData)
+    // console.log(lessonData)
     axiosSecure.post('/lessons', lessonData)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.insertedId) {
           Swal.fire({
             position: "top-end",

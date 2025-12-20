@@ -12,7 +12,7 @@ const FeatureLesson = () => {
 
     // Fetch logged-in user's details from DB
     const { data: userData = {}, isLoading: userLoading } = useQuery({
-        queryKey: ['user', user?.email],
+        queryKey: ['userIn-featuredSection', user?.email],
         enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosSecure.get(`/users/${user?.email}`);
@@ -31,7 +31,7 @@ const FeatureLesson = () => {
     })
     // console.log(featuredLessons);
 
-    if (isLoading) {
+    if (isLoading || userLoading) {
         return <LoadingSpinner></LoadingSpinner>
     }
     return (

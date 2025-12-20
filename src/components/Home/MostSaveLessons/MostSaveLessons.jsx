@@ -3,6 +3,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
 import MostSaveLessonCard from '../../Shared/MostSaveLessonCard/MostSaveLessonCard';
+import Container from '../../Shared/Container';
 
 const MostSaveLessons = () => {
     const axiosSecure = useAxiosSecure();
@@ -18,6 +19,7 @@ const MostSaveLessons = () => {
         return <LoadingSpinner></LoadingSpinner>
     }
     return (
+        <Container>
         <section className="mt-10">
             {/* Section Header */}
             <div className="mb-6 text-center">
@@ -43,6 +45,7 @@ const MostSaveLessons = () => {
                 ))}
             </div>
         </section>
+        </Container>
     );
 };
 

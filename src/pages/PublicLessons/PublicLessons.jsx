@@ -53,7 +53,7 @@ const PublicLessons = () => {
 
   // Fetch logged-in user's details from DB
   const { data: userData = {}, isLoading: userLoading } = useQuery({
-    queryKey: ['user', user?.email],
+    queryKey: ['userInPublicLessons', user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`users/${user?.email}`);
@@ -71,10 +71,6 @@ const PublicLessons = () => {
 
   if (lessonsLoading || userLoading) {
     return <LoadingSpinner />;
-  }
-
-  const handleEmotion = (e) => {
-    setEmotion(e.target.value);
   }
 
   return (

@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from 'react-router'
 import { FcGoogle } from 'react-icons/fc'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
-import { TbFidgetSpinner } from 'react-icons/tb'
 import { useForm } from "react-hook-form"
 import SocialLogin from '../socialLogin/SocialLogin'
 import { imageUpload } from '../../utils'
@@ -37,7 +36,7 @@ const SignUp = () => {
       //   formData
       // )
       const imageURL = await imageUpload(imageFile)
-      console.log("image url" , imageURL)
+      // console.log("image url" , imageURL)
       //1. User Registration
       const result = await createUser(email, password)
 
@@ -57,7 +56,7 @@ const SignUp = () => {
       }
       axiosSecure.post('/users', userInfo)
       .then(res =>{
-        console.log("save user info in database", res.data);
+        // console.log("save user info in database", res.data);
       })
 
       navigate(from, { replace: true })

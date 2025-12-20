@@ -30,7 +30,7 @@ const ReportModal = ({ closeModal, isOpen, lesson }) => {
   const handleReport = (e) => {
     e.preventDefault();
     const data = e.target.reason.value;
-    console.log(data);
+    // console.log(data);
 
     const reason = e.target.reason.value;
     // console.log(reason);
