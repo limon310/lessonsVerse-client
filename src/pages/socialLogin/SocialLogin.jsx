@@ -22,8 +22,8 @@ const SocialLogin = () => {
                     email: result.user.email
                 }
                 axiosSecure.post('/users', userInfo)
-                    .then(res => {
-                        console.log("user created in database", res.data);
+                    .then(() => {
+                        // console.log("user created in database", res.data);
                         navigate(location?.state || "/");
                     })
             })

@@ -34,20 +34,6 @@ const Login = () => {
       toast.error(err?.message)
     }
   }
-
-  // Handle Google Signin
-  // const handleGoogleSignIn = async () => {
-  //   try {
-  //     //User Registration using google
-  //     await signInWithGoogle()
-  //     navigate(from, { replace: true })
-  //     toast.success('Login Successful')
-  //   } catch (err) {
-  //     console.log(err)
-  //     setLoading(false)
-  //     toast.error(err?.message)
-  //   }
-  // }
   return (
     <div className='flex justify-center items-center min-h-screen bg-white'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>

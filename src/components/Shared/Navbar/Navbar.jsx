@@ -1,13 +1,14 @@
 import Container from '../Container'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, NavLink } from 'react-router'
 import useAuth from '../../../hooks/useAuth'
 import avatarImg from '../../../assets/images/placeholder.jpg'
 import logo from '../../../assets/images/logo.png'
 import { useQuery } from '@tanstack/react-query'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { LuBadgeCheck } from "react-icons/lu";
+
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
@@ -23,106 +24,24 @@ const Navbar = () => {
   });
   const isUserPremium = userData?.isPremium;
   const links = <>
-    <li className='text-lg'><Link to="/">Home</Link></li>
-    <li className='text-lg'><Link to="/public-lessons">Public Lessons</Link></li>
-    <li className='text-lg'><Link to="/dashboard/add-lesson">Add Lesson</Link></li>
-    <li className='text-lg'><Link to="/dashboard/my-lessons">My Lessons</Link></li>
-    
+
+    {
+      userData?.role === "user"
+        ? <>
+          <li className='text-lg'><NavLink to="/">Home</NavLink></li>
+          <li className='text-lg'><NavLink to="/public-lessons">Public Lessons</NavLink></li>
+          <li className='text-lg'><NavLink to="/dashboard/add-lesson">Add Lesson</NavLink></li>
+          <li className='text-lg'><NavLink to="/dashboard/my-lessons">My Lessons</NavLink></li>
+        </>
+        : <>
+          <li className='text-lg'><NavLink to="/dashboard">Statistics</NavLink></li>
+          <li className='text-lg'><NavLink to="/dashboard/manage-users">Manage Users</NavLink></li>
+          <li className='text-lg'><NavLink to="/dashboard/manage-lessons">Manage Lessons</NavLink></li>
+          <li className='text-lg'><NavLink to="/dashboard/manage-flagged-lessons">Flagged Lessons</NavLink></li>
+        </>
+    }
   </>
   return (
-    // <div className='fixed w-full bg-white z-10 shadow-sm'>
-    //   <div className='py-4 '>
-    //     <Container>
-    //       <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
-    //         {/* Logo */}
-    //         <Link to='/'>
-    //           <div className='flex items-center gap-1'>
-    //             <img
-    //               className='w-[60px] h-[60px] rounded-full'
-    //               src={logo} alt='logo' width='100' height='100' />
-    //             <p className='text-3xl font-bold'>Lessons<span className='text-pink-600'>Verse</span></p>
-    //           </div>
-    //         </Link>
-    //         <div className="navbar-center hidden lg:flex">
-    //           <ul className="menu menu-horizontal px-1 text-lg">
-    //             {links}
-    //           </ul>
-    //         </div>
-    //         {/* Dropdown Menu */}
-    //         <div className='relative'>
-    //           <div className='flex flex-row items-center gap-3'>
-    //             {/* Dropdown btn */}
-    //             <div
-    //               onClick={() => setIsOpen(!isOpen)}
-    //               className='p-4 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
-    //             >
-    //               <AiOutlineMenu />
-    //               <div className='hidden md:block'>
-    //                 {/* Avatar */}
-    //                 <img
-    //                   className='rounded-full'
-    //                   referrerPolicy='no-referrer'
-    //                   src={user && user.photoURL ? user.photoURL : avatarImg}
-    //                   alt='profile'
-    //                   height='30'
-    //                   width='30'
-    //                 />
-    //               </div>
-    //             </div>
-    //           </div>
-    //           {isOpen && (
-    //             <div className='absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm'>
-    //               <div className='flex flex-col cursor-pointer'>
-    //                 <Link
-    //                   to='/'
-    //                   className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-    //                 >
-    //                   Home
-    //                 </Link>
-
-    //                 {user ? (
-    //                   <>
-    //                     <span className='px-4 py-3 hover:bg-neutral-100 transition font-semibold text-pink-500'>{user?.displayName}</span>
-    //                     <Link
-    //                       to='/dashboard'
-    //                       className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-    //                     >
-    //                       Dashboard
-    //                     </Link>
-    //                     <div
-    //                       onClick={logOut}
-    //                       className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
-    //                     >
-    //                       Logout
-    //                     </div>
-    //                   </>
-    //                 ) : (
-    //                   <>
-    //                     <Link
-    //                       to='/login'
-    //                       className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-    //                     >
-    //                       Login
-    //                     </Link>
-    //                     <Link
-    //                       to='/signup'
-    //                       className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-    //                     >
-    //                       Sign Up
-    //                     </Link>
-    //                   </>
-    //                 )}
-    //               </div>
-    //             </div>
-    //           )}
-    //         </div>
-    //       </div>
-    //     </Container>
-    //   </div>
-    // </div>
-
-    // <div className='fixed w-full bg-white shadow-sm'>
-    // <div className='py-4 '></div>
     <div className='fixed w-full bg-white z-10 shadow-sm'>
       <Container>
         <div className="navbar">
@@ -154,15 +73,19 @@ const Navbar = () => {
           <div className="navbar-end z-10">
             {/* show upgrade button on condition */}
             {user && (
-              isUserPremium ? (
+              userData?.role === "admin" ? null : isUserPremium ? (
                 <span className="px-3 py-1 text-white">
-                  <LuBadgeCheck color='blue' size={28} />
+                  <LuBadgeCheck color="blue" size={28} />
                 </span>
               ) : (
-                <Link to='/upgrade-premium' className="btn bg-purple-400 mr-2 text-white text-sm">Upgrade</Link>
+                <Link
+                  to="/upgrade-premium"
+                  className="btn bg-purple-400 mr-2 text-white text-sm"
+                >
+                  Upgrade
+                </Link>
               )
             )}
-
 
             {/* Dropdown Menu */}
             <div className='relative'>
@@ -176,12 +99,10 @@ const Navbar = () => {
                   <div className='hidden md:block'>
                     {/* Avatar */}
                     <img
-                      className='rounded-full'
+                      className='rounded-full w-8 h-8'
                       referrerPolicy='no-referrer'
                       src={user && user.photoURL ? user.photoURL : avatarImg}
                       alt='profile'
-                      height='30'
-                      width='30'
                     />
                   </div>
                 </div>
@@ -199,6 +120,12 @@ const Navbar = () => {
                     {user ? (
                       <>
                         <span className='px-4 py-3 hover:bg-neutral-100 transition font-semibold text-pink-500'>{user?.displayName}</span>
+                        <Link
+                          to='/dashboard/profile'
+                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                        >
+                          Profile
+                        </Link>
                         <Link
                           to='/dashboard'
                           className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'

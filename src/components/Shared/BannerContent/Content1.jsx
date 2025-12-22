@@ -1,5 +1,6 @@
 import React from 'react';
 import bannerImg from '../../../assets/images/banner2.jpg'
+import { Link } from 'react-router';
 
 const Content1 = () => {
     return (
@@ -24,16 +25,16 @@ const Content1 = () => {
                     </h1>
 
                     <p className="text-lg md:text-2xl text-slate-300 mb-8 font-light tracking-wide max-w-lg mx-auto md:mx-0">
-                        Explore the universe of knowledge. Your journey into the infinite library begins here.
+                        LessonVerse is a community-driven platform where people share real-life experiences, discover meaningful insights, and learn from each other’s journeys.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                        <button className="button">
-                            Start Journey
-                        </button>
-                        <button className="px-8 py-4 bg-transparent border border-violet-500 text-violet-300 hover:text-white hover:bg-violet-900/50 font-medium text-lg rounded-sm transition-all duration-300 tracking-wider uppercase">
-                            View Lessons
-                        </button>
+                        <Link to='/dashboard/add-lesson' className="button">
+                            Share Your Story
+                        </Link>
+                        <Link to='/public-lessons' className="px-8 py-4 bg-transparent border border-violet-500 text-violet-300 hover:text-white hover:bg-violet-900/50 font-medium text-lg rounded-sm transition-all duration-300 tracking-wider uppercase">
+                            Explore Lessons
+                        </Link>
                     </div>
                 </div>
 

@@ -28,10 +28,10 @@ const PaymentSuccess = () => {
                     Thank you for your Upgrade Premium.
                 </p>
                 <Link
-                    to='/'
-                    className='inline-block bg-lime-500 text-white font-semibold py-2 px-4 rounded hover:bg-lime-600 transition duration-300'
+                    to='/public-lessons'
+                    className='inline-block bg-lime-500 text-black font-semibold py-2 px-4 rounded hover:bg-lime-600 transition duration-300'
                 >
-                    Home
+                    Explore Lessons
                 </Link>
             </div>
         </div>

@@ -7,6 +7,7 @@ import WhyLearningFromLife from "../../components/Home/WhyLearningFromLife/WhyLe
 const Home = () => {
   return (
     <div>
+       <title>LessonVerse Home</title>
       {/* banner */}
       <Banner></Banner>
 

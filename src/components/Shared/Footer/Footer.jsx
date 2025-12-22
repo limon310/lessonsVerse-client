@@ -21,12 +21,12 @@ const Footer = () => {
 
             <div className="col-span-1">
               <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
-              <ul class="space-y-3">
+              <ul className="space-y-3">
                 <li>
                   <Link to="" className="text-gray-400 hover:text-indigo-400 transition duration-150">about us</Link>
                 </li>
                 <li>
-                  <Link to="" className="text-gray-400 hover:text-indigo-400 transition duration-150">Premium Upgrade</Link>
+                  <Link to="/upgrade-premium" className="text-gray-400 hover:text-indigo-400 transition duration-150">Premium Upgrade</Link>
                 </li>
                 <li>
                   <Link to="" className="text-gray-400 hover:text-indigo-400 transition duration-150">Terms & Conditions</Link>
@@ -38,9 +38,9 @@ const Footer = () => {
             </div>
 
             <div className="col-span-1">
-              <h3 class="text-lg font-semibold text-white mb-4">Contact</h3>
-              <ul class="space-y-3">
-                <li class="text-gray-400">
+              <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
+              <ul className="space-y-3">
+                <li className="text-gray-400">
                   <span className="hover:text-indigo-400">mdlimonislam134@gmail.com</span>
                 </li>
                 <li className="text-gray-400">
@@ -68,8 +68,8 @@ const Footer = () => {
             </div>
           </div>
 
-          <div class="mt-12 pt-8 border-t border-gray-700">
-            <p class="text-center text-sm text-gray-500">
+          <div className="mt-12 pt-8 border-t border-gray-700">
+            <p className="text-center text-sm text-gray-500">
               &copy; <span id="currentYear"></span>LessonsVerse. All rights reserved. {new Date().getFullYear()}
             </p>
           </div>

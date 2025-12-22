@@ -2,32 +2,24 @@ import { Dialog, DialogTitle, DialogPanel } from '@headlessui/react'
 import { useQuery } from '@tanstack/react-query';
 import { FaEye } from 'react-icons/fa';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-// import useAuth from '../../hooks/useAuth';
-const LessonDetailsModal = ({ closeModal, isOpen, lesson }) => {
+
+const views = Math.floor(Math.random() * 10000);
+
+const LessonDetailsModal = ({ closeModal, isOpen, lesson, favoriteCount, likeCount }) => {
   const { title, category, emotional_ton, createdAt, privacy, authorInfo } = lesson;
-  // const {user} = useAuth();
-  // console.log(authorInfo);
   const axiosSecure = useAxiosSecure();
+  // console.log(authorInfo);
+  // console.log("from-----", favoriteCount, likeCount)
+  const dateFormate = new Date(createdAt).toLocaleDateString();
 
-   const views = Math.floor(Math.random() * 10000);
-
-  // like count
-  const { data: likeCount = 0 } = useQuery({
-    queryKey: ['like-count', lesson._id],
+  // count total lesson created
+  const { data: totalLesson } = useQuery({
+    queryKey: ['totalLesson-count', authorInfo?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/like-lessons/count/${lesson._id}`);
-      return res.data.count;
+      const res = await axiosSecure.get(`/users/lessons/count/${authorInfo?.email}`)
+      return res.data;
     }
-  });
-
-  // favorite count
-  const { data: favoriteCount = 0 } = useQuery({
-    queryKey: ['favorite-count', lesson._id],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/favorite-lessons/count/${lesson._id}`);
-      return res.data.count;
-    }
-  });
+  })
 
   return (
     <Dialog
@@ -44,13 +36,13 @@ const LessonDetailsModal = ({ closeModal, isOpen, lesson }) => {
           >
             <DialogTitle
               as='h3'
-              className='text-lg font-medium text-center leading-6 text-gray-900'
+              className='text-3xl font-bold text-center leading-6 text-pink-600'
             >
               Lesson Details!
             </DialogTitle>
             <div className='mt-2'>
               {/* Title */}
-              <h1 className="text-3xl font-bold py-5">{title}</h1>
+              <h1 className="text-2xl font-bold py-5">{title}</h1>
               {/* Category + Tone */}
               <div className="flex flex-wrap items-center gap-3 text-sm mb-3">
                 <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full">
@@ -63,12 +55,12 @@ const LessonDetailsModal = ({ closeModal, isOpen, lesson }) => {
               <section className="bg-gray-50 p-4 rounded-xl border space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="font-medium">Created:</span>
-                  <span>{createdAt}</span>
+                  <span>{dateFormate}</span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="font-medium">Last Updated:</span>
-                  <span>{createdAt}</span>
+                  <span>{dateFormate}</span>
                 </div>
 
                 <div className="flex justify-between">
@@ -106,7 +98,7 @@ const LessonDetailsModal = ({ closeModal, isOpen, lesson }) => {
 
                 <div className="flex-1">
                   <p className="font-semibold text-lg">{authorInfo?.name}</p>
-                  <p className="text-sm text-gray-500">Total Lessons: {authorInfo?.count || 0}</p>
+                  <p className="text-sm text-gray-500">Total Lessons: {totalLesson?.totalCreatedLessons}</p>
                 </div>
               </section>
             </div>

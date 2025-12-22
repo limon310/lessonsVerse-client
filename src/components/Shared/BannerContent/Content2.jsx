@@ -1,5 +1,6 @@
 import React from 'react';
 import bannerImg3 from '../../../assets/images/banner.jpg'
+import { Link } from 'react-router';
 
 const Content2 = () => {
     return (
@@ -12,21 +13,25 @@ const Content2 = () => {
                     <div className="w-full lg:w-5/12 text-center lg:text-left">
 
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
-                            LessonsVerse: <br className="hidden sm:inline" />
-                            The <span className="text-pink-600">Learning Hub</span>
+                            Where Experiences<br className="hidden sm:inline" /><span className="text-pink-600">Turn Into Life Lessons</span>
                         </h1>
 
                         <p className="text-xl sm:text-2xl text-gray-600 font-light mb-8">
-                            The standard, trustworthy aesthetic for modern educational platforms.
+                            Read real stories, share your insights, and engage with a growing community through likes, comments, and discussions.
                         </p>
-                        <button className="w-full sm:w-auto px-10 py-4 text-lg font-bold text-white bg-blue-600 rounded-lg shadow-lg shadow-blue-500/50 hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-                            Start Building Your Skills
-                        </button>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            <button className="button">
+                                Join the Community
+                            </button>
 
+                            <Link to='/public-lessons' className="w-full sm:w-auto px-10 py-4 text-lg font-bold text-white bg-blue-600 rounded-lg shadow-lg shadow-blue-500/50 hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                                Read Stories
+                            </Link>
+                        </div>
                     </div>
 
                     {/* RIGHT */}
-                    <div className="w-full lg:w-7/12 flex justify-center relative mt-10 lg:mt-0">
+                    <div className="w-full lg:w-7/12 h-[500px] flex justify-center relative mt-10 lg:mt-0">
                         <img src={bannerImg3} alt="" />
                     </div>
 

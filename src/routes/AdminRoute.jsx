@@ -5,7 +5,7 @@ import { Navigate } from 'react-router';
 
 const AdminRoute = ({children}) => {
     const {role, isRoleLoading} = useRole();
-    console.log(role)
+    // console.log(role)
     if(isRoleLoading){
         return <LoadingSpinner></LoadingSpinner>
     }

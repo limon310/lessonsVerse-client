@@ -1,5 +1,4 @@
 import { Link, useLocation, useNavigate } from 'react-router'
-import { FcGoogle } from 'react-icons/fc'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 import { useForm } from "react-hook-form"
@@ -55,7 +54,7 @@ const SignUp = () => {
         photoURL: imageURL
       }
       axiosSecure.post('/users', userInfo)
-      .then(res =>{
+      .then(() =>{
         // console.log("save user info in database", res.data);
       })
 
@@ -70,7 +69,7 @@ const SignUp = () => {
   }
 
   if(loading){
-    return LoadingSpinner
+    return <LoadingSpinner />
   }
 
   return (

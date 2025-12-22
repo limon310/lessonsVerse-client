@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { Bar, BarChart, Legend } from 'recharts';
+import { Bar, BarChart, Legend, ResponsiveContainer } from 'recharts';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
 import { BookOpen, Star, PlusCircle, ChartBar } from "lucide-react";
-import {  XAxis, YAxis, Tooltip } from "recharts";
+import { XAxis, YAxis, Tooltip } from "recharts";
 import { Link } from 'react-router';
 
 const UserStatistics = () => {
@@ -25,7 +25,7 @@ const UserStatistics = () => {
   const { data: totalSaveLesson, isLoading: saveLessonLoading } = useQuery({
     queryKey: ['total-saveLesson', user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users/saveLesson/count/${user?.email}`)
+      const res = await axiosSecure.get('/users/saveLesson/count')
       return res.data;
     }
   })
@@ -36,38 +36,40 @@ const UserStatistics = () => {
     enabled: !!user?.email,
     queryKey: ['recentLessons', user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/recent/lessons/${user?.email}`)
+      const res = await axiosSecure.get('/recent/lessons')
       return res.data;
     }
   })
   // console.log("recent lessons", latestLessons);
 
-  // chard analytics most created lesson a user in a month
+  // most created lesson a user in a month
   const { data: totalCreatedLessonAmonth, isLoading: totalCreatedLessonLoading } = useQuery({
     queryKey: ['monthlyCreated-lessons'],
     queryFn: async () => {
-      const res = await axiosSecure.get(`users/lessons/analytics/monthly-total/${user?.email}`)
+      const res = await axiosSecure.get('users/lessons/analytics/monthly-total')
       return res.data;
     }
   })
   // console.log("total created lessons in a month", totalCreatedLessonAmonth);
 
+  // analytics for chart
   const { data: monthlyAnalytics = [], isLoading: analyticsLoading } = useQuery({
+    enabled: !!user?.email,
     queryKey: ['monthly-lesson-analytics', user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/users/lessons/analytics/monthly/${user?.email}`
-      );
+      const res = await axiosSecure.get('/users/lessons/analytics/monthly');
       return res.data;
     }
   });
   // console.log(monthlyAnalytics)
 
-  if (totalLessonLoading || saveLessonLoading || recentLessonsLoading || analyticsLoading || totalCreatedLessonLoading ) {
+  if (totalLessonLoading || saveLessonLoading || recentLessonsLoading || analyticsLoading || totalCreatedLessonLoading) {
     return <LoadingSpinner></LoadingSpinner>
   }
   return (
     <div className="p-6 space-y-6">
+      {/* dynamic title */}
+         <title>Dashboard Statics</title>
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-2xl shadow p-5 flex items-center gap-4 hover:scale-105 transition-transform">
@@ -132,16 +134,20 @@ const UserStatistics = () => {
       <div className="bg-white rounded-2xl shadow p-8">
         <h2 className="text-2xl font-semibold mb-8 text-center">Monthly Contributions</h2>
         <div className="h-64">
-            <BarChart
-            style={{ width: '100%', maxWidth: '100%', maxHeight: '70vh', aspectRatio: 1.618 }}
-            data={monthlyAnalytics}>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={monthlyAnalytics}>
               <XAxis dataKey="day" />
               <YAxis allowDecimals={false} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="totalLessons" fill="#8884d8" activeBar={{ fill: 'pink', stroke: 'blue' }} radius={[10, 10, 0, 0]} />
+              <Bar
+                dataKey="totalLessons"
+                name="Lessons Created"
+                fill="#8884d8"
+                radius={[8, 8, 0, 0]}
+              />
             </BarChart>
-
+          </ResponsiveContainer>
         </div>
       </div>
     </div>

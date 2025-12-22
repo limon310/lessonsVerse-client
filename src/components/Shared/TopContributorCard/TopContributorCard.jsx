@@ -1,62 +1,67 @@
 import React from 'react';
-import Container from '../Container';
 import { Link } from 'react-router';
 
 const TopContributorCard = ({ user, rank }) => {
-     const { name, image, totalLessons } = user;
+    const { name, image, totalLessons } = user;
 
-    const rankBadge = (rank) => {
-        if (rank === 1) return "🥇";
-        if (rank === 2) return "🥈";
-        if (rank === 3) return "🥉";
-    }
+    // const rankBadge = (rank) => {
+    //     if (rank === 1) return "🥇";
+    //     if (rank === 2) return "🥈";
+    //     if (rank === 3) return "🥉";
+    // }
 
-        return (
-            <Container>
-            <div>
-                <div className="w-[300px] mx-auto relative rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
+    return (
+            <div className="w-[300px] mx-auto relative rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
 
-                    {/* Rank */}
-                    <span className="absolute top-3 right-3 text-lg font-semibold">
-                        {rankBadge(rank)}
+                {/* Rank Badge */}
+                <div className="absolute top-4 right-4">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">
+                        {rank}
                     </span>
+                </div>
 
-                    {/* Avatar */}
-                    <div className="flex justify-center">
+                {/* Avatar */}
+                <div className="flex justify-center">
+                    <div className="rounded-full ring-4 ring-indigo-50 p-1">
                         <img
                             src={image || "https://i.postimg.cc/kgcVLhvn/placeholder.jpg"}
                             alt={name}
-                            className="h-20 w-20 rounded-full object-cover border"
+                            className="h-20 w-20 rounded-full object-cover"
                         />
                     </div>
+                </div>
 
-                    {/* Name */}
-                    <div className="mt-4 text-center">
-                        <h3 className="font-semibold text-gray-800 truncate">
-                            {name || "Unknown Creator"}
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                            Lessons this week
+                {/* Name & Subtitle */}
+                <div className="mt-4 text-center">
+                    <h3 className="text-lg font-semibold text-gray-900 truncate">
+                        {name || "Unknown Creator"}
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                        Lessons created this week
+                    </p>
+                </div>
+
+                {/* Stats */}
+                <div className="mt-4 flex justify-center">
+                    <div className="rounded-xl bg-indigo-50 px-6 py-2 text-center">
+                        <p className="text-2xl font-bold text-indigo-600">
+                            {totalLessons}
+                        </p>
+                        <p className="text-xs text-indigo-500">
+                            Lessons
                         </p>
                     </div>
-
-                    {/* Stats */}
-                    <div className="mt-3 text-center">
-                        <span className="inline-block rounded-full bg-indigo-50 px-4 py-1 text-sm font-semibold text-indigo-600">
-                            {totalLessons}
-                        </span>
-                    </div>
-
-                    {/* CTA */}
-                    <div className="mt-4">
-                        <button className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition">
-                            View Lessons
-                        </button>
-                    </div>
                 </div>
-            </div>
-        </Container>
-        );
-    };
 
- export default TopContributorCard;
+                {/* CTA (Optional) */}
+                <div className="mt-5">
+                    <button className="w-full rounded-lg border border-indigo-600 px-4 py-2 text-sm font-semibold text-indigo-600 hover:bg-indigo-600 hover:text-white transition">
+                        View Profile
+                    </button>
+                </div>
+
+            </div>
+    );
+};
+
+export default TopContributorCard;

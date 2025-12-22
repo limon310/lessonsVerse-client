@@ -1,5 +1,8 @@
+import { Link } from "react-router";
+
 const MostSaveLessonCard = ({ lesson }) => {
     const {
+        lessonId,
         title,
         description,
         totalSaves,
@@ -8,40 +11,55 @@ const MostSaveLessonCard = ({ lesson }) => {
         privacy,
         access_level
     } = lesson;
+    // console.log(lessonId)
 
     return (
-        <div className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div className="group bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-80 w-full">
 
-            {/* Title */}
-            <h3 className="text-lg font-semibold text-gray-800 truncate">{title}</h3>
+            {/* Header */}
+            <div>
+                <h3 className="text-lg font-semibold text-gray-900 leading-snug line-clamp-1">
+                    {title}
+                </h3>
 
-            {/* Description */}
-            <p className="mt-2 text-sm text-gray-500 line-clamp-2">
-                {description}
-            </p>
+                <p className="mt-2 text-sm text-gray-500 line-clamp-3">
+                    {description}
+                </p>
+            </div>
 
-            {/* Stats */}
-            <div className="mt-3 flex items-center justify-between text-sm text-gray-600">
-                <span className="bg-indigo-50 px-2 py-1 rounded-full text-indigo-600 font-semibold">
-                    Saves: {totalSaves}
+            {/* Meta Info */}
+            <div className="mt-4 flex items-center justify-between text-sm">
+                <span className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-medium">
+                    ⭐ {totalSaves} Saves
                 </span>
-                <span className="px-2 py-1 rounded-full bg-gray-100">{category}</span>
+
+                <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                    {category}
+                </span>
             </div>
 
             {/* Tags */}
-            <div className="mt-2 flex flex-wrap gap-2 text-xs text-gray-500">
-                <span>{emotional_ton}</span>
-                <span>{privacy}</span>
-                <span>{access_level}</span>
+            <div className="mt-3 flex flex-wrap gap-2">
+                <span className="bg-gray-50 border text-gray-600 px-2 py-1 rounded-md text-xs">
+                    {emotional_ton}
+                </span>
+                <span className="bg-gray-50 border text-gray-600 px-2 py-1 rounded-md text-xs">
+                    {privacy}
+                </span>
+                <span className="bg-gray-50 border text-gray-600 px-2 py-1 rounded-md text-xs">
+                    {access_level}
+                </span>
             </div>
 
             {/* CTA */}
-            <div className="mt-4">
-                <button className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition">
-                    View Lesson
-                </button>
-            </div>
+            <Link
+                to={`/lesson-details/${lessonId}`}
+                className="mt-5 inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 transition w-full"
+            >
+                View Lesson →
+            </Link>
         </div>
+
     );
 };
 

@@ -10,12 +10,14 @@ import Swal from 'sweetalert2';
 import { toast } from 'react-hot-toast'
 
 const ManageLessons = () => {
+
     const axiosSecure = useAxiosSecure();
-    const [filters, setFilters] = useState({
-        category: "",
-        privacy: "",
-        flagged: false
-    });
+
+    const [category, setCategory] = useState("");
+    const [visibility, setVisibility] = useState("");
+    const [flagged, setFlagged] = useState('');
+
+    // lesson states
     const { data: stats = {}, isLoading } = useQuery({
         queryKey: ['lesson-stats'],
         queryFn: async () => {
@@ -24,21 +26,21 @@ const ManageLessons = () => {
         }
     });
 
+    // filter
     const { data: allLessons = [], isLoading: allLessonsLoading, refetch } = useQuery({
-        queryKey: ['admin-lessons', filters],
+        queryKey: ['adminLessons-filter', category, visibility, flagged],
         queryFn: async () => {
             const params = {};
-
-            if (filters.category) params.category = filters.category;
-            if (filters.privacy) params.privacy = filters.privacy;
-            if (filters.flagged) params.flagged = true;
-
-            const res = await axiosSecure.get('/admin/lessons', { params });
+            if (category) params.category = category;
+            if (visibility) params.visibility = visibility;
+            if (flagged !== '') {
+                params.flagged = flagged;
+            }
+            const res = await axiosSecure.get('/admin/lessons-filter', { params })
             return res.data;
         }
     });
-
-    // console.log(allLessons);
+    // console.log(allLessons)
 
     // HANDLE DELETE LESSONS
     const handleDeleteLesson = (lesson) => {
@@ -104,6 +106,8 @@ const ManageLessons = () => {
     return (
         // <Container>
         <div>
+            {/* dynamic title */}
+            <title>Manage Lessons</title>
             <div className="grid grid-cols-3 gap-4 mb-6 text-center">
                 <div className="stat bg-base-100 shadow">
                     <div className="text-lg">Public Lessons</div>
@@ -120,30 +124,48 @@ const ManageLessons = () => {
                     <div className="text-2xl font-bold">{stats.flaggedLessons}</div>
                 </div>
             </div>
-            <h2 className='text-3xl font-bold mb-2'>Search by: </h2>
-            <label htmlFor="category" className="mb-2 text-lg font-medium text-gray-700 ms-4 mr-3">Visibility</label>
-            <select onChange={(e) => setFilters({ ...filters, privacy: e.target.value })}>
-                <option value="">All</option>
-                <option value="Public">Public</option>
-                <option value="Private">Private</option>
-            </select>
-            <label htmlFor="category" className="mb-2 text-lg font-medium text-gray-700 mr-3 ml-3">Category</label>
-            <select onChange={(e) => setFilters({ ...filters, category: e.target.value })}>
-                <option value="">All Categories</option>
-                <option value="Personal ">Personal </option>
-                <option value="Growth">Growth</option>
-                <option value="Career">Career</option>
-                <option value="Relationships">Relationships</option>
-                <option value="Mindset">Mindset</option>
-                <option value="Mistakes_learned">Mistakes Learned</option>
-                <option value="Finance_Money">Finance Money</option>
-                <option value="Health_Wellness">Health Wellness</option>
-            </select>
+            <h2 className='text-3xl font-bold mb-2 text-purple-500'>Filter by: </h2>
 
-            <button onClick={() => setFilters({ ...filters, flagged: true })}
-                className='btn ms-4'>
-                Show Flagged
-            </button>
+            {/* filter */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 py-6">
+                {/* Category */}
+                <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="border px-3 py-2 rounded"
+                >
+                    <option value="">All Categories</option>
+                    <option value="Personal">Personal </option>
+                    <option value="Growth">Growth</option>
+                    <option value="Career">Career</option>
+                    <option value="Relationships">Relationships</option>
+                    <option value="Mindset">Mindset</option>
+                    <option value="Mistakes_learned">Mistakes Learned</option>
+                    <option value="Finance_Money">Finance Money</option>
+                    <option value="Health_Wellness">Health Wellness</option>
+                </select>
+
+                {/* visibility */}
+                <select
+                    value={visibility}
+                    onChange={(e) => setVisibility(e.target.value)}
+                    className="border px-3 py-2 rounded"
+                >
+                    <option value="">All</option>
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+                {/* flagged */}
+                <select
+                    value={flagged}
+                    onChange={(e) => setFlagged(e.target.value)}
+                    className="border px-3 py-2 rounded"
+                >
+                    <option value="">All Lessons</option>
+                    <option value="true">Flagged Lessons</option>
+                    <option value="false">Unflagged Lessons</option>
+                </select>
+            </div>
 
             <table className="table table-zebra">
                 {/* head */}

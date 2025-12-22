@@ -26,7 +26,7 @@ const WhyLearningFromLife = () => {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <h3 className="text-xl font-semibold text-gray-900">Preserve Your Wisdom</h3>
+                            <h3 className="text-xl font-semibold text-purple-700">Preserve Your Wisdom</h3>
                             <p className="mt-2 text-base text-gray-600">
                                 Don't let valuable insights fade away. Capture your hard-won life lessons in a structured, digital format.
                             </p>
@@ -40,7 +40,7 @@ const WhyLearningFromLife = () => {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <h3 className="text-xl font-semibold text-gray-900">Avoid Past Mistakes</h3>
+                            <h3 className="text-xl font-semibold text-purple-700">Avoid Past Mistakes</h3>
                             <p className="mt-2 text-base text-gray-600">
                                 Review your past failures and triumphs to recognize patterns, creating a clearer roadmap for future challenges.
                             </p>
@@ -54,7 +54,7 @@ const WhyLearningFromLife = () => {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <h3 className="text-xl font-semibold text-gray-900">Find Shared Humanity</h3>
+                            <h3 className="text-xl font-semibold text-purple-700">Find Shared Humanity</h3>
                             <p className="mt-2 text-base text-gray-600">
                                 By sharing and exploring lessons from others, you build empathy and feel connected to a community growing together.
                             </p>
@@ -68,7 +68,7 @@ const WhyLearningFromLife = () => {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <h3 className="text-xl font-semibold text-gray-900">Accelerate Your Growth</h3>
+                            <h3 className="text-xl font-semibold text-purple-700">Accelerate Your Growth</h3>
                             <p className="mt-2 text-base text-gray-600">
                                 Turn passive experience into an engine for rapid personal development through mindful documentation and review.
                             </p>

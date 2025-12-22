@@ -8,21 +8,25 @@ const MyLessons = () => {
   const { user } = useAuth();
   // console.log(user.email)
   const axiosSecure = useAxiosSecure();
+  // get user lesson by email
   const { data: myLessons = [], isLoading, refetch, } = useQuery({
-    enabled: !!user?.email, 
+    enabled: !!user?.email,
     queryKey: ['myLessonsIn-myLessonPage', user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/my-lessons/${user?.email}`)
+      const res = await axiosSecure.get('/my-lessons')
       return res.data;
     }
   });
   // console.log(myLessons);
+
   if (isLoading) {
     return <LoadingSpinner></LoadingSpinner>
   }
   return (
     <>
-      <div className='container mx-auto px-4 sm:px-8'>
+      <div className='container mx-auto px-2 sm:px-2'>
+        {/* dynamic title */}
+        <title>My Lessons</title>
         <div className='py-8'>
           <div className='grid sm:grid-cols-1 lg:grid-cols-2 justify-between'>
             <div>
@@ -57,12 +61,6 @@ const MyLessons = () => {
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold'
                     >
                       Access
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold'
-                    >
-                      Created
                     </th>
                     <th
                       scope='col'

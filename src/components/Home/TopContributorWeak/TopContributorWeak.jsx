@@ -3,6 +3,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
 import TopContributorCard from '../../Shared/TopContributorCard/TopContributorCard';
+import Container from '../../Shared/Container';
 
 const TopContributorWeak = () => {
     const axiosSecure = useAxiosSecure();
@@ -18,13 +19,13 @@ const TopContributorWeak = () => {
         return <LoadingSpinner></LoadingSpinner>
     }
     return (
-        <div>
+            <Container>
             {/* Section Header */}
             <div className="py-6 text-center">
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">
                     Top Contributors of the Week
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-700 font-semibold">
                     Creators who shared the most lessons this week
                 </p>
             </div>
@@ -37,7 +38,7 @@ const TopContributorWeak = () => {
             )}
 
             {/* Contributors Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20 mt-5">
+            <div className="w-[1080px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20 mt-5">
                 {topContributor.map((user, index) => (
                     <TopContributorCard
                         key={user.creatorId}
@@ -46,7 +47,7 @@ const TopContributorWeak = () => {
                     />
                 ))}
             </div>
-        </div>
+            </Container>
     );
 };
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
 import useAuth from './useAuth'
+import toast from 'react-hot-toast'
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/",
@@ -29,7 +30,7 @@ const useAxiosSecure = () => {
           if (err?.response?.status === 401 || err?.response?.status === 403) {
             logOut()
               .then(() => {
-                // console.log('Logged out successfully.')
+                toast.success("Logged out successfully.")
               })
               .catch(console.error)
             navigate('/login')

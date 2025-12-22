@@ -9,19 +9,19 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
-import ManageOrders from '../pages/Dashboard/User/ManageOrders'
 import MyLessons from '../pages/Dashboard/User/MyLessons'
 import { createBrowserRouter } from 'react-router'
 import PublicLessons from '../pages/PublicLessons/PublicLessons'
 import PricingComparisonTable from '../pages/PricingComparisonTable/PricingComparisonTable'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 import LessonDetails from '../pages/LessonDetails/LessonDetails'
-import UpdateLesson from '../pages/Dashboard/UpdateLesson/UpdateLesson'
 import AdminRoute from './AdminRoute'
 import UserRoute from './UserRoute'
 import ManageLessons from '../pages/Dashboard/Admin/ManageLessons'
 import MyFavorite from '../pages/Dashboard/User/MyFavorite'
 import ManageFlaggedLesson from '../pages/Dashboard/Admin/ManageFlaggedLesson'
+import PaymentCancel from '../pages/Payment/PaymentCancel'
+import AuthorProfile from '../pages/Dashboard/Common/AuthorProfile'
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +38,12 @@ export const router = createBrowserRouter([
         Component: PublicLessons,
       },
       {
+        path: '/authorProfile/:creatorId',
+        element: <PrivateRoute>
+          <AuthorProfile></AuthorProfile>
+        </PrivateRoute>
+      },
+      {
         path: '/upgrade-premium',
         element: <PrivateRoute>
           <PricingComparisonTable></PricingComparisonTable>
@@ -47,6 +53,12 @@ export const router = createBrowserRouter([
         path: '/payment-success',
         element: <PrivateRoute>
           <PaymentSuccess></PaymentSuccess>
+        </PrivateRoute>,
+      },
+      {
+        path: '/payment-cancel',
+        element: <PrivateRoute>
+          <PaymentCancel></PaymentCancel>
         </PrivateRoute>,
       },
       {
@@ -106,14 +118,6 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'update-lesson',
-        element: (
-          <PrivateRoute>
-            <UpdateLesson />
-          </PrivateRoute>
-        ),
-      },
-      {
         path: 'manage-users',
         element: (
           <PrivateRoute>
@@ -150,11 +154,7 @@ export const router = createBrowserRouter([
             <Profile />
           </PrivateRoute>
         ),
-      },
-      {
-        path: 'manage-orders',
-        element: <ManageOrders />,
-      },
+      }
     ],
   },
 ])

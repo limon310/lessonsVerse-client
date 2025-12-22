@@ -25,6 +25,7 @@ const Profile = () => {
   });
 
   const isUserPremium = userData?.isPremium;
+  const isAdmin = userData?.role === "admin";
   // console.log(isUserPremium)
 
   // lesson count
@@ -41,24 +42,26 @@ const Profile = () => {
   const { data: saveLessonCount = [] } = useQuery({
     queryKey: ['saveLessonCount'],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users/saveLesson/count/${user?.email}`)
+      const res = await axiosSecure.get(`/users/saveLesson/count`)
       return res.data;
     }
   })
   // console.log("save lesson count", saveLessonCount);
 
-  if(userLoading){
+  if (userLoading) {
     return <LoadingSpinner></LoadingSpinner>
   }
 
   return (
     <Container>
       <div className='flex justify-center items-center h-screen'>
+        {/* dynamic title */}
+        <title>Profile</title>
         <div className='bg-white shadow-lg rounded-2xl w-full'>
           <img
             alt='cover photo'
             src={user?.photoURL}
-            className='w-full mb-4 rounded-t-lg h-56'
+            className='w-full h-56 object-cover rounded-t-2xl mb-4'
           />
           <div className='flex flex-col items-center justify-center p-4 -mt-16'>
             <a href='#' className='relative block'>
@@ -69,11 +72,11 @@ const Profile = () => {
               />
             </a>
 
-            <p className='p-2 px-4 text-xs text-white bg-lime-500 rounded-full'>
+            <p className='p-2 px-4 text-xs text-black bg-lime-500 rounded-full'>
               {role}
             </p>
             <p className='text-2xl font-semibold flex items-center gap-2'>
-              User: {user?.displayName}
+              {user?.displayName}
             </p>
             {
               isUserPremium && <span className="text-yellow-500 text">⭐ Premium</span>
@@ -85,18 +88,22 @@ const Profile = () => {
                   Email
                   <span className='font-bold text-gray-600 ms-2'>{user?.email}</span>
                 </p>
-                <p className=''>
-                  CreatedLessons
-                  <span className='font-bold text-gray-600 ms-2'>{lessonCount.totalCreatedLessons}</span>
-                </p>
-                <p className=''>
-                  SaveLessons
-                  <span className='font-bold text-gray-600 ms-2'>{saveLessonCount.totalSaveLessons}</span>
-                </p>
+                {
+                  !isAdmin && <>
+                    <p className=''>
+                      CreatedLessons
+                      <span className='font-bold text-gray-600 ms-2'>{lessonCount.totalCreatedLessons}</span>
+                    </p>
+                    <p className=''>
+                      SaveLessons
+                      <span className='font-bold text-gray-600 ms-2'>{saveLessonCount.totalSaveLessons}</span>
+                    </p>
+                  </>
+                }
                 <div>
                   <button
                     onClick={() => setOpen(true)}
-                    className='bg-lime-500 w-full  px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-lime-800 block mb-1'>
+                    className='bg-amber-500 w-full  px-10 py-1 rounded-lg text-black cursor-pointer hover:bg-amber-700 block mb-1'>
                     Update Profile
                   </button>
                   {open && <UpdateUserProfileModal
@@ -108,17 +115,13 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <UserLessonSection></UserLessonSection>
+      {
+        !isAdmin &&
+        <UserLessonSection isUserPremium={isUserPremium}></UserLessonSection>
+      }
     </Container>
   );
 };
-
-const Stat = ({ label, value }) => (
-  <div>
-    <p className="text-xl font-bold">{value}</p>
-    <p className="text-sm text-gray-500">{label}</p>
-  </div>
-)
 
 
 export default Profile

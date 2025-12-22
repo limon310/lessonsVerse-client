@@ -76,6 +76,8 @@ const PublicLessons = () => {
   return (
     <Container>
       <div>
+        {/* dynamic title */}
+         <title>Public Lessons</title>
         <h2 className='text-3xl font-bold py-3'>Total Public lessons <span className='text-pink-500'>{total}</span></h2>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 py-6">

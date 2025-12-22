@@ -1,5 +1,6 @@
 import React from 'react';
-import bannerImg from '../../../assets/images/network.jpg'
+import bannerImg from '../../../assets/images/banner3.jpg'
+import { Link } from 'react-router';
 const Content3 = () => {
     return (
         <section className="relative w-full min-h-[500px] flex items-center bg-white font-sans overflow-hidden">
@@ -15,22 +16,21 @@ const Content3 = () => {
                         </span>
 
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-                            LessonsVerse: <br className="hidden sm:inline" />
-                            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600">Connected Mind</span>
+                            Your Experience<br className="hidden sm:inline" /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600">Can Inspire Someone</span>
                         </h1>
 
                         <p className="text-xl text-gray-700 mb-8 max-w-lg mx-auto lg:mx-0 font-medium">
-                            **Master New Skills. Expand Your World.** Experience the platform where knowledge nodes are seamlessly connected.
+                            A single story can change a perspective. Share your journey, connect with others, and make an impact through your experiences.
                         </p>
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <button className="px-8 py-3 text-lg font-bold text-white rounded-lg transition duration-300" style={{ backgroundColor: '#4c1d95', boxShadow: '0 4px 15px rgba(76, 29, 149, 0.4)' }}>
-                                See How it Connects
-                            </button>
-                            <button className="px-8 py-3 text-lg font-bold border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-100 transition duration-300">
-                                Browse Topics
-                            </button>
+                            <Link to='/dashboard/add-lesson' className="px-8 py-3 text-lg font-bold text-white rounded-lg transition duration-300" style={{ backgroundColor: '#4c1d95', boxShadow: '0 4px 15px rgba(76, 29, 149, 0.4)' }}>
+                                Post a Lesson
+                            </Link>
+                            <Link to='/public-lessons' className="px-8 py-3 text-lg font-bold border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-100 transition duration-300">
+                                Discover Insights
+                            </Link>
                         </div>
 
                     </div>

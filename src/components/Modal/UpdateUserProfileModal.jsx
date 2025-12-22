@@ -25,7 +25,7 @@ const UpdateUserProfileModal = ({ user, close }) => {
       displayName: name,
       photoURL: imageURL
     }
-    updateUserProfile(updateInfo)
+    await updateUserProfile(updateInfo)
       .then(() => {
         // console.log(result);
         toast.success("profile update successfully");
@@ -88,6 +88,7 @@ const UpdateUserProfileModal = ({ user, close }) => {
               hover:file:bg-lime-100
                 bg-gray-100 border border-dashed border-lime-300 rounded-md cursor-pointer
                 focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-lime-400 py-2'
+                {...register("image")}
             />
             <p className='mt-1 text-xs text-gray-400'>
               PNG, JPG or JPEG (max 2MB)

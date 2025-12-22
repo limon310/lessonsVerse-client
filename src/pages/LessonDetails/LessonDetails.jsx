@@ -1,15 +1,12 @@
-import Container from '../../components/Shared/Container'
-import Heading from '../../components/Shared/Heading'
-import Button from '../../components/Shared/Button/Button'
+
 import ReportModal from '../../components/Modal/ReportModal'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import useAxiosSecure from '../../hooks/useAxiosSecure'
 import LoadingSpinner from '../../components/Shared/LoadingSpinner'
 import { FaHeart, FaRegHeart, FaFlag } from "react-icons/fa";
 import { FaEye, FaShareFromSquare } from "react-icons/fa6";
-import { User } from 'lucide-react'
 import useAuth from '../../hooks/useAuth'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
@@ -26,7 +23,6 @@ import {
   TwitterIcon
 } from "react-share";
 import { useRef } from 'react'
-import LessonCard from '../../components/Shared/LessonCard/LessonCard'
 import SemilarLessonCard from '../../components/Shared/SemilarLessonCard/SemilarLessonCard'
 
 // random view
@@ -44,6 +40,7 @@ const LessonDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
   // console.log(id);
+  const navigate = useNavigate();
 
   const { data: lesson = {}, isLoading } = useQuery({
     queryKey: ["lessons-details", id],
@@ -53,7 +50,8 @@ const LessonDetails = () => {
     }
   })
   // console.log(lesson)
-  const { title, description, category, emotional_ton, createdAt, privacy, authorInfo, } = lesson;
+  const { title, description, category, emotional_ton, createdAt, privacy, authorInfo, creatorId } = lesson;
+  const dateFormate = new Date(createdAt).toLocaleDateString();
 
   // get semilar or reccomended lessons by category or emotional_ton
   const {
@@ -64,7 +62,7 @@ const LessonDetails = () => {
     enabled: !!category || !!emotional_ton,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/similar-lessons?category=${category}&tone=${emotional_ton}&exclude=${id}`
+        `/similar-lessons?category=${category}&tone=${emotional_ton}&id=${id}`
       );
       return res.data;
     }
@@ -111,7 +109,7 @@ const LessonDetails = () => {
 
   // favorite button toogle
   const handleToggleFavorite = () => {
-    axiosSecure.post(`/favorite-lessons/${lesson._id}`, { email: user?.email, title: lesson.title })
+    axiosSecure.post(`/favorite-lessons/${lesson._id}`, { email: user?.email, title: lesson.title, category: lesson.category, emotional_ton: lesson.emotional_ton })
       .then(res => {
         setIsFavorited(res.data.action === 'added');
         refetchCount();
@@ -169,7 +167,7 @@ const LessonDetails = () => {
   const { data: totalLesson, isLoading: totalLessonLoading } = useQuery({
     queryKey: ['totalLesson-count', authorInfo?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users/lessons/count/${authorInfo?.email}`)
+      const res = await axiosSecure.get(`/users/lessons/count/${authorInfo.email}`)
       return res.data;
     }
   })
@@ -190,6 +188,13 @@ const LessonDetails = () => {
     }
   });
 
+  // vies all lesson create by this author
+  const handleViewLessons = () => {
+    // Encode the email
+    // const encodedEmail = encodeURIComponent(authorInfo.email);
+    navigate(`/authorProfile/${creatorId}`);
+  };
+
   const isUserPremium = userData?.isPremium;
 
   if (isLoading || userCommentsLoading || totalLessonLoading || similarLessonsLoading || userLoading) {
@@ -198,6 +203,8 @@ const LessonDetails = () => {
   const shareUrl = `http://localhost:3000/lesson-details/69438b28a0bf90ca51d281f6`;
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
+      {/* dynamic title */}
+        <title>Lesson Details</title>
 
       {/* 1. Lesson Info */}
       <section className="space-y-4">
@@ -290,12 +297,12 @@ const LessonDetails = () => {
         <section className="bg-gray-50 w-[300px] p-4 rounded-xl border space-y-2 text-sm">
           <div className="flex justify-between ">
             <span className="font-medium">Created:</span>
-            <span>{createdAt}</span>
+            <span>{dateFormate}</span>
           </div>
 
           <div className="flex justify-between">
             <span className="font-medium">Last Updated:</span>
-            <span>{createdAt}</span>
+            <span>{dateFormate}</span>
           </div>
 
           <div className="flex justify-between">
@@ -323,12 +330,12 @@ const LessonDetails = () => {
           <p className="text-sm text-gray-500">Total Lessons: {totalLesson.totalCreatedLessons}</p>
         </div>
 
-        <Link to='/dashboard/profile'
+        <button onClick={handleViewLessons}
           className="px-4 py-2 rounded-lg text-sm bg-blue-600 text-white hover:bg-blue-700"
 
         >
           View all by this author
-        </Link>
+        </button >
       </section>
 
       {/* 6. Comments Section */}
@@ -339,6 +346,7 @@ const LessonDetails = () => {
         <div className="space-y-3">
           <form onSubmit={handlePostComment}>
             <textarea
+              required
               placeholder="Write a comment..."
               name='comment'
               className="w-full border p-3 rounded-xl focus:outline-none focus:ring"
@@ -371,6 +379,7 @@ const LessonDetails = () => {
         </div>
       </section>
 
+      {/* semilar lessons */}
       <div>
         <h2 className='text-3xl font-bold py-8 text-pink-500'>Recommended Lesson</h2>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>

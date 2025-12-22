@@ -4,10 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { GiShieldDisabled } from 'react-icons/gi';
 import { FaUserShield } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { Trash2 } from 'lucide-react';
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const [searchText, setSearchText] = useState('');
+  // get users
   const { refetch, data: users = [] } = useQuery({
     queryKey: ['users', searchText],
     queryFn: async () => {
@@ -15,7 +17,7 @@ const ManageUsers = () => {
       return res.data;
     }
   })
-  // handle user admin
+  // handle user
 
   const handleMakeAdmin = user => {
     const roleInfo = { role: "admin" };
@@ -44,6 +46,7 @@ const ManageUsers = () => {
       }
     });
   }
+
   const handleRemoveAdmin = user => {
     const roleInfo = { role: "user" };
     Swal.fire({
@@ -71,14 +74,44 @@ const ManageUsers = () => {
       }
     });
   }
+
+  // handle delete user
+  const handleDeleteUser = (id) => {
+    console.log("delte button clicked", id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/user/${id}`)
+          .then(res => {
+            console.log(res.data);
+            if (res.data.deletedCount > 0) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            }
+          })
+      }
+    });
+  }
   return (
     <div>
-      <h2 className='text-4xl font-bold'>Manage Users {users.length}</h2>
+      {/* dynamic title */}
+      <title>Manage Users</title>
+      <h2 className='text-4xl font-bold'>Manage Users: {users.length}</h2>
       <input
         onChange={(e) => setSearchText(e.target.value)}
         type="search"
         placeholder="search users"
-        className="input py-3" />
+        className="input my-6" />
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
@@ -92,7 +125,6 @@ const ManageUsers = () => {
               <th>Role</th>
               <th>Total Lessons</th>
               <th>Admin Actions</th>
-              <th>Others Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -133,10 +165,10 @@ const ManageUsers = () => {
                         onClick={() => handleMakeAdmin(user)}
                         className="btn bg-green-500"><FaUserShield /></button>
                   }
+                  <button
+                    onClick={() => handleDeleteUser(user._id)}
+                    className='btn ms-2 hover:bg-red-500'> <Trash2 size={24} /></button>
                 </td>
-                <th>
-                  <button className="btn btn-ghost btn-xs">details</button>
-                </th>
               </tr>)
             }
 

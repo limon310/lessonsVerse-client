@@ -62,6 +62,8 @@ const ManageFlaggedLesson = () => {
     return (
         <Container>
             <div className='py-5'>
+                {/* dynamic title */}
+                <title>Flagged Lessons</title>
                 <h2 className='text-3xl font-bold mb-5 text-pink-500'>Flagged Lessons</h2>
                 {/* table */}
                 <div className="overflow-x-auto">

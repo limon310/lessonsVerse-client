@@ -12,11 +12,13 @@ const LessonCard = ({ lesson, isUserPremium }) => {
         emotional_tone,
         authorInfo,
         access_level,
-        _id
+        _id,
+        createdAt
         // createdDate
     } = lesson;
-    // const {user} = useAuth();
-    // console.log(authorInfo)
+    // console.log(lesson.createdAt)
+    const dateFormate = new Date(createdAt).toLocaleDateString();
+    // console.log(dateFormate)
 
     // Conditional Logic
     const isPremiumLocked = access_level === 'Premium' && !isUserPremium;
@@ -29,7 +31,7 @@ const LessonCard = ({ lesson, isUserPremium }) => {
         <div className="max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-2xl ">
 
             {/* Card Content Area */}
-            <div className="p-6 relative w-full max-w-[380px] h-full">
+            <div className="p-6 relative w-full h-full">
 
                 {/* 1. Content: Blurred or Clear */}
                 <div className={isPremiumLocked ? 'filter blur-sm pointer-events-none' : ''}>
@@ -64,9 +66,14 @@ const LessonCard = ({ lesson, isUserPremium }) => {
                         </div>
 
                         {/* Access Level */}
+                        <div className='flex justify-between mb-2'>
                         <p className={`text-xs text-right font-medium ${accessColor}`}>
                             Access: <span className="capitalize">{access_level}</span>
                         </p>
+                        <p className={`text-xs text-right font-medium ${accessColor}`}>
+                            createAt: <span className="capitalize">{dateFormate}</span>
+                        </p>
+                        </div>
 
                     </div>
 
@@ -95,7 +102,7 @@ const LessonCard = ({ lesson, isUserPremium }) => {
                 {/* Footer Button */}
                 <div className="p-4 border-t border-gray-100 flex justify-end">
                     <Link to={`/lesson-details/${_id}`}
-                        className={`w-full py-2 text-sm font-semibold rounded-lg transition duration-150 ${buttonClasses}`}
+                        className={`w-full py-2 text-sm font-semibold rounded-lg transition duration-150 text-center ${buttonClasses}`}
                         disabled={isPremiumLocked}
                     >
                         See Details Button

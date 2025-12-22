@@ -48,10 +48,10 @@ const AddLessonForm = () => {
         image: user?.photoURL,
       }
     }
-    console.log(lessonData)
+    // console.log(lessonData)
     axiosSecure.post('/lessons', lessonData)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.insertedId) {
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
@@ -135,7 +135,7 @@ const AddLessonForm = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
             {...register("description", {
               maxLength: {
-                value: 1000,
+                minLength: 50,
                 message: "Description cannot exceed 500 characters."
               }
             })}
@@ -162,22 +162,44 @@ const AddLessonForm = () => {
           </div>
 
           {/* Access level Input */}
-          <div className="flex flex-col">
-            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Access Level</label>
+          <div className="flex flex-col relative group">
+            <label
+              htmlFor="access_level"
+              className="mb-2 text-sm font-medium text-gray-700"
+            >
+              Access Level
+            </label>
+
             <select
               id="access_level"
-              className={`w-full p-3 border ${errors.access_level ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("access_level", { required: "Please select access level" })}
+              disabled={!isUserPremium}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 
+              ${errors.access_level ? "border-red-500" : "border-gray-300"}
+              ${!isUserPremium ? "bg-gray-100 cursor-not-allowed" : "focus:ring-blue-500"}`}
+              {...register("access_level", {
+                required: "Please select access level",
+              })}
             >
               <option value="Free">Free</option>
-              {/* check user premium or free */}
-              {
-                isUserPremium &&
-                <option value="Premium">Premium</option>
-              }
+              <option value="Premium">Premium</option>
             </select>
-            {errors.access_level && <p className="mt-1 text-sm text-red-600">{errors.access_level.message}</p>}
+
+            {/* Tooltip */}
+            {!isUserPremium && (
+              <div className="absolute -top-9 left-0 hidden group-hover:block z-10">
+                <div className="bg-black text-white text-xs px-3 py-1 rounded shadow">
+                  Upgrade Premium to create paid lessons
+                </div>
+              </div>
+            )}
+
+            {errors.access_level && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.access_level.message}
+              </p>
+            )}
           </div>
+
         </div>
 
         {/* --- Button Group --- */}

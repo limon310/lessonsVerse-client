@@ -30,10 +30,10 @@ const ReportDetailsModal = ({ closeModal, isOpen, lesson }) => {
                 reports.map((report, i) => <div key={i}>
                   <div className="flex justify-between items-center text-lg">
                     <div className='py-4'>
-                      <p className='text-gray-600'>Reporter: <span className='text-purple-500 font-bold'>{report.displayName}</span></p>
+                      <p className='text-gray-600'>Reporter: <span className='font-bold'>{report.displayName}</span></p>
                     </div>
                     <div>
-                      <p className='text-gray-600'>Reason: <span className='text-purple-500 font-bold'>{report.reason}</span></p>
+                      <p className='text-gray-600'>Reason: <span className='font-bold'>{report.reason}</span></p>
                     </div>
                   </div>
                 </div>)
