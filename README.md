@@ -2,6 +2,8 @@
 
 LessonVerse is a web application where users can share their personal insights and stories, interact with others by liking, commenting, and sharing posts, and explore a collection of lessons shared by the community.
 
+Live Demo: https://lessonsverse.web.app/
+
 ---
 
 ## Table of Contents
