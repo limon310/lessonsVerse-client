@@ -1,66 +1,75 @@
+
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Medal, Award, Crown } from 'lucide-react';
 import { Link } from 'react-router';
 
 const TopContributorCard = ({ user, rank }) => {
-    const { name, image, totalLessons } = user;
+    const { name, image, totalLessons, creatorId } = user;
 
-    // const rankBadge = (rank) => {
-    //     if (rank === 1) return "🥇";
-    //     if (rank === 2) return "🥈";
-    //     if (rank === 3) return "🥉";
-    // }
+    // Rank based styling
+    const getRankStyles = (r) => {
+        if (r === 1) return { shadow: "hover:shadow-amber-500/20", border: "border-amber-400", bg: "bg-amber-500", icon: <Crown className="w-5 h-5" /> };
+        if (r === 2) return { shadow: "hover:shadow-slate-400/20", border: "border-slate-300", bg: "bg-slate-400", icon: <Medal className="w-5 h-5" /> };
+        if (r === 3) return { shadow: "hover:shadow-orange-400/20", border: "border-orange-300", bg: "bg-orange-400", icon: <Award className="w-5 h-5" /> };
+        return { shadow: "hover:shadow-primary/10", border: "border-base-300", bg: "bg-primary", icon: null };
+    };
+
+    const styles = getRankStyles(rank);
 
     return (
-            <div className="w-[300px] mx-auto relative rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+        <motion.div
+            whileHover={{ y: -8 }}
+            className={`relative group bg-base-200 rounded-3xl border-2 ${styles.border} p-8 transition-all duration-300 ${styles.shadow}`}
+        >
+            {/* Rank Badge */}
+            <div className={`absolute -top-5 left-1/2 -translate-x-1/2 flex items-center gap-1 px-4 py-1.5 rounded-full ${styles.bg} text-white font-bold shadow-lg`}>
+                {styles.icon}
+                <span>Rank #{rank}</span>
+            </div>
 
-                {/* Rank Badge */}
-                <div className="absolute top-4 right-4">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">
-                        {rank}
+            {/* Avatar Section */}
+            <div className="relative mt-2 flex justify-center">
+                <div className={`p-1.5 rounded-full border-2 ${styles.border} bg-base-100`}>
+                    <img
+                        src={image || `https://ui-avatars.com/api/?name=${name}&background=random`}
+                        alt={name}
+                        className="h-24 w-24 rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                </div>
+                {/* Decorative circle */}
+                <div className={`absolute inset-0 rounded-full bg-current opacity-0 group-hover:opacity-5 transition-opacity blur-xl ${styles.bg}`} />
+            </div>
+
+            {/* Info Section */}
+            <div className="mt-6 text-center">
+                <h3 className="text-xl font-bold text-neutral group-hover:text-primary transition-colors truncate">
+                    {name || "Legacy Creator"}
+                </h3>
+                <p className="text-xs uppercase tracking-widest text-neutral-content font-bold mt-1">
+                    Master Contributor
+                </p>
+            </div>
+
+            {/* All Time Stats */}
+            <div className="mt-6 flex flex-col items-center">
+                <div className="w-full bg-base-300/50 rounded-2xl py-4 px-2">
+                    <span className="block text-3xl font-black text-primary leading-none">
+                        {totalLessons.toLocaleString()}
+                    </span>
+                    <span className="text-[10px] uppercase font-bold text-neutral-content tracking-tighter mt-1 block">
+                        Total Lessons Shared
                     </span>
                 </div>
-
-                {/* Avatar */}
-                <div className="flex justify-center">
-                    <div className="rounded-full ring-4 ring-indigo-50 p-1">
-                        <img
-                            src={image || "https://i.postimg.cc/kgcVLhvn/placeholder.jpg"}
-                            alt={name}
-                            className="h-20 w-20 rounded-full object-cover"
-                        />
-                    </div>
-                </div>
-
-                {/* Name & Subtitle */}
-                <div className="mt-4 text-center">
-                    <h3 className="text-lg font-semibold text-gray-900 truncate">
-                        {name || "Unknown Creator"}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500">
-                        Lessons created this week
-                    </p>
-                </div>
-
-                {/* Stats */}
-                <div className="mt-4 flex justify-center">
-                    <div className="rounded-xl bg-indigo-50 px-6 py-2 text-center">
-                        <p className="text-2xl font-bold text-indigo-600">
-                            {totalLessons}
-                        </p>
-                        <p className="text-xs text-indigo-500">
-                            Lessons
-                        </p>
-                    </div>
-                </div>
-
-                {/* CTA (Optional) */}
-                <div className="mt-5">
-                    <button className="w-full rounded-lg border border-indigo-600 px-4 py-2 text-sm font-semibold text-indigo-600 hover:bg-indigo-600 hover:text-white transition">
-                        View Profile
-                    </button>
-                </div>
-
             </div>
+
+            {/* View Profile Action */}
+            <div className="mt-6">
+                <Link to={`authorProfile/${creatorId}`} className="btn btn-outline btn-primary btn-sm btn-block rounded-xl normal-case hover:shadow-lg transition-all">
+                    View All Lessons
+                </Link>
+            </div>
+        </motion.div>
     );
 };
 
