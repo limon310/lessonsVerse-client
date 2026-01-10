@@ -1,81 +1,120 @@
 import { Link } from 'react-router'
 import logo from '../../../assets/images/logo.png'
-import { FaXTwitter } from "react-icons/fa6";
-import { FaFacebook } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
+import { FaXTwitter, FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa6";
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
+
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-      <footer className="bg-gray-800 text-white mt-12">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+    <footer className="bg-base-200 border-t border-base-300 pt-16 pb-8 text-neutral-content">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
-            <div className="col-span-2 md:col-span-1 lg:col-span-2 space-y-4">
-              <Link to='/' className="flex items-center space-x-3 text-2xl font-bold text-white">
-                <span className="text-indigo-400 text-3xl"><img className='w-[70px] h-[70px] rounded-full' src={logo} alt="" /></span>
-                <span>LessonsVerse</span>
-              </Link>
-              <p className="text-gray-400 text-sm max-w-xs">
-                Preserving personal wisdom and fostering community growth through shared life lessons.
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-12">
+
+          {/* Brand & Mission - 4 Columns */}
+          <div className="lg:col-span-4 space-y-6">
+            <Link to='/' className="flex items-center space-x-3 group">
+              <img
+                className='w-12 h-12 rounded-2xl ring-2 ring-primary/20 group-hover:ring-primary transition-all duration-300'
+                src={logo}
+                alt="LessonsVerse Logo"
+              />
+              <span className="text-2xl font-black text-neutral tracking-tight">
+                Lessons<span className="text-primary">Verse</span>
+              </span>
+            </Link>
+            <p className="text-sm leading-relaxed max-w-sm">
+              Empowering individuals to capture life's hard-won wisdom. Join our community to share, learn, and grow through collective experiences.
+            </p>
+            <div className="flex items-center gap-4">
+              {[
+                { icon: <FaFacebook />, link: "https://www.facebook.com/mdlimon.islam.1422409", label: "Facebook" },
+                { icon: <FaXTwitter />, link: "https://x.com/", label: "Twitter" },
+                { icon: <FaLinkedin />, link: "https://www.linkedin.com/in/limon-dev/", label: "LinkedIn" },
+                { icon: <FaInstagram />, link: "https://www.instagram.com/", label: "Instagram" },
+              ].map((social, idx) => (
+                <a
+                  key={idx}
+                  href={social.link}
+                  target='_blank'
+                  className="p-2 bg-base-300 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 transform hover:-translate-y-1"
+                  aria-label={social.label}
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
+          </div>
 
-            <div className="col-span-1">
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link to="" className="text-gray-400 hover:text-indigo-400 transition duration-150">about us</Link>
-                </li>
-                <li>
-                  <Link to="/upgrade-premium" className="text-gray-400 hover:text-indigo-400 transition duration-150">Premium Upgrade</Link>
-                </li>
-                <li>
-                  <Link to="" className="text-gray-400 hover:text-indigo-400 transition duration-150">Terms & Conditions</Link>
-                </li>
-                <li>
-                  <Link to="" className="text-gray-400 hover:text-indigo-400 transition duration-150">Privacy Policy</Link>
-                </li>
-              </ul>
-            </div>
+          {/* Quick Links - 2 Columns */}
+          <div className="lg:col-span-2">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-neutral mb-6 italic">Platform</h3>
+            <ul className="space-y-4 text-sm">
+              <li><Link to="/about" className="hover:text-primary transition-colors">About Story</Link></li>
+              <li><Link to="/public-lessons" className="hover:text-primary transition-colors">Explore Lessons</Link></li>
+              <li><Link to="/upgrade-premium" className="flex items-center gap-2 hover:text-primary transition-colors font-bold text-accent">
+                ✨ Premium Upgrade
+              </Link></li>
+              <li><Link to="/community" className="hover:text-primary transition-colors">Community</Link></li>
+            </ul>
+          </div>
 
-            <div className="col-span-1">
-              <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
-              <ul className="space-y-3">
-                <li className="text-gray-400">
-                  <span className="hover:text-indigo-400">mdlimonislam134@gmail.com</span>
-                </li>
-                <li className="text-gray-400">
-                  Phone: <span className="hover:text-indigo-400">+88 01896139783</span>
-                </li>
-                <li className="text-gray-400">
-                  Address: Dinajpur Bangladesh
-                </li>
-              </ul>
-            </div>
+          {/* Support - 2 Columns */}
+          <div className="lg:col-span-2">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-neutral mb-6 italic">Support</h3>
+            <ul className="space-y-4 text-sm">
+              <li><Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/help" className="hover:text-primary transition-colors">Help Center</Link></li>
+              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
+            </ul>
+          </div>
 
-            <div className="col-span-2 md:col-span-2 lg:col-span-1">
-              <h3 className="text-lg font-semibold text-white mb-4">Follow Us</h3>
-              <div className="flex space-x-4">
-                <Link to='' className="text-gray-400 hover:text-white transition duration-150" aria-label="Follow us on X (Twitter)">
-                  <FaXTwitter size={24} />
-                </Link>
-                <Link to="" className="text-gray-400 hover:text-white transition duration-150" aria-label="Follow us on Facebook">
-                  <FaFacebook size={24} />
-                </Link>
-                <Link to="" className="text-gray-400 hover:text-white transition duration-150" aria-label="Follow us on LinkedIn">
-                  <FaLinkedin size={24} />
-                </Link>
+          {/* Newsletter - 4 Columns */}
+          <div className="lg:col-span-4 space-y-6">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-neutral mb-2 italic">Stay Inspired</h3>
+            <p className="text-xs">Get weekly insights and top life lessons delivered to your inbox.</p>
+            <form className="relative group">
+              <input
+                type="email"
+                placeholder="Enter email address"
+                className="w-full bg-base-300 border-none rounded-xl py-3 pl-4 pr-12 text-sm focus:ring-2 focus:ring-primary transition-all outline-none"
+              />
+              <button
+                type="submit"
+                className="absolute right-1 top-1 bottom-1 px-3 bg-primary text-white rounded-lg hover:bg-primary-focus transition-colors"
+              >
+                <Send size={16} />
+              </button>
+            </form>
+            <div className="space-y-2 pt-2">
+              <div className="flex items-center gap-3 text-xs">
+                <Mail size={14} className="text-primary" />
+                <span>support@lessonsverse.com</span>
+              </div>
+              <div className="flex items-center gap-3 text-xs">
+                <MapPin size={14} className="text-primary" />
+                <span>Dinajpur, Bangladesh</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-gray-700">
-            <p className="text-center text-sm text-gray-500">
-              &copy; <span id="currentYear"></span>LessonsVerse. All rights reserved. {new Date().getFullYear()}
-            </p>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-base-300 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-[12px] font-medium opacity-70">
+            &copy; {currentYear} LessonsVerse. Built with ❤️ for lifelong learners.
+          </p>
+          <div className="flex gap-6 text-[12px] opacity-70">
+            <span>Status: Operational</span>
+            <span>Version: 2.0.4</span>
           </div>
         </div>
-      </footer>
-  )
-}
+      </div>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
