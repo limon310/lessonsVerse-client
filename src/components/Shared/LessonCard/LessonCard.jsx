@@ -1,116 +1,100 @@
-
 import React from 'react';
 import { FaLock } from "react-icons/fa";
 import { Link } from 'react-router';
 
 const LessonCard = ({ lesson, isUserPremium }) => {
-    // Destructure lesson properties for easier use
     const {
         title,
         description,
         category,
-        emotional_tone,
+        emotional_ton,
         authorInfo,
         access_level,
         _id,
         createdAt
-        // createdDate
     } = lesson;
-    // console.log(lesson.createdAt)
-    const dateFormate = new Date(createdAt).toLocaleDateString();
-    // console.log(dateFormate)
 
-    // Conditional Logic
+    const dateFormatted = new Date(createdAt).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    });
+
     const isPremiumLocked = access_level === 'Premium' && !isUserPremium;
-    const accessColor = access_level === 'Premium' ? 'text-yellow-600' : 'text-blue-600';
-    const buttonClasses = isPremiumLocked
-        ? 'text-gray-400 bg-gray-50 cursor-not-allowed'
-        : 'text-indigo-700 bg-indigo-50 hover:bg-indigo-100';
 
     return (
-        <div className="max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-2xl ">
-
-            {/* Card Content Area */}
-            <div className="p-6 relative w-full h-full">
-
-                {/* 1. Content: Blurred or Clear */}
-                <div className={isPremiumLocked ? 'filter blur-sm pointer-events-none' : ''}>
-
-                    {/* Top Section */}
-                    <div className="flex items-start justify-between mb-4">
-                        <div>
-                            <h2 className="text-xl font-bold text-gray-900 mb-1">Title: {title}</h2>
-                            <p className="text-sm line-clamp-3 text-gray-700">{description}</p>
-                        </div>
-                    </div>
-
-                    {/* Tags and Metadata */}
-                    <div className="space-y-3 pt-3 border-t border-gray-100">
-
-                        {/* Category & Tone */}
-                        <div className="flex flex-wrap gap-2 text-xs">
-                            <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 font-medium rounded-full">{category}</span>
-                            <span className="px-2 py-0.5 bg-green-100 text-green-700 font-medium rounded-full">{emotional_tone}</span>
-                        </div>
-
-                        {/* Creator Info */}
-                        <div className="flex items-center">
-                            <img
-                                className="h-8 w-8 rounded-full mr-3 object-cover"
-                                src={authorInfo?.image || "https://via.placeholder.com/48/4F46E5/FFFFFF?text=AJ"}
-                                alt={`Photo of ${authorInfo?.name}`}
-                            />
-                            <div>
-                                <p className="text-sm font-semibold text-gray-800">{authorInfo?.name}</p>
-                            </div>
-                        </div>
-
-                        {/* Access Level */}
-                        <div className='flex justify-between mb-2'>
-                        <p className={`text-xs text-right font-medium ${accessColor}`}>
-                            Access: <span className="capitalize">{access_level}</span>
-                        </p>
-                        <p className={`text-xs text-right font-medium ${accessColor}`}>
-                            createAt: <span className="capitalize">{dateFormate}</span>
-                        </p>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                {/* 2. Lock Overlay (Conditional Rendering) */}
-                {isPremiumLocked && (
-                    <div className="absolute inset-0 bg-white bg-opacity-90 backdrop-filter backdrop-blur-sm flex flex-col items-center justify-center p-6 rounded-xl">
-                        {/* <LockIcon /> */}
-                        <span className='text-yellow-500 mb-2'>
-                            <FaLock size={30} />
+        <div className="group relative flex flex-col h-full bg-base-200 border border-base-300 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            
+            {/* Card Content */}
+            <div className={`p-6 grow flex flex-col ${isPremiumLocked ? 'filter blur-[2px] select-none pointer-events-none' : ''}`}>
+                
+                {/* Header: Title & Description */}
+                <div className="mb-4">
+                    <div className="flex justify-between items-start gap-2 mb-2">
+                         <span className="px-2.5 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded-md">
+                            {category}
                         </span>
-                        <p className="text-center font-bold text-lg text-gray-800">
-                            Premium Lesson
-                        </p>
-                        <p className="text-center text-sm text-gray-600 mb-4">
-                            Upgrade to view
-                        </p>
-                        <Link to="/upgrade-premium"
-                            className="px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition duration-150 shadow-md">
-                            Upgrade Now
-                        </Link>
                     </div>
-                )}
-
-                {/* Footer Button */}
-                <div className="p-4 border-t border-gray-100 flex justify-end">
-                    <Link to={`/lesson-details/${_id}`}
-                        className={`w-full py-2 text-sm font-semibold rounded-lg transition duration-150 text-center ${buttonClasses}`}
-                        disabled={isPremiumLocked}
-                    >
-                        See Details Button
-                    </Link>
+                    <h3 className="text-xl font-bold text-neutral line-clamp-1 mb-2 group-hover:text-primary transition-colors">
+                        {title}
+                    </h3>
+                    <p className="text-sm text-neutral-content line-clamp-3 leading-relaxed">
+                        {description}
+                    </p>
                 </div>
 
+                {/* Author & Info */}
+                <div className="mt-auto pt-4 border-t border-base-300 space-y-4">
+                    <div className="flex items-center gap-3">
+                        <img
+                            className="h-9 w-9 rounded-full object-cover ring-2 ring-base-300"
+                            src={authorInfo?.image || "https://ui-avatars.com/api/?name=" + authorInfo?.name}
+                            alt={authorInfo?.name}
+                        />
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-neutral">{authorInfo?.name}</span>
+                            <span className="text-[11px] text-neutral-content">{dateFormatted}</span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs font-medium">
+                        <span className={`flex items-center gap-1 ${access_level === 'Premium' ? 'text-warning' : 'text-success'}`}>
+                            {access_level === 'Premium' && <FaLock className="text-[10px]" />}
+                            {access_level} Access
+                        </span>
+                        <span className="px-2 py-0.5 bg-accent/10 text-accent rounded-full text-[10px]">
+                            {emotional_ton}
+                        </span>
+                    </div>
+                </div>
             </div>
 
+            {/* Premium Overlay */}
+            {isPremiumLocked && (
+                <div className="absolute inset-0 z-10 bg-base-200/60 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
+                    <div className="w-14 h-14 bg-warning/20 text-warning rounded-full flex items-center justify-center mb-4 animate-pulse">
+                        <FaLock size={24} />
+                    </div>
+                    <h4 className="text-lg font-bold text-neutral mb-1">Premium Content</h4>
+                    <p className="text-sm text-neutral-content mb-5">Unlock this lesson and more with a premium subscription.</p>
+                    <Link 
+                        to="/upgrade-premium"
+                        className="btn btn-warning btn-sm rounded-full px-6 shadow-lg hover:shadow-warning/20"
+                    >
+                        Upgrade Now
+                    </Link>
+                </div>
+            )}
+
+            {/* Action Button */}
+            <div className="p-4 bg-base-300/30">
+                <Link 
+                    to={`/lesson-details/${_id}`}
+                    className={`btn btn-block btn-sm normal-case ${isPremiumLocked ? 'btn-ghost disabled' : 'btn-primary'}`}
+                >
+                    {isPremiumLocked ? 'Locked' : 'View Lesson Details'}
+                </Link>
+            </div>
         </div>
     );
 };

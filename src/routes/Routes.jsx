@@ -63,9 +63,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/lesson-details/:id',
-        element: <PrivateRoute>
-          <LessonDetails></LessonDetails>
-        </PrivateRoute>,
+        element: <LessonDetails></LessonDetails>
       },
     ],
   },

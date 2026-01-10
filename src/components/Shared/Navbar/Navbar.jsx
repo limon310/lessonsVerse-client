@@ -15,7 +15,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   // console.log(user)
   const axiosSecure = useAxiosSecure();
-  const { data: userData = {} } = useQuery({
+  const { data: userData = null } = useQuery({
     queryKey: ['upgradeUser', user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -24,26 +24,38 @@ const Navbar = () => {
     }
   });
   const isUserPremium = userData?.isPremium;
-  const links = <>
-
-    {
-      userData?.role === "user"
-        ? <>
+  const links = (
+    <>
+      {userData ? (
+        userData.role === "user" ? (
+          // user route
+          <>
+            <li className='text-lg'><NavLink to="/">Home</NavLink></li>
+            <li className='text-lg'><NavLink to="/public-lessons">Public Lessons</NavLink></li>
+            <li className='text-lg'><NavLink to="/dashboard/add-lesson">Add Lesson</NavLink></li>
+            <li className='text-lg'><NavLink to="/dashboard/my-lessons">My Lessons</NavLink></li>
+          </>
+        ) : (
+          // admin route
+          <>
+            <li className='text-lg'><NavLink to="/dashboard">Statistics</NavLink></li>
+            <li className='text-lg'><NavLink to="/dashboard/manage-users">Manage Users</NavLink></li>
+            <li className='text-lg'><NavLink to="/dashboard/manage-lessons">Manage Lessons</NavLink></li>
+            <li className='text-lg'><NavLink to="/dashboard/manage-flagged-lessons">Flagged Lessons</NavLink></li>
+          </>
+        )
+      ) : (
+        // if user not login then show
+        <>
           <li className='text-lg'><NavLink to="/">Home</NavLink></li>
           <li className='text-lg'><NavLink to="/public-lessons">Public Lessons</NavLink></li>
-          <li className='text-lg'><NavLink to="/dashboard/add-lesson">Add Lesson</NavLink></li>
-          <li className='text-lg'><NavLink to="/dashboard/my-lessons">My Lessons</NavLink></li>
         </>
-        : <>
-          <li className='text-lg'><NavLink to="/dashboard">Statistics</NavLink></li>
-          <li className='text-lg'><NavLink to="/dashboard/manage-users">Manage Users</NavLink></li>
-          <li className='text-lg'><NavLink to="/dashboard/manage-lessons">Manage Lessons</NavLink></li>
-          <li className='text-lg'><NavLink to="/dashboard/manage-flagged-lessons">Flagged Lessons</NavLink></li>
-        </>
-    }
-  </>
+      )}
+    </>
+  );
+
   return (
-    <div className='fixed w-full bg-white z-10 shadow-sm'>
+    <div className='fixed w-full bg-base-200 z-10 shadow-sm'>
       <Container>
         <div className="navbar">
           <div className="navbar-start">
@@ -62,7 +74,7 @@ const Navbar = () => {
                 <img
                   className='w-10 h-10 md:w-[60px] md:h-[60px] rounded-full'
                   src={logo} alt='logo' width='100' height='100' />
-                <p className='text-3xl font-bold hidden md:block'>Lessons<span className='text-pink-600'>Verse</span></p>
+                <p className='text-3xl font-bold hidden md:block'>Lessons<span className='text-pink-500'>Verse</span></p>
               </div>
             </Link>
           </div>
@@ -73,7 +85,7 @@ const Navbar = () => {
           </div>
           <div className="navbar-end z-10">
             {/* theme toogle */}
-            <div className='mr-4'>
+            <div className='mr-2'>
               <ThemeToggle />
             </div>
             {/* show upgrade button on condition */}
@@ -96,23 +108,44 @@ const Navbar = () => {
             <div className='relative'>
               <div className='flex flex-row items-center gap-3'>
                 {/* Dropdown btn */}
-                <div
-                  onClick={() => setIsOpen(!isOpen)}
-                  className='p-4 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
-                >
-                  <AiOutlineMenu />
-                  <div className='hidden md:block'>
-                    {/* Avatar */}
-                    <img
-                      className='rounded-full w-8 h-8'
-                      referrerPolicy='no-referrer'
-                      src={user && user.photoURL ? user.photoURL : avatarImg}
-                      alt='profile'
-                    />
+                {user ? ( // only show dropdown if user exists
+                  <div
+                    onClick={() => setIsOpen(!isOpen)}
+                    className='p-4 md:py-1 md:px-2 border border-base-300 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
+                  >
+                    <AiOutlineMenu />
+                    <div className='hidden md:block'>
+                      {/* Avatar */}
+                      <img
+                        className='rounded-full w-8 h-8'
+                        referrerPolicy='no-referrer'
+                        src={user.photoURL || avatarImg}
+                        alt='profile'
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  // If no user not login then show
+                  <div className="flex gap-3">
+                    <Link
+                      to="/login"
+                      className="px-5 py-2 font-semibold rounded-lg text-base-100 bg-primary hover:bg-primary-focus transition-colors duration-300 shadow-md"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="px-5 py-2 font-semibold rounded-lg text-base-100 bg-secondary hover:bg-secondary-focus transition-colors duration-300 shadow-md"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+
+                )}
               </div>
-              {isOpen && (
+
+              {/* Dropdown menu */}
+              {isOpen && user && (
                 <div className='absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm'>
                   <div className='flex flex-col cursor-pointer'>
                     <Link
@@ -122,48 +155,30 @@ const Navbar = () => {
                       Home
                     </Link>
 
-                    {user ? (
-                      <>
-                        <span className='px-4 py-3 hover:bg-neutral-100 transition font-semibold text-pink-500'>{user?.displayName}</span>
-                        <Link
-                          to='/dashboard/profile'
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                        >
-                          Profile
-                        </Link>
-                        <Link
-                          to='/dashboard'
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                        >
-                          Dashboard
-                        </Link>
-                        <div
-                          onClick={logOut}
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
-                        >
-                          Logout
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <Link
-                          to='/login'
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                        >
-                          Login
-                        </Link>
-                        <Link
-                          to='/signup'
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                        >
-                          Sign Up
-                        </Link>
-                      </>
-                    )}
+                    <span className='px-4 py-3 hover:bg-neutral-100 transition font-semibold text-pink-500'>{user.displayName}</span>
+                    <Link
+                      to='/dashboard/profile'
+                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      to='/dashboard'
+                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                    >
+                      Dashboard
+                    </Link>
+                    <div
+                      onClick={logOut}
+                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
+                    >
+                      Logout
+                    </div>
                   </div>
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </Container>

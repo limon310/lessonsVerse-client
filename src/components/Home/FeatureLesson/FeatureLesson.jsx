@@ -4,7 +4,6 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
 import LessonCard from '../../Shared/LessonCard/LessonCard';
 import useAuth from '../../../hooks/useAuth';
-import Container from '../../Shared/Container';
 
 const FeatureLesson = () => {
     const axiosSecure = useAxiosSecure();
@@ -35,20 +34,28 @@ const FeatureLesson = () => {
         return <LoadingSpinner></LoadingSpinner>
     }
     return (
-        <Container>
-        <div className='py-10'>
-            <h2 className='text-3xl font-bold text-center text-accent mb-8'>Featured Lesson</h2>
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-            {
-                featuredLessons.map(lesson => <LessonCard
-                    key={lesson._id}
-                    lesson={lesson}
-                    isUserPremium={isUserPremium}
-                ></LessonCard>)
-            }
+        <section className='bg-base-100 py-16'>
+            <div className='container mx-auto px-4'>
+                <div className='text-center mb-12'>
+                    <h2 className='text-3xl md:text-4xl font-bold text-accent mb-3'>
+                        Featured Lessons
+                    </h2>
+                    <p className='text-neutral-content max-w-2xl mx-auto'>
+                        Expand your knowledge with our curated lessons designed for your growth.
+                    </p>
+                </div>
+
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
+                    {featuredLessons?.map(lesson => (
+                        <LessonCard
+                            key={lesson._id}
+                            lesson={lesson}
+                            isUserPremium={isUserPremium}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
-        </Container>
+        </section>
     );
 };
 
