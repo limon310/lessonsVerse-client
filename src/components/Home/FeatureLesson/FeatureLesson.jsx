@@ -34,7 +34,7 @@ const FeatureLesson = () => {
         return <LoadingSpinner></LoadingSpinner>
     }
     return (
-        <section className='bg-base-100 py-16'>
+        <section className='bg-base-100 pb-16 pt-16'>
             <div className='container mx-auto px-4'>
                 <div className='text-center mb-12'>
                     <h2 className='text-3xl md:text-4xl font-bold text-accent mb-3'>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HiCheck, HiXMark, HiOutlineShieldCheck, HiOutlineBolt } from 'react-icons/hi2';
+import { HiCheck, HiXMark, HiOutlineShieldCheck } from 'react-icons/hi2';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { Zap } from 'lucide-react';
 
 const comparisonFeatures = [
     { name: "Number of Lessons", free: "10 Core Lessons", premium: "Unlimited Access", isBoolean: false },
@@ -42,7 +43,7 @@ const PricingComparisonTable = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-bold mb-4 uppercase tracking-widest"
                     >
-                        <HiOutlineBolt />
+                        <Zap size={16} className="fill-current" />
                         Upgrade Your Experience
                     </motion.div>
                     <h1 className="text-4xl md:text-6xl font-black text-neutral mb-6">

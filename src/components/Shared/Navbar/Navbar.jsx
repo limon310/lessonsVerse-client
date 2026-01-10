@@ -55,7 +55,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className='fixed w-full bg-base-200 z-10 shadow-sm'>
+    <div className='fixed w-full bg-base-200 z-100 shadow-sm'>
       <Container>
         <div className="navbar">
           <div className="navbar-start">

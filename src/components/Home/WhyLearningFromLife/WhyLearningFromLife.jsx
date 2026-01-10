@@ -50,7 +50,7 @@ const WhyLearningFromLife = () => {
     };
 
     return (
-        <section className="py-20 bg-base-100 overflow-hidden">
+        <section className="pb-20 pt-10 bg-base-100 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
                 {/* Header Section */}
