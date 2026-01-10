@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router'
 import axios from 'axios'
 import useAuth from './useAuth'
 import toast from 'react-hot-toast'
-
+// https://lessonverse.vercel.app/
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/",
   withCredentials: true,
 })
-// http://localhost:3000/
 const useAxiosSecure = () => {
   const { user, logOut, loading } = useAuth()
   const navigate = useNavigate()

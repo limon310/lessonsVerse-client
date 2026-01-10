@@ -4,7 +4,6 @@ import { Carousel } from 'react-responsive-carousel';
 import Content1 from '../../Shared/BannerContent/Content1';
 import Content2 from '../../Shared/BannerContent/Content2';
 import Content3 from '../../Shared/BannerContent/Content3';
-import Container from '../../Shared/Container';
 
 const Banner = () => {
     return (

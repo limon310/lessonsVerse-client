@@ -37,7 +37,7 @@ const FeatureLesson = () => {
     return (
         <Container>
         <div className='py-10'>
-            <h2 className='text-3xl font-bold text-center text-purple-500 mb-8'>Featured Lesson</h2>
+            <h2 className='text-3xl font-bold text-center text-accent mb-8'>Featured Lesson</h2>
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
             {
                 featuredLessons.map(lesson => <LessonCard

@@ -8,6 +8,7 @@ import logo from '../../../assets/images/logo.png'
 import { useQuery } from '@tanstack/react-query'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { LuBadgeCheck } from "react-icons/lu";
+import ThemeToggle from '../ThemeToggle'
 
 const Navbar = () => {
   const { user, logOut } = useAuth()
@@ -18,7 +19,7 @@ const Navbar = () => {
     queryKey: ['upgradeUser', user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`http://localhost:3000/users/${user?.email}`);
+      const res = await axiosSecure.get(`/users/${user?.email}`);
       return res.data;
     }
   });
@@ -59,7 +60,7 @@ const Navbar = () => {
             <Link to='/'>
               <div className='flex items-center gap-1'>
                 <img
-                  className='w-[40px] h-[40px] md:w-[60px] md:h-[60px] rounded-full'
+                  className='w-10 h-10 md:w-[60px] md:h-[60px] rounded-full'
                   src={logo} alt='logo' width='100' height='100' />
                 <p className='text-3xl font-bold hidden md:block'>Lessons<span className='text-pink-600'>Verse</span></p>
               </div>
@@ -71,6 +72,10 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="navbar-end z-10">
+            {/* theme toogle */}
+            <div className='mr-4'>
+              <ThemeToggle />
+            </div>
             {/* show upgrade button on condition */}
             {user && (
               userData?.role === "admin" ? null : isUserPremium ? (

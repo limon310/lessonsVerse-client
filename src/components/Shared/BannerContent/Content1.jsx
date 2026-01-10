@@ -1,70 +1,93 @@
+
 import React from 'react';
 import bannerImg from '../../../assets/images/banner2.jpg'
-import { Link } from 'react-router';
+import { Link } from 'react-router'; // Fixed import to standard
+import { motion } from 'framer-motion';
 
 const Content1 = () => {
     return (
-        <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-slate-900">
+        <section className="relative w-full min-h-[70vh] flex items-center overflow-hidden bg-base-100 transition-colors duration-300">
+            
+            {/* Background Decorative Glows (Using Theme Colors) */}
+            <div className="absolute top-1/4 left-1/2 w-2 h-2 bg-primary rounded-full opacity-40 blur-sm"></div>
+            <div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-accent rounded-full opacity-50 blur-sm"></div>
+            <div className="absolute top-10 right-[10%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[120px] -z-0"></div>
 
-            {/* Small Stars (Dots) */}
-            <div className="absolute top-1/4 left-1/2 w-1 h-1 bg-white rounded-full opacity-60 neon-glow"></div>
-            <div className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-80 neon-glow"></div>
-            <div className="absolute top-10 right-1/2 w-1 h-1 bg-violet-400 rounded-full opacity-50 neon-glow"></div>
+            {/* MAIN CONTENT */}
+            <div className="relative z-10 container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-12">
 
-            {/* 3. MAIN CONTENT HERE */}
-            <div className="relative z-10 container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between">
-
-                {/* LEFT COLUMN: Text */}
-                <div className="w-full md:w-1/2 text-center md:text-left mb-12 md:mb-0">
-                    <span className="inline-block py-1 px-3 rounded-full bg-cyan-900/30 border border-cyan-500/30 text-cyan-300 text-xs font-bold tracking-[0.2em] mb-6 backdrop-blur-sm uppercase">
+                {/* LEFT COLUMN: Text Content */}
+                <motion.div 
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-full md:w-1/2 text-center md:text-left"
+                >
+                    <span className="inline-block py-1.5 px-4 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold tracking-[0.2em] mb-6 backdrop-blur-sm uppercase">
                         Welcome to the Verse
                     </span>
 
-                    <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-violet-200 neon-text-glow">
-                        LESSONS<span className="text-cyan-400">VERSE</span>
+                    <h1 className="text-4xl md:text-5xl font-black leading-[1.1] mb-6 text-neutral">
+                        LESSONS<span className="text-primary italic">VERSE</span>
                     </h1>
 
-                    <p className="text-lg md:text-2xl text-slate-300 mb-8 font-light tracking-wide max-w-lg mx-auto md:mx-0">
-                        LessonVerse is a community-driven platform where people share real-life experiences, discover meaningful insights, and learn from each other’s journeys.
+                    <p className="text-lg md:text-xl text-neutral-content mb-8 font-medium max-w-lg mx-auto md:mx-0 leading-relaxed">
+                        A community-driven social platform where experiences become lessons. Share your journey, discover insights, and learn together.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                        <Link to='/dashboard/add-lesson' className="button">
+                        <Link 
+                            to='/dashboard/add-lesson' 
+                            className="btn btn-primary btn-lg shadow-lg shadow-primary/20 text-white rounded-xl transform hover:scale-105 transition-all"
+                        >
                             Share Your Story
                         </Link>
-                        <Link to='/public-lessons' className="px-8 py-4 bg-transparent border border-violet-500 text-violet-300 hover:text-white hover:bg-violet-900/50 font-medium text-lg rounded-sm transition-all duration-300 tracking-wider uppercase">
+                        <Link 
+                            to='/public-lessons' 
+                            className="btn btn-outline btn-secondary btn-lg rounded-xl hover:scale-105 transition-all"
+                        >
                             Explore Lessons
                         </Link>
                     </div>
-                </div>
+                </motion.div>
 
-                {/* RIGHT COLUMN */}
-                <div className="w-full md:w-1/2 flex justify-center relative">
-                    {/* Decorative Circle behind image */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-r from-cyan-500/20 to-violet-500/20 rounded-full blur-3xl"></div>
+                {/* RIGHT COLUMN: Image with Theme Adaptation */}
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="w-full md:w-1/2 flex justify-center relative"
+                >
+                    {/* Decorative Circle behind image using Primary/Accent */}
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[450px] md:h-[450px] bg-gradient-to-tr from-primary/20 to-accent/20 rounded-full blur-3xl animate-pulse"></div>
 
-                    {/* IMAGE PLACEHOLDER */}
-                    <div className="relative z-10 w-full max-w-md">
+                    {/* IMAGE CONTAINER */}
+                    <div className="relative z-10 w-full max-w-md group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-accent/50 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                         <img
                             src={bannerImg}
-                            alt="Student looking at universe"
-                            className="rounded-2xl shadow-2xl shadow-cyan-900/50 border border-slate-700/50 object-cover h-[400px] w-full opacity-90 hover:opacity-100 transition duration-500"
+                            alt="Student and Universe"
+                            className="relative rounded-2xl shadow-2xl border border-base-300 object-cover h-[450px] w-full grayscale-[20%] hover:grayscale-0 transition-all duration-700"
                         />
 
-                        {/* Floating Card Effect over image */}
-                        <div className="absolute -bottom-6 -left-6 bg-slate-900/90 backdrop-blur-md p-4 rounded-lg border-l-4 border-cyan-400 shadow-lg hidden md:block">
-                            <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 bg-violet-600 rounded-full flex items-center justify-center">
-                                    <span className="text-white font-bold">LV</span>
+                        {/* Floating Status Card (Updated Colors) */}
+                        <motion.div 
+                            animate={{ y: [0, -10, 0] }}
+                            transition={{ repeat: Infinity, duration: 4 }}
+                            className="absolute -bottom-6 -left-6 bg-base-200/90 backdrop-blur-md p-5 rounded-2xl border border-base-300 shadow-xl hidden md:block min-w-[200px]"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="h-12 w-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/30 text-white">
+                                    <span className="text-xl font-black">LV</span>
                                 </div>
                                 <div>
-                                    <p className="text-cyan-300 text-sm font-bold tracking-widest uppercase">Status</p>
-                                    <p className="text-white text-xs">Learning Mode: Active</p>
+                                    <p className="text-primary text-[10px] font-black tracking-widest uppercase">System Status</p>
+                                    <p className="text-neutral font-bold text-sm">Verse Active 🚀</p>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </section>
     );
