@@ -24,6 +24,8 @@ import PaymentCancel from '../pages/Payment/PaymentCancel'
 import AuthorProfile from '../pages/Dashboard/Common/AuthorProfile'
 import HelpSupport from '../pages/HelpSupport/HelpSupport'
 import PrivacyPolicy from '../pages/PrivacyPolicy/PrivacyPolicy'
+import ContactPage from '../pages/ContactPage/ContactPage'
+import TermsOfService from '../pages/TermsOfService/TermsOfService'
 
 export const router = createBrowserRouter([
   {
@@ -40,12 +42,20 @@ export const router = createBrowserRouter([
         Component: PublicLessons,
       },
       {
-        path: '/help-support',
+        path: '/support',
         Component: HelpSupport,
       },
       {
         path: '/privacy-policy',
         Component: PrivacyPolicy,
+      },
+      {
+        path: '/contact',
+        Component: ContactPage,
+      },
+      {
+        path: '/terms',
+        Component: TermsOfService,
       },
       {
         path: '/authorProfile/:creatorId',
