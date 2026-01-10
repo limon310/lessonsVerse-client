@@ -137,7 +137,7 @@ const PublicLessons = () => {
         </div>
 
           {/* lesson card grid */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-20 mt-5'>
+        <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5'>
           {lessons.map(lesson => (
             <LessonCard
               key={lesson._id}
@@ -148,11 +148,11 @@ const PublicLessons = () => {
         </div>
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-10">
+          <div className="flex justify-center items-center gap-2 py-10">
             <button
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
-              className="px-4 py-2 border rounded disabled:opacity-50"
+              className="px-4 py-2 border rounded disabled:opacity-50 cursor-pointer"
             >
               Prev
             </button>
@@ -163,7 +163,7 @@ const PublicLessons = () => {
                 <button
                   key={pageNumber}
                   onClick={() => setPage(pageNumber)}
-                  className={`px-4 py-2 border rounded
+                  className={`px-4 py-2 border rounded cursor-pointer
                     ${page === pageNumber
                       ? 'bg-black text-white'
                       : 'hover:bg-gray-100'
@@ -177,7 +177,7 @@ const PublicLessons = () => {
             <button
               disabled={page === totalPages}
               onClick={() => setPage(page + 1)}
-              className="px-4 py-2 border rounded disabled:opacity-50"
+              className="px-4 py-2 border rounded disabled:opacity-50 cursor-pointer"
             >
               Next
             </button>

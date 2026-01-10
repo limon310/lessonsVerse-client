@@ -20,7 +20,7 @@ const TopContributorCard = ({ user, rank }) => {
     return (
         <motion.div
             whileHover={{ y: -8 }}
-            className={`relative group bg-base-200 rounded-3xl border-2 ${styles.border} p-8 transition-all duration-300 ${styles.shadow}`}
+            className={`relative group bg-base-200 rounded-2xl border-2 ${styles.border} p-8 transition-all duration-300 ${styles.shadow}`}
         >
             {/* Rank Badge */}
             <div className={`absolute -top-5 left-1/2 -translate-x-1/2 flex items-center gap-1 px-4 py-1.5 rounded-full ${styles.bg} text-white font-bold shadow-lg`}>

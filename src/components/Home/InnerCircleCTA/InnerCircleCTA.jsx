@@ -5,7 +5,7 @@ import { Zap, ArrowRight, Sparkles } from 'lucide-react';
 
 const InnerCircleCTA = () => {
     return (
-        <section className="py-16 px-6 bg-base-100 transition-colors duration-300 overflow-hidden">
+        <section className="py-10 px-6 bg-base-100 transition-colors duration-300 overflow-hidden">
             <div className="max-w-7xl mx-auto relative">
 
                 {/* Background Glows - Using OKLCH Primary/Accent with transparency */}
@@ -17,7 +17,7 @@ const InnerCircleCTA = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="relative bg-base-200 border border-base-300 rounded-[3rem] p-8 md:p-20 text-center shadow-xl overflow-hidden"
+                    className="relative bg-base-200 border border-base-300 rounded-2xl p-8 md:p-20 text-center shadow-xl overflow-hidden"
                 >
                     {/* Animated Decorative Icon */}
                     <motion.div

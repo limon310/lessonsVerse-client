@@ -59,15 +59,15 @@ const Content1 = () => {
                     className="w-full md:w-1/2 flex justify-center relative"
                 >
                     {/* Decorative Circle behind image using Primary/Accent */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[450px] md:h-[450px] bg-gradient-to-tr from-primary/20 to-accent/20 rounded-full blur-3xl animate-pulse"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[450px] md:h-[450px] bg-linear-to-tr from-primary/20 to-accent/20 rounded-full blur-3xl animate-pulse"></div>
 
                     {/* IMAGE CONTAINER */}
                     <div className="relative z-10 w-full max-w-md group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-accent/50 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                        <div className="absolute -inset-1 bg-linear-to-r from-primary/50 to-accent/50 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                         <img
                             src={bannerImg}
                             alt="Student and Universe"
-                            className="relative rounded-2xl shadow-2xl border border-base-300 object-cover h-[450px] w-full grayscale-[20%] hover:grayscale-0 transition-all duration-700"
+                            className="relative rounded-2xl shadow-2xl border border-base-300 object-cover h-[450px] w-full grayscale-20 hover:grayscale-0 transition-all duration-700"
                         />
 
                         {/* Floating Status Card (Updated Colors) */}

@@ -25,7 +25,7 @@ const impactStories = [
         role: "Mentor",
         image: "https://i.pravatar.cc/150?u=james",
         story: "As a mentor, this is the best place to leave a legacy. My life lessons are now helping the next generation of leaders.",
-        impact: "Top Contributor"
+        impact: "Entrepreneur"
     }
 ];
 
@@ -54,7 +54,7 @@ const ImpactStories = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.2 }}
                             whileHover={{ y: -10 }}
-                            className="bg-base-200 border border-base-300 p-8 rounded-4xl relative group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5"
+                            className="bg-base-200 border border-base-300 p-8 rounded-2xl relative group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5"
                         >
                             {/* Quote Icon */}
                             <div className="absolute -top-4 -right-4 bg-primary text-white p-3 rounded-2xl shadow-lg rotate-12 group-hover:rotate-0 transition-transform">

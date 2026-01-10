@@ -90,7 +90,7 @@ const WhyLearningFromLife = () => {
                             key={index}
                             variants={itemVariants}
                             whileHover={{ y: -10 }}
-                            className="group relative p-8 bg-base-200 border border-base-300 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5"
+                            className="group relative p-8 bg-base-200 border border-base-300 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5"
                         >
                             {/* Icon Wrapper */}
                             <div className={`inline-flex items-center justify-center p-3 rounded-2xl ${item.bgColor} ${item.color} mb-6 group-hover:scale-110 transition-transform duration-300`}>
