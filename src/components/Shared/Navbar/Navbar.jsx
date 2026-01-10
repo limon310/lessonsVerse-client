@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { LuBadgeCheck } from "react-icons/lu";
 import ThemeToggle from '../ThemeToggle'
+import NavbarLinks from './NavbarLinks'
 
 const Navbar = () => {
   const { user, logOut } = useAuth()
@@ -24,38 +25,6 @@ const Navbar = () => {
     }
   });
   const isUserPremium = userData?.isPremium;
-  const links = (
-    <>
-      {userData ? (
-        userData.role === "user" ? (
-          // user route
-          <>
-            <li className='text-lg'><NavLink to="/">Home</NavLink></li>
-            <li className='text-lg'><NavLink to="/public-lessons">Public Lessons</NavLink></li>
-            <li className='text-lg'><NavLink to="/dashboard/add-lesson">Add Lesson</NavLink></li>
-            <li className='text-lg'><NavLink to="/dashboard/my-lessons">My Lessons</NavLink></li>
-          </>
-        ) : (
-          // admin route
-          <>
-            <li className='text-lg'><NavLink to="/dashboard">Statistics</NavLink></li>
-            <li className='text-lg'><NavLink to="/dashboard/manage-users">Manage Users</NavLink></li>
-            <li className='text-lg'><NavLink to="/dashboard/manage-lessons">Manage Lessons</NavLink></li>
-            <li className='text-lg'><NavLink to="/dashboard/manage-flagged-lessons">Flagged Lessons</NavLink></li>
-          </>
-        )
-      ) : (
-        // if user not login then show
-        <>
-          <li className='text-lg'><NavLink to="/">Home</NavLink></li>
-          <li className='text-lg'><NavLink to="/public-lessons">Public Lessons</NavLink></li>
-          <li className='text-lg'><NavLink to="/support">Help & Support</NavLink></li>
-          <li className='text-lg'><NavLink to="/privacy-policy">Privacy Policy</NavLink></li>
-          <li className='text-lg'><NavLink to="/contact">Contact</NavLink></li>
-        </>
-      )}
-    </>
-  );
 
   return (
     <div className='fixed w-full bg-base-200 z-100 shadow-sm'>
@@ -69,7 +38,7 @@ const Navbar = () => {
               <ul
                 tabIndex="-1"
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                {links}
+                <NavbarLinks userData={userData} />
               </ul>
             </div>
             <Link to='/'>
@@ -83,7 +52,7 @@ const Navbar = () => {
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
-              {links}
+              <NavbarLinks userData={userData} />
             </ul>
           </div>
           <div className="navbar-end z-10">

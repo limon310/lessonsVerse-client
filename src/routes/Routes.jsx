@@ -26,6 +26,7 @@ import HelpSupport from '../pages/HelpSupport/HelpSupport'
 import PrivacyPolicy from '../pages/PrivacyPolicy/PrivacyPolicy'
 import ContactPage from '../pages/ContactPage/ContactPage'
 import TermsOfService from '../pages/TermsOfService/TermsOfService'
+import AboutStory from '../pages/AboutStory/AboutStory'
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: '/terms',
         Component: TermsOfService,
+      },
+      {
+        path: '/about',
+        Component: AboutStory,
       },
       {
         path: '/authorProfile/:creatorId',

@@ -56,7 +56,7 @@ const Footer = () => {
               <li><Link to="/upgrade-premium" className="flex items-center gap-2 hover:text-primary transition-colors font-bold text-accent">
                 ✨ Premium Upgrade
               </Link></li>
-              <li><Link to="/community" className="hover:text-primary transition-colors">Community</Link></li>
+              <li><Link to="/contact" className="hover:text-primary transition-colors">Community</Link></li>
             </ul>
           </div>
 

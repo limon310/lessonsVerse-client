@@ -37,6 +37,7 @@ const faqs = [
 const HelpSupport = () => {
     return (
         <div className="bg-base-100 min-h-screen pt-20 pb-20">
+            <title>Support | LessonVerse</title>
             <div className="max-w-7xl mx-auto px-6">
 
                 {/* --- Hero Section --- */}

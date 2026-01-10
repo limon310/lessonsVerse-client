@@ -17,6 +17,7 @@ const ContactPage = () => {
     };
     return (
         <div className="bg-base-100 min-h-screen pt-28 pb-20 transition-colors duration-300">
+            <title>Contact | LessonVerse</title>
             <div className="max-w-7xl mx-auto px-6">
 
                 {/* --- Hero Header --- */}
