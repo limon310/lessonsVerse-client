@@ -8,7 +8,7 @@ import ImpactStories from "../../components/Home/SuccessStories/ImpactStories"
 import Testimonials from "../../components/Home/Testimonials/Testimonials"
 import TopContributorWeak from "../../components/Home/TopContributorWeak/TopContributorWeak"
 import WhyLearningFromLife from "../../components/Home/WhyLearningFromLife/WhyLearningFromLife"
-import PillarsOfWisdom from "./PillarsOfWisdom/PillarsOfWisdom"
+import PillarsOfWisdom from "../../components/Home/PillarsOfWisdom/PillarsOfWisdom"
 
 const Home = () => {
   return (
@@ -39,7 +39,7 @@ const Home = () => {
       <ImpactStories />
 
       {/* Testimonials section */}
-      <Testimonials />
+      {/* <Testimonials /> */}
 
       {/* call to action section */}
       <InnerCircleCTA />

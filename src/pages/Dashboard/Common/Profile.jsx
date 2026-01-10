@@ -57,7 +57,7 @@ const Profile = () => {
       <div className='flex justify-center items-center h-screen'>
         {/* dynamic title */}
         <title>Profile</title>
-        <div className='bg-white shadow-lg rounded-2xl w-full'>
+        <div className='bg-base-100 shadow-lg rounded-2xl w-full'>
           <img
             alt='cover photo'
             src={user?.photoURL}
@@ -72,7 +72,7 @@ const Profile = () => {
               />
             </a>
 
-            <p className='p-2 px-4 text-xs text-black bg-lime-500 rounded-full'>
+            <p className='p-2 px-4 text-xs text-neutral bg-primary rounded-full'>
               {role}
             </p>
             <p className='text-2xl font-semibold flex items-center gap-2'>

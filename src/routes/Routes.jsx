@@ -22,6 +22,8 @@ import MyFavorite from '../pages/Dashboard/User/MyFavorite'
 import ManageFlaggedLesson from '../pages/Dashboard/Admin/ManageFlaggedLesson'
 import PaymentCancel from '../pages/Payment/PaymentCancel'
 import AuthorProfile from '../pages/Dashboard/Common/AuthorProfile'
+import HelpSupport from '../pages/HelpSupport/HelpSupport'
+import PrivacyPolicy from '../pages/PrivacyPolicy/PrivacyPolicy'
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +38,14 @@ export const router = createBrowserRouter([
       {
         path: '/public-lessons',
         Component: PublicLessons,
+      },
+      {
+        path: '/help-support',
+        Component: HelpSupport,
+      },
+      {
+        path: '/privacy-policy',
+        Component: PrivacyPolicy,
       },
       {
         path: '/authorProfile/:creatorId',
