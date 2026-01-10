@@ -1,200 +1,162 @@
-import { Link, useLocation, useNavigate } from 'react-router'
-import useAuth from '../../hooks/useAuth'
-import { toast } from 'react-hot-toast'
-import { useForm } from "react-hook-form"
-import SocialLogin from '../socialLogin/SocialLogin'
-import { imageUpload } from '../../utils'
-import LoadingSpinner from '../../components/Shared/LoadingSpinner'
-import useAxiosSecure from '../../hooks/useAxiosSecure'
+
+import { Link, useLocation, useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth';
+import { toast } from 'react-hot-toast';
+import { useForm } from "react-hook-form";
+import SocialLogin from '../socialLogin/SocialLogin';
+import { imageUpload } from '../../utils';
+import LoadingSpinner from '../../components/Shared/LoadingSpinner';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { motion } from 'framer-motion';
+import { User, Mail, Lock, Image as ImageIcon, Sparkles } from 'lucide-react';
 
 const SignUp = () => {
-  const { createUser, updateUserProfile, loading } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const from = location.state || '/'
+  const { createUser, updateUserProfile, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || '/';
   const axiosSecure = useAxiosSecure();
 
-  // react hook form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const handleSignUp = async data => {
-    const { name, image, email, password } = data
-    const imageFile = image[0]
-    // const formData = new FormData()
-    // formData.append('image', imageFile)
+    const { name, image, email, password } = data;
+    const imageFile = image[0];
 
     try {
-      // const { data } = await axios.post(
-      //   `https://api.imgbb.com/1/upload?key=${
-      //     import.meta.env.VITE_IMGBB_API_KEY
-      //   }`,
-      //   formData
-      // )
-      const imageURL = await imageUpload(imageFile)
-      // console.log("image url" , imageURL)
-      //1. User Registration
-      const result = await createUser(email, password)
+      const imageURL = await imageUpload(imageFile);
+      const result = await createUser(email, password);
 
-      // 2. Generate image url from selected file
+      const updateInfo = { displayName: name, photoURL: imageURL };
+      await updateUserProfile(updateInfo);
 
-      //3. Save username & profile photo
-      const updateInfo={
-        displayName: name,
-        photoURL: imageURL
-      }
-      await updateUserProfile(updateInfo)
-      // create user in database
-      const userInfo = {
-        displayName: name,
-        email,
-        photoURL: imageURL
-      }
-      axiosSecure.post('/users', userInfo)
-      .then(() =>{
-        // console.log("save user info in database", res.data);
-      })
+      const userInfo = { displayName: name, email, photoURL: imageURL };
+      await axiosSecure.post('/users', userInfo);
 
-      navigate(from, { replace: true })
-      toast.success('Signup Successful')
-
-      console.log(result)
+      navigate(from, { replace: true });
+      toast.success('Welcome to the Verse!');
     } catch (err) {
-      console.log(err)
-      toast.error(err?.message)
+      toast.error(err?.message);
     }
-  }
+  };
 
-  if(loading){
-    return <LoadingSpinner />
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-white'>
-      <title>Sign Up | LessonVerse</title>
-      <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
-        <div className='mb-8 text-center'>
-          <h1 className='my-3 text-4xl font-bold'>Sign Up</h1>
-          <p className='text-sm text-gray-400'>Welcome to PlantNet</p>
+    <div className='min-h-screen flex items-center justify-center bg-base-100 px-6 py-12 relative overflow-hidden'>
+      <title>Join the Circle | LessonsVerse</title>
+
+      {/* Background Aesthetic Blurs */}
+      <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className='w-full max-w-lg bg-base-200 border border-base-300 rounded-[3rem] p-8 md:p-12 shadow-2xl relative z-10'
+      >
+        {/* Header */}
+        <div className='text-center mb-10'>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-4 rotate-3">
+            <Sparkles size={32} />
+          </div>
+          <h1 className='text-4xl font-black text-neutral tracking-tight'>Create Account</h1>
+          <p className='text-neutral-content/70 mt-2 font-medium'>Join 10,000+ wisdom seekers today.</p>
         </div>
-        <form
-          onSubmit={handleSubmit(handleSignUp)}
-          noValidate=''
-          action=''
-          className='space-y-6 ng-untouched ng-pristine ng-valid'
-        >
-          <div className='space-y-4'>
-            <div>
-              <label htmlFor='email' className='block mb-2 text-sm'>
-                Name
-              </label>
+
+        <form onSubmit={handleSubmit(handleSignUp)} className='space-y-5'>
+          {/* Name Field */}
+          <div className='form-control'>
+            <label className='label font-black uppercase text-[10px] tracking-widest text-neutral-content/60 ml-2'>Full Name</label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-content/50" size={18} />
               <input
                 type='text'
-                id='name'
-                placeholder='Enter Your Name Here'
-                className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
-                data-temp-mail-org='0'
-                {...register("name", { required: true })}
+                placeholder='Enter your name'
+                className={`input w-full pl-12 bg-base-100 border-base-300 rounded-2xl focus:ring-2 focus:ring-primary/20 outline-none font-medium ${errors.name ? 'border-red-500' : ''}`}
+                {...register("name", { required: "Name is required" })}
               />
-              {errors.name?.type === "required" && <span className='text-red-500 text-sm'>name is required</span>}
             </div>
-            {/* Image */}
-            <div>
-              <label
-                htmlFor='image'
-                className='block mb-2 text-sm font-medium text-gray-700'
-              >
-                Profile Image
-              </label>
+            {errors.name && <span className='text-red-500 text-xs mt-1 ml-2'>{errors.name.message}</span>}
+          </div>
+
+          {/* Image Upload Field */}
+          <div className='form-control'>
+            <label className='label font-black uppercase text-[10px] tracking-widest text-neutral-content/60 ml-2'>Profile Picture</label>
+            <div className="relative">
+              <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-content/50" size={18} />
               <input
                 type='file'
-                id='image'
                 accept='image/*'
-                className='block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm file:font-semibold
-              file:bg-lime-50 file:text-lime-700
-              hover:file:bg-lime-100
-                bg-gray-100 border border-dashed border-lime-300 rounded-md cursor-pointer
-                focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-lime-400 py-2'
-                {...register("image", { required: true })}
+                className='file-input file-input-bordered w-full pl-12 bg-base-100 border-base-300 rounded-2xl focus:ring-2 focus:ring-primary/20 outline-none'
+                {...register("image", { required: "Profile image is required" })}
               />
-              <p className='mt-1 text-xs text-gray-400'>
-                PNG, JPG or JPEG (max 2MB)
-              </p>
-              {
-                errors.image?.type === "required" && <span className='text-red-500 text-sm'>image is required</span>
-              }
             </div>
-            <div>
-              <label htmlFor='email' className='block mb-2 text-sm'>
-                Email address
-              </label>
+            {errors.image && <span className='text-red-500 text-xs mt-1 ml-2'>{errors.image.message}</span>}
+          </div>
+
+          {/* Email Field */}
+          <div className='form-control'>
+            <label className='label font-black uppercase text-[10px] tracking-widest text-neutral-content/60 ml-2'>Email Address</label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-content/50" size={18} />
               <input
                 type='email'
-                id='email'
-                placeholder='Enter Your Email Here'
-                className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
-                data-temp-mail-org='0'
-                {...register("email", { required: true })}
+                placeholder='email@example.com'
+                className={`input w-full pl-12 bg-base-100 border-base-300 rounded-2xl focus:ring-2 focus:ring-primary/20 outline-none font-medium ${errors.email ? 'border-red-500' : ''}`}
+                {...register("email", { required: "Email is required" })}
               />
-              {errors.email && <span className='text-red-500 text-sm'>email is required</span>}
             </div>
-            <div>
-              <div className='flex justify-between'>
-                <label htmlFor='password' className='text-sm mb-2'>
-                  Password
-                </label>
-              </div>
+            {errors.email && <span className='text-red-500 text-xs mt-1 ml-2'>{errors.email.message}</span>}
+          </div>
+
+          {/* Password Field */}
+          <div className='form-control'>
+            <label className='label font-black uppercase text-[10px] tracking-widest text-neutral-content/60 ml-2'>Password</label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-content/50" size={18} />
               <input
                 type='password'
-                autoComplete='new-password'
-                id='password'
-                placeholder='*******'
-                className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
+                placeholder='••••••••'
+                className={`input w-full pl-12 bg-base-100 border-base-300 rounded-2xl focus:ring-2 focus:ring-primary/20 outline-none font-medium ${errors.password ? 'border-red-500' : ''}`}
                 {...register("password", {
-                  required: true,
-                  pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/
+                  required: "Password is required",
+                  pattern: {
+                    value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/,
+                    message: "Must include Uppercase, Lowercase & Number (Min 6)"
+                  }
                 })}
               />
-              {errors.password?.type === "pattern" && <p className='text-red-500 text-sm'>Password must include uppercase, lowercase, number, and be at least 6 characters.</p>}
             </div>
+            {errors.password && <span className='text-red-500 text-xs mt-1 ml-2'>{errors.password.message}</span>}
           </div>
 
-          <div>
-            <button
-              type='submit'
-              className='bg-lime-500 w-full rounded-md py-3 text-white'
-            >Sign Up
-            </button>
-          </div>
-        </form>
-        <div className='flex items-center pt-4 space-x-1'>
-          <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
-          <p className='px-3 text-sm dark:text-gray-400'>
-            Signup with social accounts
-          </p>
-          <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
-        </div>
-        {/* social login components */}
-        <SocialLogin></SocialLogin>
-        <p className='px-6 text-sm text-center text-gray-400'>
-          Already have an account?{' '}
-          <Link
-            to='/login'
-            className='hover:underline hover:text-lime-500 text-gray-600'
+          <button
+            type='submit'
+            className='btn btn-primary btn-block rounded-2xl h-auto py-4 font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/20 hover:shadow-primary/40 mt-4'
           >
-            Login
+            Create Account
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className='flex items-center my-8'>
+          <div className='flex-1 h-px bg-base-300'></div>
+          <p className='px-4 text-[10px] font-black uppercase tracking-widest text-neutral-content/40'>Or continue with</p>
+          <div className='flex-1 h-px bg-base-300'></div>
+        </div>
+
+        <SocialLogin />
+
+        <p className='text-center mt-8 text-sm font-medium text-neutral-content/60'>
+          Already part of the Verse?{' '}
+          <Link to='/login' className='text-primary font-black hover:underline underline-offset-4'>
+            Login here
           </Link>
-          .
         </p>
-      </div>
+      </motion.div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
-
+export default SignUp;

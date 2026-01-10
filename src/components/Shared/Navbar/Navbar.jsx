@@ -57,19 +57,19 @@ const Navbar = () => {
           </div>
           <div className="navbar-end z-10">
             {/* theme toogle */}
-            <div className='mr-2'>
+            <div className='mr-4'>
               <ThemeToggle />
             </div>
             {/* show upgrade button on condition */}
             {user && (
               userData?.role === "admin" ? null : isUserPremium ? (
-                <span className="px-3 py-1 text-white">
+                <span className="px-3 py-1">
                   <LuBadgeCheck color="blue" size={28} />
                 </span>
               ) : (
                 <Link
                   to="/upgrade-premium"
-                  className="btn bg-purple-400 mr-2 text-white text-sm"
+                  className="btn btn-primary mr-2 text-base-100 text-sm"
                 >
                   Upgrade
                 </Link>
@@ -77,7 +77,7 @@ const Navbar = () => {
             )}
 
             {/* Dropdown Menu */}
-            <div className='relative'>
+            <div className='relative bg-base-100 text-neutral'>
               <div className='flex flex-row items-center gap-3'>
                 {/* Dropdown btn */}
                 {user ? ( // only show dropdown if user exists
@@ -101,13 +101,13 @@ const Navbar = () => {
                   <div className="flex gap-3">
                     <Link
                       to="/login"
-                      className="px-5 py-2 font-semibold rounded-lg text-base-100 bg-primary hover:bg-primary-focus transition-colors duration-300 shadow-md"
+                      className="px-5 py-2 font-semibold rounded-lg bg-primary hover:bg-primary-focus transition-colors duration-300 shadow-md"
                     >
                       Login
                     </Link>
                     <Link
                       to="/signup"
-                      className="px-5 py-2 font-semibold rounded-lg text-base-100 bg-secondary hover:bg-secondary-focus transition-colors duration-300 shadow-md"
+                      className="px-5 py-2 font-semibold rounded-lg bg-secondary hover:bg-secondary-focus transition-colors duration-300 shadow-md"
                     >
                       Sign Up
                     </Link>
@@ -118,31 +118,31 @@ const Navbar = () => {
 
               {/* Dropdown menu */}
               {isOpen && user && (
-                <div className='absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm'>
+                <div className='absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-base-100 overflow-hidden right-0 top-12 text-sm'>
                   <div className='flex flex-col cursor-pointer'>
                     <Link
                       to='/'
-                      className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                      className='block md:hidden px-4 py-3 hover:bg-neutral-content transition font-semibold'
                     >
                       Home
                     </Link>
 
-                    <span className='px-4 py-3 hover:bg-neutral-100 transition font-semibold text-pink-500'>{user.displayName}</span>
+                    <span className='px-4 py-3 hover:bg-neutral-content transition font-semibold text-success'>{user.displayName}</span>
                     <Link
                       to='/dashboard/profile'
-                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                      className='px-4 py-3 hover:bg-primary transition font-semibold'
                     >
                       Profile
                     </Link>
                     <Link
                       to='/dashboard'
-                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                      className='px-4 py-3 hover:bg-primary transition font-semibold'
                     >
                       Dashboard
                     </Link>
                     <div
                       onClick={logOut}
-                      className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
+                      className='px-4 py-3 hover:bg-primary transition font-semibold cursor-pointer'
                     >
                       Logout
                     </div>
