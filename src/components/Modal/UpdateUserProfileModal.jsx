@@ -1,105 +1,143 @@
-
 import { useForm } from 'react-hook-form';
 import { imageUpload } from '../../utils';
 import toast from 'react-hot-toast';
 import useAuth from '../../hooks/useAuth';
+import { Camera, X, Loader2, User, Mail } from 'lucide-react';
+import { useState } from 'react';
 
 const UpdateUserProfileModal = ({ user, close }) => {
   const { updateUserProfile } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm();
 
-  // handle update user info
-  const handleUpdate = async data => {
-    // console.log(data)
-    const { name, image } = data
+  // Handle local image preview
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpdate = async (data) => {
+    setLoading(true);
+    const { name, image } = data;
     let imageURL = user?.photoURL;
-    if (image && image.length > 0) {
-      const imageFile = image[0];
-      imageURL = await imageUpload(imageFile); 
+
+    try {
+      if (image && image.length > 0) {
+        const imageFile = image[0];
+        imageURL = await imageUpload(imageFile);
+      }
+
+      const updateInfo = {
+        displayName: name,
+        photoURL: imageURL
+      };
+
+      await updateUserProfile(updateInfo);
+      toast.success("Profile updated successfully");
+      close();
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    const updateInfo = {
-      displayName: name,
-      photoURL: imageURL
-    }
-    await updateUserProfile(updateInfo)
-      .then(() => {
-        // console.log(result);
-        toast.success("profile update successfully");
-        close();
-      }).catch(error => {
-        // console.log(error.messate);
-        toast.error(error.message);
-      })
-  }
+  };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md space-y-4">
+    <div className="fixed inset-0 bg-neutral/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+      <div className="bg-base-100 rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden border border-base-300 animate-in fade-in zoom-in duration-200">
 
-        <h3 className="text-lg font-semibold">Edit Profile</h3>
-        <form onSubmit={handleSubmit(handleUpdate)}>
-          {/* name */}
+        {/* Header */}
+        <div className="px-8 pt-8 flex justify-between items-center">
           <div>
-            <label htmlFor='Name' className='block mb-2 text-sm'>
-              Name
+            <h3 className="text-2xl font-black text-neutral tracking-tight">Edit Profile</h3>
+            <p className="text-sm text-neutral-content font-medium">Update your public identity</p>
+          </div>
+          <button onClick={close} className="btn btn-ghost btn-circle btn-sm">
+            <X size={20} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit(handleUpdate)} className="p-8 space-y-6">
+
+          {/* Avatar Preview & Upload */}
+          <div className="flex flex-col items-center gap-4 py-2">
+            <div className="relative group">
+              <img
+                src={preview || user?.photoURL}
+                alt="preview"
+                className="w-24 h-24 rounded-3xl object-cover ring-4 ring-base-200 shadow-inner group-hover:opacity-80 transition-opacity"
+              />
+              <label
+                htmlFor="image"
+                className="absolute inset-0 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <div className="bg-neutral/70 p-2 rounded-full text-white">
+                  <Camera size={20} />
+                </div>
+              </label>
+            </div>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              className="hidden"
+              {...register("image")}
+              onChange={handleImageChange}
+            />
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">Click image to change</p>
+          </div>
+
+          {/* Name Input */}
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase tracking-widest text-neutral-content ml-1 flex items-center gap-2">
+              <User size={14} /> Full Name
             </label>
             <input
-              type='text'
-              id='name'
+              type="text"
               defaultValue={user?.displayName}
-              className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
-              data-temp-mail-org='0'
-              {...register("name", { required: true })}
+              placeholder="Enter your name"
+              className={`w-full px-4 py-3 rounded-2xl bg-base-200 border-none focus:ring-2 focus:ring-primary/50 text-neutral font-medium transition-all ${errors.name ? 'ring-2 ring-error' : ''}`}
+              {...register("name", { required: "Name is required" })}
             />
-            {errors.name?.type === "required" && <span className='text-red-500 text-sm'>name is required</span>}
+            {errors.name && <p className="text-xs text-error font-bold ml-1">{errors.name.message}</p>}
           </div>
-          {/* email */}
-          <div>
-            <label htmlFor='email' className='block mb-2 text-sm mt-2'>
-              Email address
+
+          {/* Email (Read Only) */}
+          <div className="space-y-2 opacity-60">
+            <label className="text-xs font-black uppercase tracking-widest text-neutral-content ml-1 flex items-center gap-2">
+              <Mail size={14} /> Registered Email
             </label>
             <input
               type="email"
-              value={user.email}
+              value={user?.email}
               disabled
-              className="input input-bordered w-full bg-gray-100"
+              className="w-full px-4 py-3 rounded-2xl bg-base-300 border-none text-neutral font-medium cursor-not-allowed"
             />
           </div>
-          {/* image */}
-          <div>
-            <label
-              htmlFor='image'
-              className='block mb-2 text-sm font-medium text-gray-700 mt-2'
+
+          {/* Footer Actions */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={close}
+              className="btn flex-1 rounded-2xl border-base-300 bg-transparent text-neutral hover:bg-base-200 font-bold"
             >
-              Profile Image
-            </label>
-            <input
-              type='file'
-              id='image'
-              accept='image/*'
-              className='block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm file:font-semibold
-              file:bg-lime-50 file:text-lime-700
-              hover:file:bg-lime-100
-                bg-gray-100 border border-dashed border-lime-300 rounded-md cursor-pointer
-                focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-lime-400 py-2'
-                {...register("image")}
-            />
-            <p className='mt-1 text-xs text-gray-400'>
-              PNG, JPG or JPEG (max 2MB)
-            </p>
-          </div>
-          <div className="flex justify-end gap-2">
-            <button onClick={close} className="btn btn-ghost">
               Cancel
             </button>
-            <button type='submit' className="btn btn-primary">
-              Save Changes
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-primary flex-1 rounded-2xl font-bold shadow-lg shadow-primary/20"
+            >
+              {loading ? <Loader2 className="animate-spin" size={20} /> : "Save Changes"}
             </button>
           </div>
         </form>
