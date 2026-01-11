@@ -10,6 +10,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { LuBadgeCheck } from "react-icons/lu";
 import ThemeToggle from '../ThemeToggle'
 import NavbarLinks from './NavbarLinks'
+import { ArrowUpRight, Send } from 'lucide-react'
 
 const Navbar = () => {
   const { user, logOut } = useAuth()
@@ -99,17 +100,30 @@ const Navbar = () => {
                 ) : (
                   // If no user not login then show
                   <div className="flex gap-3">
-                    <Link
+                    {/* <Link
                       to="/login"
                       className="px-5 py-2 font-semibold rounded-lg bg-primary hover:bg-primary-focus transition-colors duration-300 shadow-md"
                     >
                       Login
+                    </Link> */}
+                    <Link to='/login'
+                      className="btn btn-primary rounded-2xl px-5 h-auto py-4 font-black uppercase tracking-widest group text-[12px]"
+                    >
+                      Login
+                      <ArrowUpRight size={16} className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      {/* <Send size={18} className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /> */}
                     </Link>
-                    <Link
+                    {/* <Link
                       to="/signup"
-                      className="px-5 py-2 font-semibold rounded-lg bg-secondary hover:bg-secondary-focus transition-colors duration-300 shadow-md"
+                      className="px-5 py-2 font-semibold rounded-lg bg-success hover:bg-secondary-focus transition-colors duration-300 shadow-md"
                     >
                       Sign Up
+                    </Link> */}
+                    <Link to="/signup"
+                      className="btn btn-success rounded-2xl px-6 h-auto py-4 font-black uppercase tracking-widest group text-base-100 text-[12px]"
+                    >
+                      Sign Up
+                      <Send size={16} className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </Link>
                   </div>
 

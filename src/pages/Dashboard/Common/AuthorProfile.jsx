@@ -26,10 +26,10 @@ const AuthorProfile = () => {
 
     return (
         <Container>
-            <div>
+            <div className='pb-8'>
                 {/* dynamic title */}
                 <title>Author Profile</title>
-                <div className="author-card flex justify-center items-center bg-white p-6 rounded-lg shadow mb-8">
+                <div className="author-card flex justify-center items-center bg-base-200 p-6 rounded-lg shadow mb-8">
                     <img
                         src={author.image}
                         alt={author.name}
@@ -41,7 +41,7 @@ const AuthorProfile = () => {
                         <p className="text-gray-700 mt-1">Total Lessons: {authorLessons.length}</p>
                     </div>
                 </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-20 mt-5'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
                     {authorLessons.map(lesson => (
                         <LessonCard
                             key={lesson._id}

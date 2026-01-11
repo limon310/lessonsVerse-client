@@ -1,15 +1,14 @@
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
+import { Fragment } from 'react'
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { toast } from 'react-hot-toast'
+import { FaExclamationTriangle } from 'react-icons/fa'
 
 const ReportModal = ({ closeModal, isOpen, lesson }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  // console.log("from lesson report modal", lesson);
-
-  // report reasons array
   const reportReasons = [
     { value: "inappropriate", text: "Inappropriate Content" },
     { value: "hate", text: "Hate Speech or Harassment" },
@@ -20,21 +19,20 @@ const ReportModal = ({ closeModal, isOpen, lesson }) => {
     { value: "privacy", text: "Privacy Violation" },
     { value: "selfharm", text: "Self-Harm or Suicide Content" },
     { value: "violence", text: "Violent or Graphic Content" },
-    { value: "misleading_ad", text: "Misleading Advertisement" },
-    { value: "fake_news", text: "False or Fake News" },
-    { value: "harassment", text: "Harassment or Bullying" },
     { value: "other", text: "Other" },
   ];
 
-  // handle report reason
   const handleReport = (e) => {
     e.preventDefault();
-
     const reason = e.target.reason.value;
-    // console.log(reason);
     if (!reason) return;
 
-    axiosSecure.post(`/report-lesson/${lesson._id}`, { email: user?.email, displayName: user?.displayName, userId: user?.uid, reason })
+    axiosSecure.post(`/report-lesson/${lesson._id}`, {
+      email: user?.email,
+      displayName: user?.displayName,
+      userId: user?.uid,
+      reason
+    })
       .then(res => {
         if (res.data.success) {
           toast.success("Reported successfully");
@@ -44,64 +42,92 @@ const ReportModal = ({ closeModal, isOpen, lesson }) => {
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      as='div'
-      className='relative z-10 focus:outline-none '
-      onClose={closeModal}
-    >
-      <div className='fixed inset-0 z-10 w-screen overflow-y-auto '>
-        <div className='flex min-h-full items-center justify-center p-4'>
-          <DialogPanel
-            transition
-            className='w-full max-w-md bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl rounded-2xl'
-          >
-            <DialogTitle
-              as='h3'
-              className='text-xl font-medium text-center leading-6 text-gray-900'
-            >
-              Report Lesson
-            </DialogTitle>
-            <p className="text-sm text-muted-foreground py-3">
-              Reporting helps us review content that may violate community
-              guidelines. Reports are confidential.
-            </p>
-            <form onSubmit={handleReport}>
-              <fieldset className="fieldset py-4">
-                <label htmlFor="privacy" className="mb-2 text-sm font-medium text-gray-700">
-                  Reason for report
-                </label>
-                <select
-                  id="reason"
-                  name="reason"
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {reportReasons.map(reason => (
-                    <option className='text-lg ' key={reason.value} value={reason.value}>
-                      {reason.text}
-                    </option>
-                  ))}
-                </select>
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={closeModal}>
+        {/* Backdrop Animation */}
+        <TransitionChild
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
+        </TransitionChild>
 
-                <button
-                  type='submit'
-                  className='cursor-pointer mt-3 inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2'
-                >
-                  Confirm Report
-                </button>
-              </fieldset>
-            </form>
-            <button
-              onClick={closeModal}
-              type='button'
-              className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <TransitionChild
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
             >
-              Cancel
-            </button>
-          </DialogPanel>
+              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-base-100 p-8 text-left align-middle shadow-2xl transition-all border border-base-300">
+
+                {/* Header Icon & Title */}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-error/10 rounded-full">
+                    <FaExclamationTriangle className="text-error text-xl" />
+                  </div>
+                  <DialogTitle as="h3" className="text-2xl font-bold leading-6 text-neutral">
+                    Report Content
+                  </DialogTitle>
+                </div>
+
+                <p className="text-sm text-neutral-content leading-relaxed mb-6">
+                  Reporting helps us keep the community safe. This report is
+                  <strong> confidential</strong> and our moderators will review it shortly.
+                </p>
+
+                <form onSubmit={handleReport} className="space-y-6">
+                  <div>
+                    <label htmlFor="reason" className="block text-sm font-semibold text-neutral mb-2">
+                      Reason for report
+                    </label>
+                    <select
+                      id="reason"
+                      name="reason"
+                      className="select select-bordered w-full bg-base-200 text-neutral focus:ring-2 focus:ring-primary focus:border-primary border-base-300 h-12"
+                      required
+                    >
+                      <option value="" disabled selected>Select a reason...</option>
+                      {reportReasons.map(reason => (
+                        <option key={reason.value} value={reason.value}>
+                          {reason.text}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row-reverse gap-3 mt-8">
+                    <button
+                      type="submit"
+                      className="btn btn-error text-white sm:flex-1"
+                    >
+                      Confirm Report
+                    </button>
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="btn btn-ghost border border-base-300 sm:flex-1 text-neutral-content"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
         </div>
-      </div>
-    </Dialog>
+      </Dialog>
+    </Transition>
   )
 }
 
