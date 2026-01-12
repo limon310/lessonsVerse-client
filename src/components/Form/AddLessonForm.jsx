@@ -1,258 +1,189 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
-import successAnimation from '../../assets/images/Tick Pop.json'
+import successAnimation from '../../assets/images/Tick Pop.json';
 import Lottie from 'lottie-react';
+import { BookOpen, ShieldCheck, Sparkles, Info, Crown } from 'lucide-react';
 
 const AddLessonForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [showSuccess, setShowSuccess] = useState(false);
-  // console.log("user in dashboard add lesson", user)
-  // Initialize useForm hook
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset
-  } = useForm();
 
-  // get user data using tanstack quiry for access level velidation
-  const { data: usersData = [] } = useQuery({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
+
+  // Get user data for premium validation
+  const { data: usersData = {} } = useQuery({
     queryKey: ['usersAccessLevel', user?.email],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users/${user?.email}`)
-      return res.data;
-    }
+    queryFn: async () => (await axiosSecure.get(`/users/${user?.email}`)).data
   });
   const isUserPremium = usersData.isPremium;
 
-  // handle add lessons
   const onSubmit = (data) => {
-    // console.log('Form Data Submitted:', data);
-    const { title, description, category, privacy, emotional_ton, access_level } = data;
     const lessonData = {
-      title,
-      description,
-      category,
-      privacy,
-      emotional_ton,
-      access_level,
+      ...data,
       creatorId: user?.uid,
       authorInfo: {
         name: user?.displayName,
         email: user?.email,
         image: user?.photoURL,
       }
-    }
-    // console.log(lessonData)
-    axiosSecure.post('/lessons', lessonData)
-      .then(res => {
-        // console.log(res.data);
-        if (res.data.insertedId) {
-          setShowSuccess(true);
-          setTimeout(() => setShowSuccess(false), 3000);
-          reset();
-        }
-      })
+    };
+
+    axiosSecure.post('/lessons', lessonData).then(res => {
+      if (res.data.insertedId) {
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000);
+        reset();
+      }
+    });
   };
 
   return (
-    <div className="max-w-3xl mx-auto my-10 p-6 bg-whited shadow-xl rounded-lg border border-gray-200">
+    <div className="max-w-4xl mx-auto my-12 relative">
+      {/* Background Decor */}
+      <div className="absolute -top-10 -left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-secondary/10 rounded-full blur-3xl" />
 
-      {/* Header */}
-      <h2 className="text-3xl font-bold mb-6 text-gray-800 border-b pb-2">Add New Lesson</h2>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
-        {/* --- Lesson Title Field --- */}
-        <div className="flex flex-col">
-          <label htmlFor="title" className="mb-2 text-sm font-medium text-gray-700">Lesson Title</label>
-          <input
-            id="title"
-            type="text"
-            placeholder="lesson title here"
-            className={`w-full p-3 border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register("title", {
-              required: "Lesson title is required.",
-              minLength: {
-                value: 5,
-                message: "Title must be at least 5 characters long."
-              }
-            })}
-          />
-          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>}
+      <div className="bg-base-100 border border-base-300 shadow-2xl rounded-[2.5rem] overflow-hidden">
+        {/* Header Section */}
+        <div className="bg-primary p-10 text-primary-content flex justify-between items-center">
+          <div>
+            <h2 className="text-4xl font-black tracking-tight flex items-center gap-3">
+              <BookOpen size={36} /> Add New Lesson
+            </h2>
+            <p className="mt-2 opacity-80 font-medium">Share your wisdom and realizations with the community</p>
+          </div>
+          <Sparkles size={60} className="opacity-20 hidden md:block" />
         </div>
 
-        {/* --- Category and privacy Fields*/}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          {/* Category Dropdown */}
-          <div className="flex flex-col">
-            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Category</label>
-            <select
-              id="category"
-              className={`w-full p-3 border ${errors.category ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("category", { required: "Please select a category." })}
-            >
-              <option value="Personal ">Personal </option>
-              <option value="Growth">Growth</option>
-              <option value="Career">Career</option>
-              <option value="Relationships">Relationships</option>
-              <option value="Mindset">Mindset</option>
-              <option value="Mistakes_learned">Mistakes Learned</option>
-              <option value="Finance_Money">Finance Money</option>
-              <option value="Health_Wellness">Health Wellness</option>
-            </select>
-            {errors.category && <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>}
+        <form onSubmit={handleSubmit(onSubmit)} className="p-10 space-y-8">
+          {/* Title Field */}
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase text-neutral-content tracking-widest ml-1">Lesson Title</label>
+            <input
+              type="text"
+              placeholder="e.g., The Art of Patience"
+              className={`input input-bordered w-full rounded-2xl bg-base-200/50 border-base-300 focus:ring-2 focus:ring-primary/40 ${errors.title ? 'border-error' : ''}`}
+              {...register("title", { required: "Title is required", minLength: 5 })}
+            />
+            {errors.title && <span className="text-error text-xs font-bold ml-1">{errors.title.message}</span>}
           </div>
 
-          {/* Privacy */}
-          <div className="flex flex-col">
-            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Privacy</label>
-            <select
-              id="privacy"
-              className={`w-full p-3 border ${errors.privacy ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("privacy", { required: "Please select privacy." })}
-            >
-              <option value="Public">Public</option>
-              <option value="Private">Private</option>
-            </select>
-            {errors.privacy && <p className="mt-1 text-sm text-red-600">{errors.privacy.message}</p>}
-          </div>
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Category */}
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase text-neutral-content tracking-widest ml-1">Category</label>
+              <select
+                className="select select-bordered w-full rounded-2xl bg-base-200/50"
+                {...register("category", { required: "Required" })}
+              >
+                <option value="Personal ">Personal </option>
+                <option value="Growth">Growth</option>
+                <option value="Career">Career</option>
+                <option value="Relationships">Relationships</option>
+                <option value="Mindset">Mindset</option>
+                <option value="Mistakes_learned">Mistakes Learned</option>
+                <option value="Finance_Money">Finance Money</option>
+                <option value="Health_Wellness">Health Wellness</option>
+              </select>
+            </div>
 
-        {/* --- Description Textarea --- */}
-        <div className="flex flex-col">
-          <label htmlFor="description" className="mb-2 text-sm font-medium text-gray-700">Description</label>
-          <textarea
-            id="description"
-            rows="4"
-            placeholder="Provide a brief summary of the lesson content."
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
-            {...register("description", {
-              maxLength: {
-                minLength: 50,
-                message: "Description cannot exceed 500 characters."
-              }
-            })}
-          />
-          {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* --- access level and emotional ton Fields*/}
-          {/* Emotional Ton Dropdown */}
-          <div className="flex flex-col">
-            <label htmlFor="category" className="mb-2 text-sm font-medium text-gray-700">Emotional Ton</label>
-            <select
-              id="emotional_ton"
-              className={`w-full p-3 border ${errors.emotional_ton ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register("emotional_ton", { required: "Please select a Ton." })}
-            >
-              <option value="Motivational">Motivational</option>
-              <option value="Sad">Sad</option>
-              <option value="Realization">Realization</option>
-              <option value="Gratitude">Gratitude</option>
-            </select>
-            {errors.emotional && <p className="mt-1 text-sm text-red-600">{errors.emotional_ton.message}</p>}
+            {/* Privacy */}
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase text-neutral-content tracking-widest ml-1">Privacy Level</label>
+              <select className="select select-bordered w-full rounded-2xl bg-base-200/50" {...register("privacy")}>
+                <option value="Public">Public (Everyone can see)</option>
+                <option value="Private">Private (Only Premium User)</option>
+              </select>
+            </div>
           </div>
 
-          {/* Access level Input */}
-          <div className="flex flex-col relative group">
-            <label
-              htmlFor="access_level"
-              className="mb-2 text-sm font-medium text-gray-700"
-            >
-              Access Level
-            </label>
+          {/* Description */}
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase text-neutral-content tracking-widest ml-1">Lesson Content</label>
+            <textarea
+              rows="5"
+              placeholder="Write the core summary of what you've learned..."
+              className="textarea textarea-bordered w-full rounded-2xl bg-base-200/50 border-base-300 resize-none"
+              {...register("description", { minLength: { value: 50, message: "Min 50 chars" } })}
+            />
+            {errors.description && <span className="text-error text-xs font-bold">{errors.description.message}</span>}
+          </div>
 
-            <select
-              id="access_level"
-              disabled={!isUserPremium}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 
-              ${errors.access_level ? "border-red-500" : "border-gray-300"}
-              ${!isUserPremium ? "bg-gray-100 cursor-not-allowed" : "focus:ring-blue-500"}`}
-              {...register("access_level", {
-                required: "Please select access level",
-              })}
-            >
-              <option value="Free">Free</option>
-              <option value="Premium">Premium</option>
-            </select>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Emotional Ton */}
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase text-neutral-content tracking-widest ml-1">Emotional Tone</label>
+              <select className="select select-bordered w-full rounded-2xl bg-base-200/50" {...register("emotional_ton")}>
+                <option value="Motivational">🚀 Motivational</option>
+                <option value="Realization">💡 Realization</option>
+                <option value="Gratitude">🙏 Gratitude</option>
+                <option value="Sad">🌧️ Sad</option>
+              </select>
+            </div>
 
-            {/* Tooltip */}
-            {!isUserPremium && (
-              <div className="absolute -top-9 left-0 hidden group-hover:block z-10">
-                <div className="bg-black text-white text-xs px-3 py-1 rounded shadow">
-                  Upgrade Premium to create paid lessons
-                </div>
+            {/* Access Level */}
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <label className="text-xs font-black uppercase text-neutral-content tracking-widest ml-1">Access Tier</label>
+                {!isUserPremium && <span className="text-[10px] font-black text-warning flex items-center gap-1 uppercase tracking-tighter"><Crown size={12} /> Premium Feature</span>}
               </div>
-            )}
 
-            {errors.access_level && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.access_level.message}
-              </p>
-            )}
+              <div className="group relative">
+                <select
+                  disabled={!isUserPremium}
+                  className={`select select-bordered w-full rounded-2xl bg-base-200/50 ${!isUserPremium ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  {...register("access_level")}
+                >
+                  <option value="Free">Free for all</option>
+                  <option value="Premium">Premium Subscribers only</option>
+                </select>
+
+                {!isUserPremium && (
+                  <div className="absolute inset-0 bg-transparent" title="Upgrade to Premium to enable paid lessons" />
+                )}
+              </div>
+            </div>
           </div>
 
-        </div>
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row justify-end items-center gap-4 pt-6">
+            <button
+              type="button"
+              onClick={() => reset()}
+              className="btn btn-ghost rounded-2xl px-10 font-bold w-full sm:w-auto"
+              disabled={isSubmitting}
+            >
+              Reset Form
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary rounded-2xl px-12 font-black w-full sm:w-auto shadow-lg shadow-primary/30"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? <span className="loading loading-spinner"></span> : "Publish Lesson"}
+            </button>
+          </div>
+        </form>
+      </div>
 
-        {/* --- Button Group --- */}
-        <div className="flex justify-end space-x-4 pt-4">
-
-          {/* Reset Button */}
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="px-6 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out"
-            disabled={isSubmitting}
-          >
-            Reset
-          </button>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            // Conditional styling for disabled state
-            className={`px-6 py-2 text-white font-semibold rounded-lg shadow-md transition duration-150 ease-in-out ${isSubmitting
-              ? 'bg-blue-300 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              }`}
-          >
-            {isSubmitting ? 'Adding...' : 'Add Lesson'}
-          </button>
-        </div>
-      </form>
-
-      {/* lotie animation */}
+      {/* Modern Success Toast */}
       {showSuccess && (
-        <div className='flex flex-col'
-          style={{
-            position: "fixed",
-            top: 20,
-            right: 20,
-            width: 150,
-            background: "#fff",
-            borderRadius: 12,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-            padding: 10,
-            zIndex: 9999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Lottie animationData={successAnimation} loop={false} />
-          <p className='text-green-500'>Lesson Created</p>
+        <div className="fixed top-10 right-10 z-100 animate-in fade-in slide-in-from-top-5 duration-300">
+          <div className="bg-base-100 border border-base-300 shadow-2xl rounded-3xl p-4 flex items-center gap-4 min-w-[280px]">
+            <div className="w-16 h-16">
+              <Lottie animationData={successAnimation} loop={false} />
+            </div>
+            <div>
+              <p className="font-black text-neutral">Success!</p>
+              <p className="text-xs font-bold text-success uppercase">Lesson Published</p>
+            </div>
+          </div>
         </div>
       )}
-
     </div>
   );
 };

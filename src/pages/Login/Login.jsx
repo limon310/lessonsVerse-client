@@ -172,7 +172,7 @@ const Login = () => {
     try {
       await signIn(email, password);
       navigate(from, { replace: true });
-      toast.success('Welcome back to LessonsVerse!');
+      toast.success('Welcome back to Verse!');
     } catch (err) {
       toast.error(err?.message);
     }
