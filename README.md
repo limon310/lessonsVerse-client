@@ -1,7 +1,10 @@
 # LessonVerse Frontend
 
-<<<<<<< HEAD
 The **frontend** LessonVerse is a web application where users can share their personal insights and stories, interact with others by liking, commenting, and sharing posts, and explore a collection of lessons shared by the community.
+
+---
+
+Live Link = [LessonVerse](https://lessonsverse.web.app/)
 
 ---
 
@@ -24,16 +27,6 @@ Live Demo: https://lessonsverse.web.app/
 
 ---
 
-## Table of Contents
-
-- [Features](#features)  
-- [Technologies](#technologies)  
-- [Installation](#installation)  
-- [Usage](#usage) 
-- [License](#license)  
-
----
-
 ## Features
 
 >>>>>>> 06afb30824e348608e55fc6992dd057f94a8a594
@@ -41,10 +34,7 @@ Live Demo: https://lessonsverse.web.app/
 - Share personal insights and stories  
 - Like, comment, and share posts  
 - Filter lessons by category and visibility  
-<<<<<<< HEAD
 - Graph char for more details 
-=======
->>>>>>> 06afb30824e348608e55fc6992dd057f94a8a594
 - Save favorite lessons  
 
 ---
@@ -57,8 +47,6 @@ Live Demo: https://lessonsverse.web.app/
 - Axios  
 <<<<<<< HEAD
 - Reachart (react)
-=======
->>>>>>> 06afb30824e348608e55fc6992dd057f94a8a594
 
 ---
 
