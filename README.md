@@ -4,7 +4,7 @@ The **frontend** LessonVerse is a web application where users can share their pe
 
 ---
 
-Live Link = [LessonVerse](https://lessonsverse.web.app/)
+Live Demo: https://lessonsverse.web.app/
 
 ---
 
@@ -20,16 +20,6 @@ Live Link = [LessonVerse](https://lessonsverse.web.app/)
 
 ## Features
 
-=======
-LessonVerse is a web application where users can share their personal insights and stories, interact with others by liking, commenting, and sharing posts, and explore a collection of lessons shared by the community.
-
-Live Demo: https://lessonsverse.web.app/
-
----
-
-## Features
-
->>>>>>> 06afb30824e348608e55fc6992dd057f94a8a594
 - User registration and login  
 - Share personal insights and stories  
 - Like, comment, and share posts  
@@ -41,11 +31,14 @@ Live Demo: https://lessonsverse.web.app/
 
 ## Technologies
 
-- React.js  
+- React.js
+- Node js
+- MongoDB
+- Express js
+- Framer Motion
 - React Router  
 - Tailwind CSS  
 - Axios  
-<<<<<<< HEAD
 - Reachart (react)
 
 ---
